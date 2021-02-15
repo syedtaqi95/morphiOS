@@ -1,5 +1,6 @@
-# binary files
+# Project binaries
 *.bin
+custom-os/
 
 # VS Code
 .vscode/*
