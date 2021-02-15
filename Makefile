@@ -1,4 +1,4 @@
-GPP_PARAMS = -m32
+GPP_PARAMS = -m32 -Wno-write-strings -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore
 AS_PARAMS = --32
 LD_PARAMS = -melf_i386
 
