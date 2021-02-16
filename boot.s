@@ -25,7 +25,7 @@ _start:
 	mov $stack_top, %esp
 	call callConstructors
 	push %eax
-    push %ebx
+	push %ebx
 	call kernel_main
  
 	/*
@@ -66,5 +66,5 @@ undefined behavior.
 .section .bss
 .align 16
 stack_bottom:
-.skip 16384 # 16 KiB
+.skip 2*1024*1024; # 2 MiB
 stack_top:
