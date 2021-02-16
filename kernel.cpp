@@ -134,8 +134,7 @@ extern "C" void kernel_main(void)
 	terminal_initialize();
  
 	printf("Wake up, Neo...\n");
-	printf("...\n");
-	printf("The Matrix has you...Follow the white rabbit. Knock, Knock, Neo.\n");
+	printf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
 
 	GlobalDescriptorTable gdt;
 

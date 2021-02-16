@@ -12,7 +12,7 @@ CXX_FLAGS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-excep
 LD_FLAGS = -ffreestanding -O2 -nostdlib -lgcc
 
 # Objects
-objects = boot.o gdt.o kernel.o
+objects = boot.o gdt.o port.o kernel.o
 
 # Targets
 %.o : %.s
