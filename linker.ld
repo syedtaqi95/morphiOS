@@ -28,6 +28,11 @@ SECTIONS
 	/* Read-write data (initialized) */
 	.data BLOCK(4K) : ALIGN(4K)
 	{
+		start_ctors = .;
+		KEEP(*( .init_array ));
+		KEEP(*(SORT_BY_INIT_PRIORITY( .init_array.* )));
+		end_ctors = .;
+
 		*(.data)
 	}
  
@@ -40,4 +45,6 @@ SECTIONS
  
 	/* The compiler may produce other sections, by default it will put them in
 	   a segment with the same name. Simply add stuff here as needed. */
+	
+	/DISCARD/ : { *(.fini_array*) *(.comment) }
 }

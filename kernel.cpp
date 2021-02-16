@@ -118,6 +118,16 @@ void terminal_writestring(const char* data)
 	terminal_write(data, strlen(data));
 }
 
+// Constructors
+typedef void (*constructor)();
+extern "C" constructor start_ctors;
+extern "C" constructor end_ctors;
+extern "C" void callConstructors()
+{
+    for(constructor* i = &start_ctors; i != &end_ctors; i++)
+    	(*i)();
+}
+
 // kernel main function called by loader.s
 extern "C" void kernel_main(void) 
 {
