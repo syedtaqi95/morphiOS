@@ -36,3 +36,6 @@ install: mykernel.bin
 	echo '}'                                 >> iso/boot/grub/grub.cfg
 	grub-mkrescue --output=mykernel.iso iso
 	rm -rf iso
+
+clean:
+	rm -f kernel.o loader.o mykernel.bin mykernel.iso
