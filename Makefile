@@ -1,11 +1,13 @@
-# Use g++ i686 Cross Compiler
+# Use the i686 Cross Compiler
 GCC_FOLDER = ~/GCC_SRC
 C = $(GCC_FOLDER)/bin/i686-elf-gcc
+CXX = $(GCC_FOLDER)/bin/i686-elf-g++
 AS = $(GCC_FOLDER)/bin/i686-elf-as
-LD = $(C)
+LD = $(CXX)
 
 # Compiler flags
 C_FLAGS = -std=gnu99 -ffreestanding -O2 -Wall -Wextra -v
+CXX_FLAGS = -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
 LD_FLAGS = -ffreestanding -O2 -nostdlib -lgcc
 
 # Objects
@@ -18,24 +20,26 @@ objects = boot.o kernel.o
 %.o : %.c
 	$(C) -o $@ -c $< $(C_FLAGS)
 
-myos.bin: linker.ld $(objects)
-	$(LD) -T $< -o $@ $(LD_FLAGS) $(objects)
-	# i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
+%.o : %.cpp
+	$(CXX) -o $@ -c $< $(CXX_FLAGS)
 
-install: myos.bin
+custom-os.bin: linker.ld $(objects)
+	$(LD) -T $< -o $@ $(LD_FLAGS) $(objects)
+
+install: custom-os.bin
 	mkdir -p isodir/boot/grub
-	cp myos.bin isodir/boot/myos.bin
+	cp custom-os.bin isodir/boot/custom-os.bin
 	echo 'set timeout=0'                      > isodir/boot/grub/grub.cfg
 	echo 'set default=0'                     >> isodir/boot/grub/grub.cfg
 	echo ''                                  >> isodir/boot/grub/grub.cfg
 	echo 'menuentry "My Operating System" {' >> isodir/boot/grub/grub.cfg
-	echo '  multiboot /boot/myos.bin'    >> isodir/boot/grub/grub.cfg
+	echo '  multiboot /boot/custom-os.bin'    >> isodir/boot/grub/grub.cfg
 	echo '}'                                 >> isodir/boot/grub/grub.cfg
-	grub-mkrescue -o myos.iso isodir
+	grub-mkrescue -o custom-os.iso isodir
 	rm -rf isodir
 
 clean:
-	rm -f $(objects) myos.bin myos.iso isodir
+	rm -f $(objects) custom-os.bin custom-os.iso isodir
 
 run:
-	qemu-system-i386 -cdrom myos.iso
+	qemu-system-i386 -cdrom custom-os.iso
