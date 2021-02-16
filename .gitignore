@@ -1,6 +1,6 @@
 # Project binaries
 *.bin
-iso/
+isodir/
 *.iso
 
 # VS Code
