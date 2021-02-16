@@ -6,9 +6,7 @@
     Created by Syed Taqi Haider
 */
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
+#include "types.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
