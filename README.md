@@ -1,6 +1,6 @@
-# CustomOS
+# micrOS
 
-Developing my own 32-bit x86 (IA32) based operating system written in C++.
+Developing my own hobbyist 32-bit operating system written in C++ for the x86 architecture.
 
 Used some of the code from the OSDev Wiki: https://wiki.osdev.org/
 
@@ -21,15 +21,15 @@ Used some of the code from the OSDev Wiki: https://wiki.osdev.org/
 - Install [qemu](https://www.qemu.org/). Required for booting and testing the OS in a VM locally.
 
 
-## Compiling customOS
+## Compiling micrOS
 
 Open a terminal and run:
 - ```make install```
 
 
-## Running customOS
+## Running micrOS
 
-You can run customOS locally (requires ```qemu```).
+You can run micrOS locally (requires ```qemu```).
 - ```make run```
 
 

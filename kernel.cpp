@@ -1,5 +1,5 @@
 /*
-    kernel.cpp : custom OS kernel written in C++
+    kernel.cpp : micrOS kernel written in C++
 
     Based on the "bare Bones" tutorial from https://wiki.osdev.org/Bare_Bones.
 
@@ -133,7 +133,7 @@ extern "C" void kernel_main(void)
 	/* Initialize terminal interface */
 	terminal_initialize();
  
-	terminal_writestring("Hello, customOS!\n");
+	terminal_writestring("Hello, micrOS!\n");
 
 	GlobalDescriptorTable gdt;
 

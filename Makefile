@@ -24,23 +24,23 @@ objects = boot.o gdt.o kernel.o
 %.o : %.cpp
 	$(CXX) -o $@ -c $< $(CXX_FLAGS)
 
-custom-os.bin: linker.ld $(objects)
+micros.bin: linker.ld $(objects)
 	$(LD) -T $< -o $@ $(LD_FLAGS) $(objects)
 
-install: custom-os.bin
+install: micros.bin
 	mkdir -p isodir/boot/grub
-	cp custom-os.bin isodir/boot/custom-os.bin
+	cp micros.bin isodir/boot/micros.bin
 	echo 'set timeout=0'                      > isodir/boot/grub/grub.cfg
 	echo 'set default=0'                     >> isodir/boot/grub/grub.cfg
 	echo ''                                  >> isodir/boot/grub/grub.cfg
 	echo 'menuentry "My Operating System" {' >> isodir/boot/grub/grub.cfg
-	echo '  multiboot /boot/custom-os.bin'    >> isodir/boot/grub/grub.cfg
+	echo '  multiboot /boot/micros.bin'    >> isodir/boot/grub/grub.cfg
 	echo '}'                                 >> isodir/boot/grub/grub.cfg
-	grub-mkrescue -o custom-os.iso isodir
+	grub-mkrescue -o micros.iso isodir
 	rm -rf isodir
 
 clean:
-	rm -f $(objects) custom-os.bin custom-os.iso isodir
+	rm -f $(objects) micros.bin micros.iso isodir
 
 run:
-	qemu-system-i386 -cdrom custom-os.iso
+	qemu-system-i386 -cdrom micros.iso
