@@ -112,7 +112,7 @@ void terminal_write(const char* data, size_t size)
 		terminal_putchar(data[i]);
 }
  
-void terminal_writestring(const char* data) 
+void printf(const char* data) 
 {
 	terminal_write(data, strlen(data));
 }
@@ -133,7 +133,9 @@ extern "C" void kernel_main(void)
 	/* Initialize terminal interface */
 	terminal_initialize();
  
-	terminal_writestring("Hello, micrOS!\n");
+	printf("Wake up, Neo...\n");
+	printf("...\n");
+	printf("The Matrix has you...Follow the white rabbit. Knock, Knock, Neo.\n");
 
 	GlobalDescriptorTable gdt;
 
