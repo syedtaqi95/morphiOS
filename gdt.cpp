@@ -6,15 +6,15 @@
 
 // GDT constructor
 GlobalDescriptorTable::GlobalDescriptorTable()
-    : nullSegmentDescriptor(0, 0, 0),
-      unusedSegmentDescriptor(0, 0, 0),
-      codeSegmentDescriptor(0, 64*1024*1024, 0x9A),
-      dataSegmentDescriptor(0, 64*1024*1024, 0x92)
+    : nullSegmentSelector(0, 0, 0),
+      unusedSegmentSelector(0, 0, 0),
+      codeSegmentSelector(0, 64*1024*1024, 0x9A),
+      dataSegmentSelector(0, 64*1024*1024, 0x92)
 {
     uint32_t i[2];
     i[1] = (uint32_t)this;
     i[0] = sizeof(GlobalDescriptorTable) << 16;
-    asm volatile("lgdt (%0)": :"p" (((uint8_t *) i) + 2));
+    asm volatile("lgdt (%0)" : : "p"(((uint8_t *)i)+2));
 }
 
 // Destructor
@@ -75,6 +75,8 @@ uint32_t GlobalDescriptorTable::SegmentDescriptor::Base() {
     result = (result << 8) + target[4];
     result = (result << 8) + target[3];
     result = (result << 8) + target[2];
+
+    return result;
 }
 uint32_t GlobalDescriptorTable::SegmentDescriptor::Limit() {
     

@@ -7,6 +7,7 @@
 */
 
 #include "types.h"
+#include "gdt.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -132,6 +133,9 @@ extern "C" void kernel_main(void)
 	/* Initialize terminal interface */
 	terminal_initialize();
  
-	/* Newline support is left as an exercise. */
 	terminal_writestring("Hello, customOS!\n");
+
+	GlobalDescriptorTable gdt;
+
+	while(1);
 }
