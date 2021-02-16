@@ -1,6 +1,6 @@
 # Project binaries
 *.bin
-custom-os/
+iso/
 *.iso
 
 # VS Code
