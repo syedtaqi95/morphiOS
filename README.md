@@ -29,7 +29,14 @@ Open a terminal and run:
 
 ## Running micrOS
 
-You can run micrOS locally (requires ```qemu```).
+You can run micrOS locally using ```qemu```.
+- ```make install```
 - ```make run```
 
+Or you can generate the ISO image and run it using Virtualbox.
+
+## Cleaning the project
+
+Open a terminal and run:
+- ```make clean```
 
