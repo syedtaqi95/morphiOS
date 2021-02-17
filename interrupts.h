@@ -33,7 +33,7 @@ class interruptsHandler {
             uint32_t base;
         } __attribute__((packed));
 
-        // Offset from GDT
+        // Offset to account for reserved interrupts
         uint16_t hardwareInterruptOffset;
 
         // Sets the entry for the particular interrupt
