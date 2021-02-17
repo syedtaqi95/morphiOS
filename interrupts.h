@@ -9,8 +9,8 @@
 #include "port.h"
 #include "gdt.h"
 
-#define NUM_INTERRUPTS 256
-#define HW_INTERRUPT_OFFSET 0x20
+#define NUM_INTERRUPTS 256 // number of entries in IDT (max 256 in x86)
+#define HW_INTERRUPT_OFFSET 0x20 // good practice to leave the first 32 IRQs for system interrupts
 
 class interruptsHandler {
 
