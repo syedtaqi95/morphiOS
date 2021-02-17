@@ -9,6 +9,7 @@
 #include "types.h"
 #include "gdt.h"
 #include "port.h"
+#include "interrupts.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -153,6 +154,9 @@ extern "C" void kernel_main(void)
 	print_welcome_msg();
  
 	GlobalDescriptorTable gdt;
+
+	interruptsHandler interrupts(0x20, &gdt);
+    interrupts.Activate();
 
 	while(1);
 }

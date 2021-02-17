@@ -12,11 +12,11 @@ CXX_FLAGS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-excep
 LD_FLAGS = -ffreestanding -O2 -nostdlib -lgcc
 
 # Objects
-objects = boot.o gdt.o port.o kernel.o
+objects = boot.o gdt.o port.o interrupts-stubs.o interrupts.o kernel.o
 
 # Targets
 %.o : %.s
-	$(AS) boot.s -o boot.o
+	$(AS) $< -o $@
 
 %.o : %.c
 	$(C) -o $@ -c $< $(C_FLAGS)
@@ -39,6 +39,7 @@ install: micros.bin
 	grub-mkrescue -o micros.iso isodir
 	rm -rf isodir
 
+.PHONY: clean run
 clean:
 	rm -f $(objects) micros.bin micros.iso isodir
 
