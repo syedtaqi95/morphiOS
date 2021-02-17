@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "gdt.h"
+#include "port.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -127,15 +128,30 @@ extern "C" void callConstructors()
     	(*i)();
 }
 
+void print_welcome_msg() {
+	
+	printf("           _           _____ _____ \n");
+	printf("          (_)         |  _  /  ___|\n");
+	printf(" _ __ ___  _  ___ _ __| | | \\ `--. \n");
+	printf("| '_ ` _ \\| |/ __| '__| | | |`--. \\\n");
+	printf("| | | | | | | (__| |  \\ \\_/ /\\__/ /\n");
+	printf("|_| |_| |_|_|\\___|_|   \\___/\\____/ \n");
+	printf("\n--------------------------------------\n");
+
+	printf("\nWake up, Neo...\n");
+	printf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
+
+}
+
+
 // kernel main function called by loader.s
 extern "C" void kernel_main(void) 
 {
 	/* Initialize terminal interface */
 	terminal_initialize();
- 
-	printf("Wake up, Neo...\n");
-	printf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
 
+	print_welcome_msg();
+ 
 	GlobalDescriptorTable gdt;
 
 	while(1);
