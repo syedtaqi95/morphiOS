@@ -155,7 +155,7 @@ extern "C" void kernel_main(void)
  
 	GlobalDescriptorTable gdt;
 
-	interruptsHandler interrupts(0x20, &gdt);
+	interruptsHandler interrupts(&gdt);
     interrupts.Activate();
 
 	while(1);

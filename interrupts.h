@@ -10,6 +10,7 @@
 #include "gdt.h"
 
 #define NUM_INTERRUPTS 256
+#define HW_INTERRUPT_OFFSET 0x20
 
 class interruptsHandler {
 
@@ -32,9 +33,6 @@ class interruptsHandler {
             uint16_t size;
             uint32_t base;
         } __attribute__((packed));
-
-        // Offset to account for reserved interrupts
-        uint16_t hardwareInterruptOffset;
 
         // Sets the entry for the particular interrupt
         static void SetInterruptDescriptorTableEntry(
@@ -97,9 +95,8 @@ class interruptsHandler {
     
     public:
 
-        interruptsHandler(uint16_t hardwareInterruptOffset, GlobalDescriptorTable* globalDescriptorTable);
+        interruptsHandler(GlobalDescriptorTable* globalDescriptorTable);
         ~interruptsHandler();
-        uint16_t HardwareInterruptOffset();
         void Activate();
 };
 
