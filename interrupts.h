@@ -65,8 +65,7 @@ class interruptsHandler {
         static void HandlerIRQ0x0D();
         static void HandlerIRQ0x0E();
         static void HandlerIRQ0x0F();
-        static void HandlerIRQ0x31(); // Keyboard device interrupt
-
+        
         static void InterruptIgnore(); // Default handler
 
         // Exception handlers

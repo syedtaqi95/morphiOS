@@ -107,12 +107,13 @@ void interruptsHandler::Activate()
 }
 
 uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp) {
-    char* foo = "INTERRUPT 0x00 ";
-    char* hex = "0123456789ABCDEF";
 
-    foo[12] = hex[(interrupt >> 4) & 0xF];
-    foo[13] = hex[interrupt & 0xF];
-    printf(foo);
+    // Debug print
+    // char* message = "INTERRUPT 0x00 ";
+    // char* hex = "0123456789ABCDEF";
+    // message[12] = hex[(interrupt >> 4) & 0xF];
+    // message[13] = hex[interrupt & 0xF];
+    // printf(message);
 
     if(interrupt == 0x20) {
         ISR0x00();
@@ -132,6 +133,6 @@ void interruptsHandler::InterruptIgnore(){
 }
 
 void interruptsHandler::ISR0x00(void) {
-
+    
 }
 
