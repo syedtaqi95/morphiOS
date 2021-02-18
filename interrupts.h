@@ -95,12 +95,6 @@ class interruptsHandler {
         
         // ISRs
         static void ISR0x00();
-
-        // Master and slave PIC ports for COMMAND and DATA
-        Port8Bit programmableInterruptControllerMasterCommandPort;
-        Port8Bit programmableInterruptControllerMasterDataPort;
-        Port8Bit programmableInterruptControllerSlaveCommandPort;
-        Port8Bit programmableInterruptControllerSlaveDataPort;
     
     public:
 

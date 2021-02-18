@@ -24,11 +24,7 @@ void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t interrupt,
 }
 
 
-interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) 
-    : programmableInterruptControllerMasterCommandPort(0x20),
-      programmableInterruptControllerMasterDataPort(0x21),
-      programmableInterruptControllerSlaveCommandPort(0xA0),
-      programmableInterruptControllerSlaveDataPort(0xA1) {
+interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) {
     
     uint32_t CodeSegment = globalDescriptorTable->CodeSegmentSelector();
 
@@ -78,20 +74,25 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0F, CodeSegment, &HandlerIRQ0x0F, 0, IDT_INTERRUPT_GATE);
     
     // Remap the PIC
-    programmableInterruptControllerMasterCommandPort.write(0x11);
-    programmableInterruptControllerSlaveCommandPort.write(0x11);
+    Port8Bit PICMasterCommandPort(0x20);
+    Port8Bit PICSlaveCommandPort(0xA0);
+    Port8Bit PICMasterDataPort(0x21);
+    Port8Bit PICSlaveDataPort(0xA1);
 
-    programmableInterruptControllerMasterDataPort.write(HW_INTERRUPT_OFFSET);
-    programmableInterruptControllerSlaveDataPort.write(HW_INTERRUPT_OFFSET+8);
+    PICMasterCommandPort.write(0x11);
+    PICSlaveCommandPort.write(0x11);
 
-    programmableInterruptControllerMasterDataPort.write(0x04);
-    programmableInterruptControllerSlaveDataPort.write(0x02);
+    PICMasterDataPort.write(HW_INTERRUPT_OFFSET);
+    PICSlaveDataPort.write(HW_INTERRUPT_OFFSET+8);
 
-    programmableInterruptControllerMasterDataPort.write(0x01);
-    programmableInterruptControllerSlaveDataPort.write(0x01);
+    PICMasterDataPort.write(0x04);
+    PICSlaveDataPort.write(0x02);
 
-    programmableInterruptControllerMasterDataPort.write(0x00);
-    programmableInterruptControllerSlaveDataPort.write(0x00);
+    PICMasterDataPort.write(0x01);
+    PICSlaveDataPort.write(0x01);
+
+    PICMasterDataPort.write(0x00);
+    PICSlaveDataPort.write(0x00);
 
     interruptDescriptorTablePointer idt_pointer;
     idt_pointer.size  = 256*sizeof(Gate) - 1;
@@ -133,6 +134,6 @@ void interruptsHandler::InterruptIgnore(){
 }
 
 void interruptsHandler::ISR0x00(void) {
-    
+
 }
 
