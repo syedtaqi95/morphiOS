@@ -1,4 +1,4 @@
-# micrOS
+# morphiOS
 
 Developing my own hobbyist 32-bit operating system written in C++ for the x86 architecture.
 
@@ -21,15 +21,15 @@ Used some of the code from the OSDev Wiki: https://wiki.osdev.org/
 - Install [qemu](https://www.qemu.org/). Required for booting and testing the OS in a VM locally.
 
 
-## Compiling micrOS
+## Compiling morphiOS
 
 Open a terminal and run:
 - ```make install```
 
 
-## Running micrOS
+## Running morphiOS
 
-You can run micrOS locally using ```qemu```.
+You can run morphiOS locally using ```qemu```.
 - ```make install```
 - ```make run```
 

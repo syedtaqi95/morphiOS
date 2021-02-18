@@ -1,5 +1,5 @@
 /*
-    kernel.cpp : micrOS kernel written in C++
+    kernel.cpp : x86 kernel written in C++
 
     Based on the "bare Bones" tutorial from https://wiki.osdev.org/Bare_Bones.
 
@@ -143,6 +143,7 @@ void print_welcome_msg() {
 
 	printf("\nWake up, Neo...\n");
 	printf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
+	printf("\n$ ");
 
 }
 

@@ -136,8 +136,9 @@ uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp) {
     // EOI (End Of Interrupt)
     Port8Bit MasterCommandPort(0x20);
     Port8Bit SlaveCommandPort(0xA0);
+    if (interrupt >= 8)
+        SlaveCommandPort.write(EOI);
     MasterCommandPort.write(EOI);
-    SlaveCommandPort.write(EOI);
 
     return esp;
 }

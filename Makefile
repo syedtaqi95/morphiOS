@@ -24,24 +24,24 @@ objects = boot.o gdt.o port.o interrupts-stubs.o interrupts.o kernel.o
 %.o : %.cpp
 	$(CXX) -o $@ -c $< $(CXX_FLAGS)
 
-micros.bin: linker.ld $(objects)
+morphios.bin: linker.ld $(objects)
 	$(LD) -T $< -o $@ $(LD_FLAGS) $(objects)
 
-install: micros.bin
+install: morphios.bin
 	mkdir -p isodir/boot/grub
-	cp micros.bin isodir/boot/micros.bin
+	cp morphios.bin isodir/boot/morphios.bin
 	echo 'set timeout=0'                      > isodir/boot/grub/grub.cfg
 	echo 'set default=0'                     >> isodir/boot/grub/grub.cfg
 	echo ''                                  >> isodir/boot/grub/grub.cfg
 	echo 'menuentry "My Operating System" {' >> isodir/boot/grub/grub.cfg
-	echo '  multiboot /boot/micros.bin'    >> isodir/boot/grub/grub.cfg
+	echo '  multiboot /boot/morphios.bin'    >> isodir/boot/grub/grub.cfg
 	echo '}'                                 >> isodir/boot/grub/grub.cfg
-	grub-mkrescue -o micros.iso isodir
+	grub-mkrescue -o morphios.iso isodir
 	rm -rf isodir
 
 .PHONY: clean run
 clean:
-	rm -f $(objects) micros.bin micros.iso isodir
+	rm -f $(objects) morphios.bin morphios.iso isodir
 
 run:
-	qemu-system-i386 -cdrom micros.iso
+	qemu-system-i386 -cdrom morphios.iso
