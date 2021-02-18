@@ -11,6 +11,8 @@
 
 #define NUM_INTERRUPTS 256 // number of entries in IDT (max 256 in x86)
 #define HW_INTERRUPT_OFFSET 0x20 // good practice to leave the first 32 IRQs for system interrupts
+#define IDT_INTERRUPT_GATE 0xE // Descriptor type for interrupt gates
+
 
 class interruptsHandler {
 
@@ -86,7 +88,14 @@ class interruptsHandler {
         static void HandlerException0x12();
         static void HandlerException0x13();
 
+        // Generic "boilerplate" interrupt handler method
         static uint32_t HandleInterrupt(uint8_t interrupt, uint32_t esp);
+
+        // Master and slave PIC ports for COMMAND and DATA
+        Port8Bit programmableInterruptControllerMasterCommandPort;
+        Port8Bit programmableInterruptControllerMasterDataPort;
+        Port8Bit programmableInterruptControllerSlaveCommandPort;
+        Port8Bit programmableInterruptControllerSlaveDataPort;
     
     public:
 

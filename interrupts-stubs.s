@@ -58,6 +58,7 @@ HandlerIRQ 0x0E
 HandlerIRQ 0x0F
 HandlerIRQ 0x31
 
+# To preserve the stack during ISR execution
 int_bottom:
     pusha
     pushl %ds

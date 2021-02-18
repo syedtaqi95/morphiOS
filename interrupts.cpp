@@ -26,10 +26,15 @@ void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t interrupt,
 }
 
 
-interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) {
+interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) 
+    : programmableInterruptControllerMasterCommandPort(0x20),
+      programmableInterruptControllerMasterDataPort(0x21),
+      programmableInterruptControllerSlaveCommandPort(0xA0),
+      programmableInterruptControllerSlaveDataPort(0xA1) {
+    
     uint32_t CodeSegment = globalDescriptorTable->CodeSegmentSelector();
 
-    const uint8_t IDT_INTERRUPT_GATE = 0xE;
+    
     for(uint8_t i = 255; i > 0; --i)
     {
         SetInterruptDescriptorTableEntry(i, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE);
@@ -73,12 +78,6 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0D, CodeSegment, &HandlerIRQ0x0D, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0E, CodeSegment, &HandlerIRQ0x0E, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0F, CodeSegment, &HandlerIRQ0x0F, 0, IDT_INTERRUPT_GATE);
-
-    // Master and slave PIC ports for COMMAND and DATA
-    Port8Bit programmableInterruptControllerMasterCommandPort(0x20);
-    Port8Bit programmableInterruptControllerMasterDataPort(0x21);
-    Port8Bit programmableInterruptControllerSlaveCommandPort(0xA0);
-    Port8Bit programmableInterruptControllerSlaveDataPort(0xA1);
     
     // Initialisation sequence
     programmableInterruptControllerMasterCommandPort.write(0x11);
@@ -88,6 +87,7 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     programmableInterruptControllerMasterDataPort.write(HW_INTERRUPT_OFFSET);
     programmableInterruptControllerSlaveDataPort.write(HW_INTERRUPT_OFFSET+8);
 
+    // Initialisation commands
     programmableInterruptControllerMasterDataPort.write(0x04);
     programmableInterruptControllerSlaveDataPort.write(0x02);
 
