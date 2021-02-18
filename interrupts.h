@@ -9,12 +9,15 @@
 #include "port.h"
 #include "gdt.h"
 
+// IDT macros
 #define NUM_INTERRUPTS 256 // number of entries in IDT (max 256 in x86)
 #define HW_INTERRUPT_OFFSET 0x20 // good practice to leave the first 32 IRQs for system interrupts
 #define IDT_INTERRUPT_GATE 0xE // Descriptor type for interrupt gates
 #define IDT_TRAP_GATE 0xF // Descriptor type for trap gates
-#define IDT_DESC_PRESENT 0x80 
+#define IDT_DESC_PRESENT 0x80  // Flag to confirm IDT entry is present
 
+// PIC macros
+#define EOI 0x20 // End Of Interrupt command
 
 
 class interruptsHandler {

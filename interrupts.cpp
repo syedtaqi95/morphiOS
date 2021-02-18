@@ -1,19 +1,18 @@
 /*
-    interrupts.cpp
+    interrupts.cpp - x86 interrupt handler in C++
 */
 
 #include "interrupts.h"
 
+// Used for debug printing
+// void printf(const char* str);
 
-void printf(const char* str);
-
-
+// IDT
 interruptsHandler::Gate interruptsHandler::interruptDescriptorTable[256];
 
 
 void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t interrupt,
-    uint16_t CodeSegment, void (*handler)(), uint8_t DescriptorPrivilegeLevel, uint8_t DescriptorType)
-{
+    uint16_t CodeSegment, void (*handler)(), uint8_t DescriptorPrivilegeLevel, uint8_t DescriptorType) {
     // address of pointer to code segment (relative to global descriptor table)
     // and address of the handler (relative to segment)
     interruptDescriptorTable[interrupt].offsetLo = ((uint32_t) handler) & 0xFFFF;
@@ -28,13 +27,12 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     
     uint32_t CodeSegment = globalDescriptorTable->CodeSegmentSelector();
 
-    
-    for(uint8_t i = 255; i > 0x13; i--)
-    {
+    // Initialise all interrupts to default (do nothing)
+    for (uint8_t i = 255; i > 0; i--) {
         SetInterruptDescriptorTableEntry(i, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE);
     }
-    SetInterruptDescriptorTableEntry(0, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE);
 
+    // Set first 32 IRQs to system exceptions
     SetInterruptDescriptorTableEntry(0x00, CodeSegment, &HandlerException0x00, 0, IDT_TRAP_GATE);
     SetInterruptDescriptorTableEntry(0x01, CodeSegment, &HandlerException0x01, 0, IDT_TRAP_GATE);
     SetInterruptDescriptorTableEntry(0x02, CodeSegment, &HandlerException0x02, 0, IDT_TRAP_GATE);
@@ -55,7 +53,20 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     SetInterruptDescriptorTableEntry(0x11, CodeSegment, &HandlerException0x11, 0, IDT_TRAP_GATE);
     SetInterruptDescriptorTableEntry(0x12, CodeSegment, &HandlerException0x12, 0, IDT_TRAP_GATE);
     SetInterruptDescriptorTableEntry(0x13, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x14, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x15, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x16, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x17, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x18, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x19, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x1A, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x1B, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x1C, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x1D, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x1E, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x1F, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
 
+    // User defined PIC interrupts
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x00, CodeSegment, &HandlerIRQ0x00, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x01, CodeSegment, &HandlerIRQ0x01, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x02, CodeSegment, &HandlerIRQ0x02, 0, IDT_INTERRUPT_GATE);
@@ -94,16 +105,18 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     PICMasterDataPort.write(0x00);
     PICSlaveDataPort.write(0x00);
 
+    // Load IDT register
     interruptDescriptorTablePointer idt_pointer;
     idt_pointer.size  = 256*sizeof(Gate) - 1;
     idt_pointer.base  = (uint32_t)interruptDescriptorTable;
     asm volatile("lidt %0" : : "m" (idt_pointer));
 }
 
+
 interruptsHandler::~interruptsHandler(){}
 
-void interruptsHandler::Activate()
-{
+
+void interruptsHandler::Activate() {
     asm("sti");
 }
 
@@ -123,8 +136,8 @@ uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp) {
     // EOI (End Of Interrupt)
     Port8Bit MasterCommandPort(0x20);
     Port8Bit SlaveCommandPort(0xA0);
-    MasterCommandPort.write(0x20);
-    SlaveCommandPort.write(0x20);
+    MasterCommandPort.write(EOI);
+    SlaveCommandPort.write(EOI);
 
     return esp;
 }
