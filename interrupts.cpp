@@ -5,7 +5,47 @@
 #include "interrupts.h"
 
 // Used for debug printing
-// void printf(const char* str);
+void printf(const char* str);
+
+char ascii_values[128] =
+{
+    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
+  '9', '0', '-', '=', '\b',	/* Backspace */
+  '\t',			/* Tab */
+  'q', 'w', 'e', 'r',	/* 19 */
+  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
+    0,			/* 29   - Control */
+  'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
+ '\'', '`',   0,		/* Left shift */
+ '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
+  'm', ',', '.', '/',   0,				/* Right shift */
+  '*',
+    0,	/* Alt */
+  ' ',	/* Space bar */
+    0,	/* Caps lock */
+    0,	/* 59 - F1 key ... > */
+    0,   0,   0,   0,   0,   0,   0,   0,
+    0,	/* < ... F10 */
+    0,	/* 69 - Num lock*/
+    0,	/* Scroll Lock */
+    0,	/* Home key */
+    0,	/* Up Arrow */
+    0,	/* Page Up */
+  '-',
+    0,	/* Left Arrow */
+    0,
+    0,	/* Right Arrow */
+  '+',
+    0,	/* 79 - End key*/
+    0,	/* Down Arrow */
+    0,	/* Page Down */
+    0,	/* Insert Key */
+    0,	/* Delete Key */
+    0,   0,   0,
+    0,	/* F11 Key */
+    0,	/* F12 Key */
+    0,	/* All other keys are undefined */
+};
 
 // IDT
 interruptsHandler::Gate interruptsHandler::interruptDescriptorTable[256];
@@ -129,14 +169,27 @@ uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp) {
     // message[13] = hex[interrupt & 0xF];
     // printf(message);
 
-    if(interrupt == 0x20) {
-        ISR0x00();
+    if (interrupt == 0x21) {
+        Port8Bit keyboardDataPort(0x60);
+        uint8_t scanCode = keyboardDataPort.read();
+        if (scanCode < 0x80) {
+            // char *c = "KEYBOARD 0x00 ";
+            // char *hex = "01234567889ABCDEF";
+            // c[11] = hex[(scanCode >> 4) & 0x0F];
+            // c[12] = hex[scanCode & 0x0F];
+            char *c = " ";
+            c[0] = ascii_values[scanCode];
+
+            printf(c);
+        }
+        
+
     }
 
     // EOI (End Of Interrupt)
     Port8Bit MasterCommandPort(0x20);
     Port8Bit SlaveCommandPort(0xA0);
-    if (interrupt >= 8)
+    if (interrupt >= (HW_INTERRUPT_OFFSET + 8))
         SlaveCommandPort.write(EOI);
     MasterCommandPort.write(EOI);
 
@@ -147,7 +200,7 @@ void interruptsHandler::InterruptIgnore(){
     asm volatile("iret");
 }
 
-void interruptsHandler::ISR0x00(void) {
+// void interruptsHandler::ISR0x00(void) {
 
-}
+// }
 

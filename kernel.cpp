@@ -100,6 +100,7 @@ void terminal_putchar(char c)
 		if (terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
+	else if (c == '\0') {}
 	else {
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 		if (++terminal_column == VGA_WIDTH) {
@@ -132,19 +133,16 @@ extern "C" void callConstructors()
 }
 
 void print_welcome_msg() {
-	
-	printf("           _           _____ _____ \n");
-	printf("          (_)         |  _  /  ___|\n");
-	printf(" _ __ ___  _  ___ _ __| | | \\ `--. \n");
-	printf("| '_ ` _ \\| |/ __| '__| | | |`--. \\\n");
-	printf("| | | | | | | (__| |  \\ \\_/ /\\__/ /\n");
-	printf("|_| |_| |_|_|\\___|_|   \\___/\\____/ \n");
-	printf("\n--------------------------------------\n");
 
+	printf("                               __    _ ____  _____\n");
+	printf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");
+	printf("  / __ `__ \\/ __ \\/ ___/ __ \\/ __ \\/ / / / /\\__ \\ \n");
+	printf(" / / / / / / /_/ / /  / /_/ / / / / / /_/ /___/ / \n");
+	printf("/_/ /_/ /_/\\____/_/  / .___/_/ /_/_/\\____//____/  \n");
+	printf("                    /_/                           \n");
 	printf("\nWake up, Neo...\n");
 	printf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
 	printf("\n$ ");
-
 }
 
 
