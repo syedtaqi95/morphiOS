@@ -19,9 +19,7 @@ void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t interrupt,
     interruptDescriptorTable[interrupt].offsetLo = ((uint32_t) handler) & 0xFFFF;
     interruptDescriptorTable[interrupt].offsetHi = (((uint32_t) handler) >> 16) & 0xFFFF;
     interruptDescriptorTable[interrupt].selector = CodeSegment;
-
-    const uint8_t IDT_DESC_PRESENT = 0x80;
-    interruptDescriptorTable[interrupt].typeAttr = IDT_DESC_PRESENT | ((DescriptorPrivilegeLevel & 3) << 5) | DescriptorType;
+    interruptDescriptorTable[interrupt].typeAttr = IDT_DESC_PRESENT | ((DescriptorPrivilegeLevel & 0x3) << 5) | DescriptorType;
     interruptDescriptorTable[interrupt].zero = 0;
 }
 
@@ -79,15 +77,13 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0E, CodeSegment, &HandlerIRQ0x0E, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0F, CodeSegment, &HandlerIRQ0x0F, 0, IDT_INTERRUPT_GATE);
     
-    // Initialisation sequence
+    // Remap the PIC
     programmableInterruptControllerMasterCommandPort.write(0x11);
     programmableInterruptControllerSlaveCommandPort.write(0x11);
 
-    // remap
     programmableInterruptControllerMasterDataPort.write(HW_INTERRUPT_OFFSET);
     programmableInterruptControllerSlaveDataPort.write(HW_INTERRUPT_OFFSET+8);
 
-    // Initialisation commands
     programmableInterruptControllerMasterDataPort.write(0x04);
     programmableInterruptControllerSlaveDataPort.write(0x02);
 
@@ -110,20 +106,13 @@ void interruptsHandler::Activate()
     asm("sti");
 }
 
-uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp)
-{
+uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp) {
     char* foo = "INTERRUPT 0x00\n";
     char* hex = "0123456789ABCDEF";
 
     foo[12] = hex[(interrupt >> 4) & 0xF];
     foo[13] = hex[interrupt & 0xF];
-    printf(foo);
-
-    // Clear the interrupt
-    // Port8Bit programmableInterruptControllerMasterCommandPort(0x20);
-    // Port8Bit programmableInterruptControllerSlaveCommandPort(0xA0);
-    // programmableInterruptControllerMasterCommandPort.write(0x20);
-    // programmableInterruptControllerSlaveCommandPort.write(0x20);
+    printf(foo);  
 
     return esp;
 }
@@ -131,3 +120,7 @@ uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp)
 void interruptsHandler::InterruptIgnore(){
     asm volatile("iret");
 }
+
+// void interruptsHandler::HandlerIRQ0x00() {
+
+// }
