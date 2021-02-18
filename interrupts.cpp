@@ -33,7 +33,7 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     uint32_t CodeSegment = globalDescriptorTable->CodeSegmentSelector();
 
     
-    for(uint8_t i = 255; i > 0; --i)
+    for(uint8_t i = 255; i > 0x13; i--)
     {
         SetInterruptDescriptorTableEntry(i, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE);
     }
@@ -107,12 +107,22 @@ void interruptsHandler::Activate()
 }
 
 uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp) {
-    char* foo = "INTERRUPT 0x00\n";
+    char* foo = "INTERRUPT 0x00 ";
     char* hex = "0123456789ABCDEF";
 
     foo[12] = hex[(interrupt >> 4) & 0xF];
     foo[13] = hex[interrupt & 0xF];
-    printf(foo);  
+    printf(foo);
+
+    if(interrupt == 0x20) {
+        ISR0x00();
+    }
+
+    // EOI (End Of Interrupt)
+    Port8Bit MasterCommandPort(0x20);
+    Port8Bit SlaveCommandPort(0xA0);
+    MasterCommandPort.write(0x20);
+    SlaveCommandPort.write(0x20);
 
     return esp;
 }
@@ -121,7 +131,7 @@ void interruptsHandler::InterruptIgnore(){
     asm volatile("iret");
 }
 
-// void interruptsHandler::HandlerIRQ0x00() {
-//     uint8_t interruptNumber = 0x0;
+void interruptsHandler::ISR0x00(void) {
 
-// }
+}
+

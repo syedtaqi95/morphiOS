@@ -1,0 +1,651 @@
+
+interrupts.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <_ZN17interruptsHandler32SetInterruptDescriptorTableEntryEhtPFvvEhh>:
+   0:	55                   	push   ebp
+   1:	89 e5                	mov    ebp,esp
+   3:	53                   	push   ebx
+   4:	83 ec 10             	sub    esp,0x10
+   7:	8b 5d 08             	mov    ebx,DWORD PTR [ebp+0x8]
+   a:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+   d:	8b 4d 14             	mov    ecx,DWORD PTR [ebp+0x14]
+  10:	8b 55 18             	mov    edx,DWORD PTR [ebp+0x18]
+  13:	88 5d f8             	mov    BYTE PTR [ebp-0x8],bl
+  16:	66 89 45 f4          	mov    WORD PTR [ebp-0xc],ax
+  1a:	89 c8                	mov    eax,ecx
+  1c:	88 45 f0             	mov    BYTE PTR [ebp-0x10],al
+  1f:	89 d0                	mov    eax,edx
+  21:	88 45 ec             	mov    BYTE PTR [ebp-0x14],al
+  24:	8b 55 10             	mov    edx,DWORD PTR [ebp+0x10]
+  27:	0f b6 45 f8          	movzx  eax,BYTE PTR [ebp-0x8]
+  2b:	66 89 14 c5 00 00 00 	mov    WORD PTR [eax*8+0x0],dx
+  32:	00 
+  33:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+  36:	c1 e8 10             	shr    eax,0x10
+  39:	89 c2                	mov    edx,eax
+  3b:	0f b6 45 f8          	movzx  eax,BYTE PTR [ebp-0x8]
+  3f:	66 89 14 c5 06 00 00 	mov    WORD PTR [eax*8+0x6],dx
+  46:	00 
+  47:	0f b6 45 f8          	movzx  eax,BYTE PTR [ebp-0x8]
+  4b:	0f b7 55 f4          	movzx  edx,WORD PTR [ebp-0xc]
+  4f:	66 89 14 c5 02 00 00 	mov    WORD PTR [eax*8+0x2],dx
+  56:	00 
+  57:	0f b6 45 f0          	movzx  eax,BYTE PTR [ebp-0x10]
+  5b:	c1 e0 05             	shl    eax,0x5
+  5e:	83 e0 60             	and    eax,0x60
+  61:	0a 45 ec             	or     al,BYTE PTR [ebp-0x14]
+  64:	89 c2                	mov    edx,eax
+  66:	0f b6 45 f8          	movzx  eax,BYTE PTR [ebp-0x8]
+  6a:	83 ca 80             	or     edx,0xffffff80
+  6d:	88 14 c5 05 00 00 00 	mov    BYTE PTR [eax*8+0x5],dl
+  74:	0f b6 45 f8          	movzx  eax,BYTE PTR [ebp-0x8]
+  78:	c6 04 c5 04 00 00 00 	mov    BYTE PTR [eax*8+0x4],0x0
+  7f:	00 
+  80:	90                   	nop
+  81:	8b 5d fc             	mov    ebx,DWORD PTR [ebp-0x4]
+  84:	c9                   	leave  
+  85:	c3                   	ret    
+
+00000086 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable>:
+  86:	55                   	push   ebp
+  87:	89 e5                	mov    ebp,esp
+  89:	83 ec 18             	sub    esp,0x18
+  8c:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  8f:	83 ec 08             	sub    esp,0x8
+  92:	6a 20                	push   0x20
+  94:	50                   	push   eax
+  95:	e8 fc ff ff ff       	call   96 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x10>
+  9a:	83 c4 10             	add    esp,0x10
+  9d:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  a0:	83 c0 08             	add    eax,0x8
+  a3:	83 ec 08             	sub    esp,0x8
+  a6:	6a 21                	push   0x21
+  a8:	50                   	push   eax
+  a9:	e8 fc ff ff ff       	call   aa <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x24>
+  ae:	83 c4 10             	add    esp,0x10
+  b1:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  b4:	83 c0 10             	add    eax,0x10
+  b7:	83 ec 08             	sub    esp,0x8
+  ba:	68 a0 00 00 00       	push   0xa0
+  bf:	50                   	push   eax
+  c0:	e8 fc ff ff ff       	call   c1 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x3b>
+  c5:	83 c4 10             	add    esp,0x10
+  c8:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+  cb:	83 c0 18             	add    eax,0x18
+  ce:	83 ec 08             	sub    esp,0x8
+  d1:	68 a1 00 00 00       	push   0xa1
+  d6:	50                   	push   eax
+  d7:	e8 fc ff ff ff       	call   d8 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x52>
+  dc:	83 c4 10             	add    esp,0x10
+  df:	83 ec 0c             	sub    esp,0xc
+  e2:	ff 75 0c             	push   DWORD PTR [ebp+0xc]
+  e5:	e8 fc ff ff ff       	call   e6 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x60>
+  ea:	83 c4 10             	add    esp,0x10
+  ed:	0f b7 c0             	movzx  eax,ax
+  f0:	89 45 f0             	mov    DWORD PTR [ebp-0x10],eax
+  f3:	c6 45 f7 ff          	mov    BYTE PTR [ebp-0x9],0xff
+  f7:	80 7d f7 13          	cmp    BYTE PTR [ebp-0x9],0x13
+  fb:	76 2c                	jbe    129 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0xa3>
+  fd:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 100:	0f b7 d0             	movzx  edx,ax
+ 103:	0f b6 45 f7          	movzx  eax,BYTE PTR [ebp-0x9]
+ 107:	83 ec 0c             	sub    esp,0xc
+ 10a:	6a 0e                	push   0xe
+ 10c:	6a 00                	push   0x0
+ 10e:	68 00 00 00 00       	push   0x0
+ 113:	52                   	push   edx
+ 114:	50                   	push   eax
+ 115:	e8 fc ff ff ff       	call   116 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x90>
+ 11a:	83 c4 20             	add    esp,0x20
+ 11d:	0f b6 45 f7          	movzx  eax,BYTE PTR [ebp-0x9]
+ 121:	83 e8 01             	sub    eax,0x1
+ 124:	88 45 f7             	mov    BYTE PTR [ebp-0x9],al
+ 127:	eb ce                	jmp    f7 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x71>
+ 129:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 12c:	0f b7 c0             	movzx  eax,ax
+ 12f:	83 ec 0c             	sub    esp,0xc
+ 132:	6a 0e                	push   0xe
+ 134:	6a 00                	push   0x0
+ 136:	68 00 00 00 00       	push   0x0
+ 13b:	50                   	push   eax
+ 13c:	6a 00                	push   0x0
+ 13e:	e8 fc ff ff ff       	call   13f <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0xb9>
+ 143:	83 c4 20             	add    esp,0x20
+ 146:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 149:	0f b7 c0             	movzx  eax,ax
+ 14c:	83 ec 0c             	sub    esp,0xc
+ 14f:	6a 0f                	push   0xf
+ 151:	6a 00                	push   0x0
+ 153:	68 00 00 00 00       	push   0x0
+ 158:	50                   	push   eax
+ 159:	6a 00                	push   0x0
+ 15b:	e8 fc ff ff ff       	call   15c <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0xd6>
+ 160:	83 c4 20             	add    esp,0x20
+ 163:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 166:	0f b7 c0             	movzx  eax,ax
+ 169:	83 ec 0c             	sub    esp,0xc
+ 16c:	6a 0f                	push   0xf
+ 16e:	6a 00                	push   0x0
+ 170:	68 00 00 00 00       	push   0x0
+ 175:	50                   	push   eax
+ 176:	6a 01                	push   0x1
+ 178:	e8 fc ff ff ff       	call   179 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0xf3>
+ 17d:	83 c4 20             	add    esp,0x20
+ 180:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 183:	0f b7 c0             	movzx  eax,ax
+ 186:	83 ec 0c             	sub    esp,0xc
+ 189:	6a 0f                	push   0xf
+ 18b:	6a 00                	push   0x0
+ 18d:	68 00 00 00 00       	push   0x0
+ 192:	50                   	push   eax
+ 193:	6a 02                	push   0x2
+ 195:	e8 fc ff ff ff       	call   196 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x110>
+ 19a:	83 c4 20             	add    esp,0x20
+ 19d:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 1a0:	0f b7 c0             	movzx  eax,ax
+ 1a3:	83 ec 0c             	sub    esp,0xc
+ 1a6:	6a 0f                	push   0xf
+ 1a8:	6a 00                	push   0x0
+ 1aa:	68 00 00 00 00       	push   0x0
+ 1af:	50                   	push   eax
+ 1b0:	6a 03                	push   0x3
+ 1b2:	e8 fc ff ff ff       	call   1b3 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x12d>
+ 1b7:	83 c4 20             	add    esp,0x20
+ 1ba:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 1bd:	0f b7 c0             	movzx  eax,ax
+ 1c0:	83 ec 0c             	sub    esp,0xc
+ 1c3:	6a 0f                	push   0xf
+ 1c5:	6a 00                	push   0x0
+ 1c7:	68 00 00 00 00       	push   0x0
+ 1cc:	50                   	push   eax
+ 1cd:	6a 04                	push   0x4
+ 1cf:	e8 fc ff ff ff       	call   1d0 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x14a>
+ 1d4:	83 c4 20             	add    esp,0x20
+ 1d7:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 1da:	0f b7 c0             	movzx  eax,ax
+ 1dd:	83 ec 0c             	sub    esp,0xc
+ 1e0:	6a 0f                	push   0xf
+ 1e2:	6a 00                	push   0x0
+ 1e4:	68 00 00 00 00       	push   0x0
+ 1e9:	50                   	push   eax
+ 1ea:	6a 05                	push   0x5
+ 1ec:	e8 fc ff ff ff       	call   1ed <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x167>
+ 1f1:	83 c4 20             	add    esp,0x20
+ 1f4:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 1f7:	0f b7 c0             	movzx  eax,ax
+ 1fa:	83 ec 0c             	sub    esp,0xc
+ 1fd:	6a 0f                	push   0xf
+ 1ff:	6a 00                	push   0x0
+ 201:	68 00 00 00 00       	push   0x0
+ 206:	50                   	push   eax
+ 207:	6a 06                	push   0x6
+ 209:	e8 fc ff ff ff       	call   20a <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x184>
+ 20e:	83 c4 20             	add    esp,0x20
+ 211:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 214:	0f b7 c0             	movzx  eax,ax
+ 217:	83 ec 0c             	sub    esp,0xc
+ 21a:	6a 0f                	push   0xf
+ 21c:	6a 00                	push   0x0
+ 21e:	68 00 00 00 00       	push   0x0
+ 223:	50                   	push   eax
+ 224:	6a 07                	push   0x7
+ 226:	e8 fc ff ff ff       	call   227 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x1a1>
+ 22b:	83 c4 20             	add    esp,0x20
+ 22e:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 231:	0f b7 c0             	movzx  eax,ax
+ 234:	83 ec 0c             	sub    esp,0xc
+ 237:	6a 0f                	push   0xf
+ 239:	6a 00                	push   0x0
+ 23b:	68 00 00 00 00       	push   0x0
+ 240:	50                   	push   eax
+ 241:	6a 08                	push   0x8
+ 243:	e8 fc ff ff ff       	call   244 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x1be>
+ 248:	83 c4 20             	add    esp,0x20
+ 24b:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 24e:	0f b7 c0             	movzx  eax,ax
+ 251:	83 ec 0c             	sub    esp,0xc
+ 254:	6a 0f                	push   0xf
+ 256:	6a 00                	push   0x0
+ 258:	68 00 00 00 00       	push   0x0
+ 25d:	50                   	push   eax
+ 25e:	6a 09                	push   0x9
+ 260:	e8 fc ff ff ff       	call   261 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x1db>
+ 265:	83 c4 20             	add    esp,0x20
+ 268:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 26b:	0f b7 c0             	movzx  eax,ax
+ 26e:	83 ec 0c             	sub    esp,0xc
+ 271:	6a 0f                	push   0xf
+ 273:	6a 00                	push   0x0
+ 275:	68 00 00 00 00       	push   0x0
+ 27a:	50                   	push   eax
+ 27b:	6a 0a                	push   0xa
+ 27d:	e8 fc ff ff ff       	call   27e <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x1f8>
+ 282:	83 c4 20             	add    esp,0x20
+ 285:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 288:	0f b7 c0             	movzx  eax,ax
+ 28b:	83 ec 0c             	sub    esp,0xc
+ 28e:	6a 0f                	push   0xf
+ 290:	6a 00                	push   0x0
+ 292:	68 00 00 00 00       	push   0x0
+ 297:	50                   	push   eax
+ 298:	6a 0b                	push   0xb
+ 29a:	e8 fc ff ff ff       	call   29b <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x215>
+ 29f:	83 c4 20             	add    esp,0x20
+ 2a2:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 2a5:	0f b7 c0             	movzx  eax,ax
+ 2a8:	83 ec 0c             	sub    esp,0xc
+ 2ab:	6a 0f                	push   0xf
+ 2ad:	6a 00                	push   0x0
+ 2af:	68 00 00 00 00       	push   0x0
+ 2b4:	50                   	push   eax
+ 2b5:	6a 0c                	push   0xc
+ 2b7:	e8 fc ff ff ff       	call   2b8 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x232>
+ 2bc:	83 c4 20             	add    esp,0x20
+ 2bf:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 2c2:	0f b7 c0             	movzx  eax,ax
+ 2c5:	83 ec 0c             	sub    esp,0xc
+ 2c8:	6a 0f                	push   0xf
+ 2ca:	6a 00                	push   0x0
+ 2cc:	68 00 00 00 00       	push   0x0
+ 2d1:	50                   	push   eax
+ 2d2:	6a 0d                	push   0xd
+ 2d4:	e8 fc ff ff ff       	call   2d5 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x24f>
+ 2d9:	83 c4 20             	add    esp,0x20
+ 2dc:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 2df:	0f b7 c0             	movzx  eax,ax
+ 2e2:	83 ec 0c             	sub    esp,0xc
+ 2e5:	6a 0f                	push   0xf
+ 2e7:	6a 00                	push   0x0
+ 2e9:	68 00 00 00 00       	push   0x0
+ 2ee:	50                   	push   eax
+ 2ef:	6a 0e                	push   0xe
+ 2f1:	e8 fc ff ff ff       	call   2f2 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x26c>
+ 2f6:	83 c4 20             	add    esp,0x20
+ 2f9:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 2fc:	0f b7 c0             	movzx  eax,ax
+ 2ff:	83 ec 0c             	sub    esp,0xc
+ 302:	6a 0f                	push   0xf
+ 304:	6a 00                	push   0x0
+ 306:	68 00 00 00 00       	push   0x0
+ 30b:	50                   	push   eax
+ 30c:	6a 0f                	push   0xf
+ 30e:	e8 fc ff ff ff       	call   30f <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x289>
+ 313:	83 c4 20             	add    esp,0x20
+ 316:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 319:	0f b7 c0             	movzx  eax,ax
+ 31c:	83 ec 0c             	sub    esp,0xc
+ 31f:	6a 0f                	push   0xf
+ 321:	6a 00                	push   0x0
+ 323:	68 00 00 00 00       	push   0x0
+ 328:	50                   	push   eax
+ 329:	6a 10                	push   0x10
+ 32b:	e8 fc ff ff ff       	call   32c <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x2a6>
+ 330:	83 c4 20             	add    esp,0x20
+ 333:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 336:	0f b7 c0             	movzx  eax,ax
+ 339:	83 ec 0c             	sub    esp,0xc
+ 33c:	6a 0f                	push   0xf
+ 33e:	6a 00                	push   0x0
+ 340:	68 00 00 00 00       	push   0x0
+ 345:	50                   	push   eax
+ 346:	6a 11                	push   0x11
+ 348:	e8 fc ff ff ff       	call   349 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x2c3>
+ 34d:	83 c4 20             	add    esp,0x20
+ 350:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 353:	0f b7 c0             	movzx  eax,ax
+ 356:	83 ec 0c             	sub    esp,0xc
+ 359:	6a 0f                	push   0xf
+ 35b:	6a 00                	push   0x0
+ 35d:	68 00 00 00 00       	push   0x0
+ 362:	50                   	push   eax
+ 363:	6a 12                	push   0x12
+ 365:	e8 fc ff ff ff       	call   366 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x2e0>
+ 36a:	83 c4 20             	add    esp,0x20
+ 36d:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 370:	0f b7 c0             	movzx  eax,ax
+ 373:	83 ec 0c             	sub    esp,0xc
+ 376:	6a 0f                	push   0xf
+ 378:	6a 00                	push   0x0
+ 37a:	68 00 00 00 00       	push   0x0
+ 37f:	50                   	push   eax
+ 380:	6a 13                	push   0x13
+ 382:	e8 fc ff ff ff       	call   383 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x2fd>
+ 387:	83 c4 20             	add    esp,0x20
+ 38a:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 38d:	0f b7 c0             	movzx  eax,ax
+ 390:	83 ec 0c             	sub    esp,0xc
+ 393:	6a 0e                	push   0xe
+ 395:	6a 00                	push   0x0
+ 397:	68 00 00 00 00       	push   0x0
+ 39c:	50                   	push   eax
+ 39d:	6a 20                	push   0x20
+ 39f:	e8 fc ff ff ff       	call   3a0 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x31a>
+ 3a4:	83 c4 20             	add    esp,0x20
+ 3a7:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 3aa:	0f b7 c0             	movzx  eax,ax
+ 3ad:	83 ec 0c             	sub    esp,0xc
+ 3b0:	6a 0e                	push   0xe
+ 3b2:	6a 00                	push   0x0
+ 3b4:	68 00 00 00 00       	push   0x0
+ 3b9:	50                   	push   eax
+ 3ba:	6a 21                	push   0x21
+ 3bc:	e8 fc ff ff ff       	call   3bd <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x337>
+ 3c1:	83 c4 20             	add    esp,0x20
+ 3c4:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 3c7:	0f b7 c0             	movzx  eax,ax
+ 3ca:	83 ec 0c             	sub    esp,0xc
+ 3cd:	6a 0e                	push   0xe
+ 3cf:	6a 00                	push   0x0
+ 3d1:	68 00 00 00 00       	push   0x0
+ 3d6:	50                   	push   eax
+ 3d7:	6a 22                	push   0x22
+ 3d9:	e8 fc ff ff ff       	call   3da <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x354>
+ 3de:	83 c4 20             	add    esp,0x20
+ 3e1:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 3e4:	0f b7 c0             	movzx  eax,ax
+ 3e7:	83 ec 0c             	sub    esp,0xc
+ 3ea:	6a 0e                	push   0xe
+ 3ec:	6a 00                	push   0x0
+ 3ee:	68 00 00 00 00       	push   0x0
+ 3f3:	50                   	push   eax
+ 3f4:	6a 23                	push   0x23
+ 3f6:	e8 fc ff ff ff       	call   3f7 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x371>
+ 3fb:	83 c4 20             	add    esp,0x20
+ 3fe:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 401:	0f b7 c0             	movzx  eax,ax
+ 404:	83 ec 0c             	sub    esp,0xc
+ 407:	6a 0e                	push   0xe
+ 409:	6a 00                	push   0x0
+ 40b:	68 00 00 00 00       	push   0x0
+ 410:	50                   	push   eax
+ 411:	6a 24                	push   0x24
+ 413:	e8 fc ff ff ff       	call   414 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x38e>
+ 418:	83 c4 20             	add    esp,0x20
+ 41b:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 41e:	0f b7 c0             	movzx  eax,ax
+ 421:	83 ec 0c             	sub    esp,0xc
+ 424:	6a 0e                	push   0xe
+ 426:	6a 00                	push   0x0
+ 428:	68 00 00 00 00       	push   0x0
+ 42d:	50                   	push   eax
+ 42e:	6a 25                	push   0x25
+ 430:	e8 fc ff ff ff       	call   431 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x3ab>
+ 435:	83 c4 20             	add    esp,0x20
+ 438:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 43b:	0f b7 c0             	movzx  eax,ax
+ 43e:	83 ec 0c             	sub    esp,0xc
+ 441:	6a 0e                	push   0xe
+ 443:	6a 00                	push   0x0
+ 445:	68 00 00 00 00       	push   0x0
+ 44a:	50                   	push   eax
+ 44b:	6a 26                	push   0x26
+ 44d:	e8 fc ff ff ff       	call   44e <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x3c8>
+ 452:	83 c4 20             	add    esp,0x20
+ 455:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 458:	0f b7 c0             	movzx  eax,ax
+ 45b:	83 ec 0c             	sub    esp,0xc
+ 45e:	6a 0e                	push   0xe
+ 460:	6a 00                	push   0x0
+ 462:	68 00 00 00 00       	push   0x0
+ 467:	50                   	push   eax
+ 468:	6a 27                	push   0x27
+ 46a:	e8 fc ff ff ff       	call   46b <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x3e5>
+ 46f:	83 c4 20             	add    esp,0x20
+ 472:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 475:	0f b7 c0             	movzx  eax,ax
+ 478:	83 ec 0c             	sub    esp,0xc
+ 47b:	6a 0e                	push   0xe
+ 47d:	6a 00                	push   0x0
+ 47f:	68 00 00 00 00       	push   0x0
+ 484:	50                   	push   eax
+ 485:	6a 28                	push   0x28
+ 487:	e8 fc ff ff ff       	call   488 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x402>
+ 48c:	83 c4 20             	add    esp,0x20
+ 48f:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 492:	0f b7 c0             	movzx  eax,ax
+ 495:	83 ec 0c             	sub    esp,0xc
+ 498:	6a 0e                	push   0xe
+ 49a:	6a 00                	push   0x0
+ 49c:	68 00 00 00 00       	push   0x0
+ 4a1:	50                   	push   eax
+ 4a2:	6a 29                	push   0x29
+ 4a4:	e8 fc ff ff ff       	call   4a5 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x41f>
+ 4a9:	83 c4 20             	add    esp,0x20
+ 4ac:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 4af:	0f b7 c0             	movzx  eax,ax
+ 4b2:	83 ec 0c             	sub    esp,0xc
+ 4b5:	6a 0e                	push   0xe
+ 4b7:	6a 00                	push   0x0
+ 4b9:	68 00 00 00 00       	push   0x0
+ 4be:	50                   	push   eax
+ 4bf:	6a 2a                	push   0x2a
+ 4c1:	e8 fc ff ff ff       	call   4c2 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x43c>
+ 4c6:	83 c4 20             	add    esp,0x20
+ 4c9:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 4cc:	0f b7 c0             	movzx  eax,ax
+ 4cf:	83 ec 0c             	sub    esp,0xc
+ 4d2:	6a 0e                	push   0xe
+ 4d4:	6a 00                	push   0x0
+ 4d6:	68 00 00 00 00       	push   0x0
+ 4db:	50                   	push   eax
+ 4dc:	6a 2b                	push   0x2b
+ 4de:	e8 fc ff ff ff       	call   4df <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x459>
+ 4e3:	83 c4 20             	add    esp,0x20
+ 4e6:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 4e9:	0f b7 c0             	movzx  eax,ax
+ 4ec:	83 ec 0c             	sub    esp,0xc
+ 4ef:	6a 0e                	push   0xe
+ 4f1:	6a 00                	push   0x0
+ 4f3:	68 00 00 00 00       	push   0x0
+ 4f8:	50                   	push   eax
+ 4f9:	6a 2c                	push   0x2c
+ 4fb:	e8 fc ff ff ff       	call   4fc <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x476>
+ 500:	83 c4 20             	add    esp,0x20
+ 503:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 506:	0f b7 c0             	movzx  eax,ax
+ 509:	83 ec 0c             	sub    esp,0xc
+ 50c:	6a 0e                	push   0xe
+ 50e:	6a 00                	push   0x0
+ 510:	68 00 00 00 00       	push   0x0
+ 515:	50                   	push   eax
+ 516:	6a 2d                	push   0x2d
+ 518:	e8 fc ff ff ff       	call   519 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x493>
+ 51d:	83 c4 20             	add    esp,0x20
+ 520:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 523:	0f b7 c0             	movzx  eax,ax
+ 526:	83 ec 0c             	sub    esp,0xc
+ 529:	6a 0e                	push   0xe
+ 52b:	6a 00                	push   0x0
+ 52d:	68 00 00 00 00       	push   0x0
+ 532:	50                   	push   eax
+ 533:	6a 2e                	push   0x2e
+ 535:	e8 fc ff ff ff       	call   536 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x4b0>
+ 53a:	83 c4 20             	add    esp,0x20
+ 53d:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 540:	0f b7 c0             	movzx  eax,ax
+ 543:	83 ec 0c             	sub    esp,0xc
+ 546:	6a 0e                	push   0xe
+ 548:	6a 00                	push   0x0
+ 54a:	68 00 00 00 00       	push   0x0
+ 54f:	50                   	push   eax
+ 550:	6a 2f                	push   0x2f
+ 552:	e8 fc ff ff ff       	call   553 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x4cd>
+ 557:	83 c4 20             	add    esp,0x20
+ 55a:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 55d:	83 ec 08             	sub    esp,0x8
+ 560:	6a 11                	push   0x11
+ 562:	50                   	push   eax
+ 563:	e8 fc ff ff ff       	call   564 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x4de>
+ 568:	83 c4 10             	add    esp,0x10
+ 56b:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 56e:	83 c0 10             	add    eax,0x10
+ 571:	83 ec 08             	sub    esp,0x8
+ 574:	6a 11                	push   0x11
+ 576:	50                   	push   eax
+ 577:	e8 fc ff ff ff       	call   578 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x4f2>
+ 57c:	83 c4 10             	add    esp,0x10
+ 57f:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 582:	83 c0 08             	add    eax,0x8
+ 585:	83 ec 08             	sub    esp,0x8
+ 588:	6a 20                	push   0x20
+ 58a:	50                   	push   eax
+ 58b:	e8 fc ff ff ff       	call   58c <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x506>
+ 590:	83 c4 10             	add    esp,0x10
+ 593:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 596:	83 c0 18             	add    eax,0x18
+ 599:	83 ec 08             	sub    esp,0x8
+ 59c:	6a 28                	push   0x28
+ 59e:	50                   	push   eax
+ 59f:	e8 fc ff ff ff       	call   5a0 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x51a>
+ 5a4:	83 c4 10             	add    esp,0x10
+ 5a7:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 5aa:	83 c0 08             	add    eax,0x8
+ 5ad:	83 ec 08             	sub    esp,0x8
+ 5b0:	6a 04                	push   0x4
+ 5b2:	50                   	push   eax
+ 5b3:	e8 fc ff ff ff       	call   5b4 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x52e>
+ 5b8:	83 c4 10             	add    esp,0x10
+ 5bb:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 5be:	83 c0 18             	add    eax,0x18
+ 5c1:	83 ec 08             	sub    esp,0x8
+ 5c4:	6a 02                	push   0x2
+ 5c6:	50                   	push   eax
+ 5c7:	e8 fc ff ff ff       	call   5c8 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x542>
+ 5cc:	83 c4 10             	add    esp,0x10
+ 5cf:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 5d2:	83 c0 08             	add    eax,0x8
+ 5d5:	83 ec 08             	sub    esp,0x8
+ 5d8:	6a 01                	push   0x1
+ 5da:	50                   	push   eax
+ 5db:	e8 fc ff ff ff       	call   5dc <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x556>
+ 5e0:	83 c4 10             	add    esp,0x10
+ 5e3:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 5e6:	83 c0 18             	add    eax,0x18
+ 5e9:	83 ec 08             	sub    esp,0x8
+ 5ec:	6a 01                	push   0x1
+ 5ee:	50                   	push   eax
+ 5ef:	e8 fc ff ff ff       	call   5f0 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x56a>
+ 5f4:	83 c4 10             	add    esp,0x10
+ 5f7:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 5fa:	83 c0 08             	add    eax,0x8
+ 5fd:	83 ec 08             	sub    esp,0x8
+ 600:	6a 00                	push   0x0
+ 602:	50                   	push   eax
+ 603:	e8 fc ff ff ff       	call   604 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x57e>
+ 608:	83 c4 10             	add    esp,0x10
+ 60b:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 60e:	83 c0 18             	add    eax,0x18
+ 611:	83 ec 08             	sub    esp,0x8
+ 614:	6a 00                	push   0x0
+ 616:	50                   	push   eax
+ 617:	e8 fc ff ff ff       	call   618 <_ZN17interruptsHandlerC1EP21GlobalDescriptorTable+0x592>
+ 61c:	83 c4 10             	add    esp,0x10
+ 61f:	66 c7 45 ea ff 07    	mov    WORD PTR [ebp-0x16],0x7ff
+ 625:	b8 00 00 00 00       	mov    eax,0x0
+ 62a:	89 45 ec             	mov    DWORD PTR [ebp-0x14],eax
+ 62d:	0f 01 5d ea          	lidtd  [ebp-0x16]
+ 631:	90                   	nop
+ 632:	c9                   	leave  
+ 633:	c3                   	ret    
+
+00000634 <_ZN17interruptsHandlerD1Ev>:
+ 634:	55                   	push   ebp
+ 635:	89 e5                	mov    ebp,esp
+ 637:	83 ec 08             	sub    esp,0x8
+ 63a:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 63d:	83 c0 18             	add    eax,0x18
+ 640:	83 ec 0c             	sub    esp,0xc
+ 643:	50                   	push   eax
+ 644:	e8 fc ff ff ff       	call   645 <_ZN17interruptsHandlerD1Ev+0x11>
+ 649:	83 c4 10             	add    esp,0x10
+ 64c:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 64f:	83 c0 10             	add    eax,0x10
+ 652:	83 ec 0c             	sub    esp,0xc
+ 655:	50                   	push   eax
+ 656:	e8 fc ff ff ff       	call   657 <_ZN17interruptsHandlerD1Ev+0x23>
+ 65b:	83 c4 10             	add    esp,0x10
+ 65e:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 661:	83 c0 08             	add    eax,0x8
+ 664:	83 ec 0c             	sub    esp,0xc
+ 667:	50                   	push   eax
+ 668:	e8 fc ff ff ff       	call   669 <_ZN17interruptsHandlerD1Ev+0x35>
+ 66d:	83 c4 10             	add    esp,0x10
+ 670:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 673:	83 ec 0c             	sub    esp,0xc
+ 676:	50                   	push   eax
+ 677:	e8 fc ff ff ff       	call   678 <_ZN17interruptsHandlerD1Ev+0x44>
+ 67c:	83 c4 10             	add    esp,0x10
+ 67f:	90                   	nop
+ 680:	c9                   	leave  
+ 681:	c3                   	ret    
+
+00000682 <_ZN17interruptsHandler8ActivateEv>:
+ 682:	55                   	push   ebp
+ 683:	89 e5                	mov    ebp,esp
+ 685:	fb                   	sti    
+ 686:	90                   	nop
+ 687:	5d                   	pop    ebp
+ 688:	c3                   	ret    
+ 689:	90                   	nop
+
+0000068a <_ZN17interruptsHandler15HandleInterruptEhj>:
+ 68a:	55                   	push   ebp
+ 68b:	89 e5                	mov    ebp,esp
+ 68d:	83 ec 28             	sub    esp,0x28
+ 690:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 693:	88 45 e4             	mov    BYTE PTR [ebp-0x1c],al
+ 696:	c7 45 f4 00 00 00 00 	mov    DWORD PTR [ebp-0xc],0x0
+ 69d:	c7 45 f0 0f 00 00 00 	mov    DWORD PTR [ebp-0x10],0xf
+ 6a4:	0f b6 45 e4          	movzx  eax,BYTE PTR [ebp-0x1c]
+ 6a8:	c0 e8 04             	shr    al,0x4
+ 6ab:	0f b6 c0             	movzx  eax,al
+ 6ae:	83 e0 0f             	and    eax,0xf
+ 6b1:	89 c2                	mov    edx,eax
+ 6b3:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 6b6:	01 d0                	add    eax,edx
+ 6b8:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+ 6bb:	83 c2 0c             	add    edx,0xc
+ 6be:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+ 6c1:	88 02                	mov    BYTE PTR [edx],al
+ 6c3:	0f b6 45 e4          	movzx  eax,BYTE PTR [ebp-0x1c]
+ 6c7:	83 e0 0f             	and    eax,0xf
+ 6ca:	89 c2                	mov    edx,eax
+ 6cc:	8b 45 f0             	mov    eax,DWORD PTR [ebp-0x10]
+ 6cf:	01 d0                	add    eax,edx
+ 6d1:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+ 6d4:	83 c2 0d             	add    edx,0xd
+ 6d7:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+ 6da:	88 02                	mov    BYTE PTR [edx],al
+ 6dc:	83 ec 0c             	sub    esp,0xc
+ 6df:	ff 75 f4             	push   DWORD PTR [ebp-0xc]
+ 6e2:	e8 fc ff ff ff       	call   6e3 <_ZN17interruptsHandler15HandleInterruptEhj+0x59>
+ 6e7:	83 c4 10             	add    esp,0x10
+ 6ea:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+ 6ed:	c9                   	leave  
+ 6ee:	c3                   	ret    
+ 6ef:	90                   	nop
+
+000006f0 <_ZN17interruptsHandler15InterruptIgnoreEv>:
+ 6f0:	55                   	push   ebp
+ 6f1:	89 e5                	mov    ebp,esp
+ 6f3:	cf                   	iret   
+ 6f4:	90                   	nop
+ 6f5:	5d                   	pop    ebp
+ 6f6:	c3                   	ret    
+ 6f7:	90                   	nop
+
+000006f8 <_ZN17interruptsHandler7ISR0x00Ej>:
+ 6f8:	55                   	push   ebp
+ 6f9:	89 e5                	mov    ebp,esp
+ 6fb:	83 ec 18             	sub    esp,0x18
+ 6fe:	c7 45 f4 20 00 00 00 	mov    DWORD PTR [ebp-0xc],0x20
+ 705:	83 ec 0c             	sub    esp,0xc
+ 708:	ff 75 f4             	push   DWORD PTR [ebp-0xc]
+ 70b:	e8 fc ff ff ff       	call   70c <_ZN17interruptsHandler7ISR0x00Ej+0x14>
+ 710:	83 c4 10             	add    esp,0x10
+ 713:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 716:	c9                   	leave  
+ 717:	c3                   	ret    

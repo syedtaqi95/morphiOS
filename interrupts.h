@@ -91,8 +91,11 @@ class interruptsHandler {
         static void HandlerException0x12();
         static void HandlerException0x13();
 
-        // Generic "boilerplate" interrupt handler method
-        static uint32_t HandleInterrupt(uint8_t interrupt, uint32_t esp);
+        // Generic "boilerplate" IRQ handler - called for every interrupt
+        static uint32_t HandleInterrupt(uint8_t interrupt, uint32_t esp); 
+        
+        // ISRs
+        static void ISR0x00();
 
         // Master and slave PIC ports for COMMAND and DATA
         Port8Bit programmableInterruptControllerMasterCommandPort;

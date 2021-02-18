@@ -82,6 +82,7 @@ int_bottom:
     pop %es
     pop %ds
     popa
+    iret
 
 .data
     interruptnumber: .byte 0
