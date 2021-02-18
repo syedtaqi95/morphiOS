@@ -82,10 +82,5 @@ int_bottom:
     pop %ds
     popa
 
-.global _ZN17interruptsHandler15InterruptIgnoreEv
-_ZN17interruptsHandler15InterruptIgnoreEv:
-    iret
-
-
 .data
     interruptnumber: .byte 0

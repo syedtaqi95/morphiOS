@@ -127,3 +127,7 @@ uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp)
 
     return esp;
 }
+
+void interruptsHandler::InterruptIgnore(){
+    asm volatile("iret");
+}
