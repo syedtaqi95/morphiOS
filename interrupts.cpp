@@ -122,5 +122,8 @@ void interruptsHandler::InterruptIgnore(){
 }
 
 // void interruptsHandler::HandlerIRQ0x00() {
-
+//     Port8Bit MasterCommandPort(0x20);
+//     Port8Bit SlaveCommandPort(0xA0);
+//     SlaveCommandPort.write(0x20);
+//     MasterCommandPort.write(0x20);
 // }
