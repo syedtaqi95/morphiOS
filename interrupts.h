@@ -43,7 +43,7 @@ class interruptsHandler {
             uint8_t DescriptorType);
 
         // Interrupt handlers
-        // 0x00...0x0F are IA-32 reserved interrupts
+        // 0x00...0x0F are system reserved interrupts
         static void HandlerIRQ0x00();
         static void HandlerIRQ0x01();
         static void HandlerIRQ0x02();
@@ -87,11 +87,6 @@ class interruptsHandler {
         static void HandlerException0x13();
 
         static uint32_t HandleInterrupt(uint8_t interrupt, uint32_t esp);
-        
-        Port8Bit programmableInterruptControllerMasterCommandPort;
-        Port8Bit programmableInterruptControllerMasterDataPort;
-        Port8Bit programmableInterruptControllerSlaveCommandPort;
-        Port8Bit programmableInterruptControllerSlaveDataPort;
     
     public:
 

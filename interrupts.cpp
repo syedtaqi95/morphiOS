@@ -26,12 +26,7 @@ void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t interrupt,
 }
 
 
-interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable)
-    : programmableInterruptControllerMasterCommandPort(0x20),
-      programmableInterruptControllerMasterDataPort(0x21),
-      programmableInterruptControllerSlaveCommandPort(0xA0),
-      programmableInterruptControllerSlaveDataPort(0xA1)
-{
+interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) {
     uint32_t CodeSegment = globalDescriptorTable->CodeSegmentSelector();
 
     const uint8_t IDT_INTERRUPT_GATE = 0xE;
@@ -79,6 +74,13 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0E, CodeSegment, &HandlerIRQ0x0E, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0F, CodeSegment, &HandlerIRQ0x0F, 0, IDT_INTERRUPT_GATE);
 
+    // Master and slave PIC ports for COMMAND and DATA
+    Port8Bit programmableInterruptControllerMasterCommandPort(0x20);
+    Port8Bit programmableInterruptControllerMasterDataPort(0x21);
+    Port8Bit programmableInterruptControllerSlaveCommandPort(0xA0);
+    Port8Bit programmableInterruptControllerSlaveDataPort(0xA1);
+    
+    // Initialisation sequence
     programmableInterruptControllerMasterCommandPort.write(0x11);
     programmableInterruptControllerSlaveCommandPort.write(0x11);
 
@@ -110,12 +112,18 @@ void interruptsHandler::Activate()
 
 uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp)
 {
-    char* foo = "INTERRUPT 0x00";
+    char* foo = "INTERRUPT 0x00\n";
     char* hex = "0123456789ABCDEF";
 
     foo[12] = hex[(interrupt >> 4) & 0xF];
     foo[13] = hex[interrupt & 0xF];
     printf(foo);
+
+    // Clear the interrupt
+    // Port8Bit programmableInterruptControllerMasterCommandPort(0x20);
+    // Port8Bit programmableInterruptControllerSlaveCommandPort(0xA0);
+    // programmableInterruptControllerMasterCommandPort.write(0x20);
+    // programmableInterruptControllerSlaveCommandPort.write(0x20);
 
     return esp;
 }
