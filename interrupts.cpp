@@ -39,26 +39,26 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     }
     SetInterruptDescriptorTableEntry(0, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE);
 
-    SetInterruptDescriptorTableEntry(0x00, CodeSegment, &HandlerException0x00, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x01, CodeSegment, &HandlerException0x01, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x02, CodeSegment, &HandlerException0x02, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x03, CodeSegment, &HandlerException0x03, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x04, CodeSegment, &HandlerException0x04, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x05, CodeSegment, &HandlerException0x05, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x06, CodeSegment, &HandlerException0x06, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x07, CodeSegment, &HandlerException0x07, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x08, CodeSegment, &HandlerException0x08, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x09, CodeSegment, &HandlerException0x09, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x0A, CodeSegment, &HandlerException0x0A, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x0B, CodeSegment, &HandlerException0x0B, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x0C, CodeSegment, &HandlerException0x0C, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x0D, CodeSegment, &HandlerException0x0D, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x0E, CodeSegment, &HandlerException0x0E, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x0F, CodeSegment, &HandlerException0x0F, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x10, CodeSegment, &HandlerException0x10, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x11, CodeSegment, &HandlerException0x11, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x12, CodeSegment, &HandlerException0x12, 0, IDT_INTERRUPT_GATE);
-    SetInterruptDescriptorTableEntry(0x13, CodeSegment, &HandlerException0x13, 0, IDT_INTERRUPT_GATE);
+    SetInterruptDescriptorTableEntry(0x00, CodeSegment, &HandlerException0x00, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x01, CodeSegment, &HandlerException0x01, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x02, CodeSegment, &HandlerException0x02, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x03, CodeSegment, &HandlerException0x03, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x04, CodeSegment, &HandlerException0x04, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x05, CodeSegment, &HandlerException0x05, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x06, CodeSegment, &HandlerException0x06, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x07, CodeSegment, &HandlerException0x07, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x08, CodeSegment, &HandlerException0x08, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x09, CodeSegment, &HandlerException0x09, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x0A, CodeSegment, &HandlerException0x0A, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x0B, CodeSegment, &HandlerException0x0B, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x0C, CodeSegment, &HandlerException0x0C, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x0D, CodeSegment, &HandlerException0x0D, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x0E, CodeSegment, &HandlerException0x0E, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x0F, CodeSegment, &HandlerException0x0F, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x10, CodeSegment, &HandlerException0x10, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x11, CodeSegment, &HandlerException0x11, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x12, CodeSegment, &HandlerException0x12, 0, IDT_TRAP_GATE);
+    SetInterruptDescriptorTableEntry(0x13, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
 
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x00, CodeSegment, &HandlerIRQ0x00, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x01, CodeSegment, &HandlerIRQ0x01, 0, IDT_INTERRUPT_GATE);
@@ -122,8 +122,6 @@ void interruptsHandler::InterruptIgnore(){
 }
 
 // void interruptsHandler::HandlerIRQ0x00() {
-//     Port8Bit MasterCommandPort(0x20);
-//     Port8Bit SlaveCommandPort(0xA0);
-//     SlaveCommandPort.write(0x20);
-//     MasterCommandPort.write(0x20);
+//     uint8_t interruptNumber = 0x0;
+
 // }
