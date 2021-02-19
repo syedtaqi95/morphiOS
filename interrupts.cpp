@@ -4,74 +4,60 @@
 
 #include "interrupts.h"
 
-// Used for debug printing
+// Used for debug prints
 void printf(const char* str);
 
-char ascii_values[128] =
-{
-    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
-  '9', '0', '-', '=', '\b',	/* Backspace */
-  '\t',			/* Tab */
-  'q', 'w', 'e', 'r',	/* 19 */
-  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
-    0,			/* 29   - Control */
-  'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
- '\'', '`',   0,		/* Left shift */
- '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
-  'm', ',', '.', '/',   0,				/* Right shift */
-  '*',
-    0,	/* Alt */
-  ' ',	/* Space bar */
-    0,	/* Caps lock */
-    0,	/* 59 - F1 key ... > */
-    0,   0,   0,   0,   0,   0,   0,   0,
-    0,	/* < ... F10 */
-    0,	/* 69 - Num lock*/
-    0,	/* Scroll Lock */
-    0,	/* Home key */
-    0,	/* Up Arrow */
-    0,	/* Page Up */
-  '-',
-    0,	/* Left Arrow */
-    0,
-    0,	/* Right Arrow */
-  '+',
-    0,	/* 79 - End key*/
-    0,	/* Down Arrow */
-    0,	/* Page Down */
-    0,	/* Insert Key */
-    0,	/* Delete Key */
-    0,   0,   0,
-    0,	/* F11 Key */
-    0,	/* F12 Key */
-    0,	/* All other keys are undefined */
-};
+// Constructor
+interruptHandle::interruptHandle(interruptsHandler *InterruptsHandler, uint8_t IRQ) {
+    this->IRQ = IRQ;
+    this->InterruptsHandler = InterruptsHandler;
+    InterruptsHandler->interruptHandles[IRQ] = this;
+}
+
+// Destructor
+interruptHandle::~interruptHandle() {
+    if(InterruptsHandler->interruptHandles[IRQ] == this)
+        InterruptsHandler->interruptHandles[IRQ] = 0;
+} 
+
+// Default ISR
+uint32_t interruptHandle::ISR(uint32_t esp) {
+    return esp;
+}
 
 // IDT
 interruptsHandler::Gate interruptsHandler::interruptDescriptorTable[256];
 
+// Active IRQ handler
+interruptsHandler* interruptsHandler::ActiveInterruptsHandler = 0;
 
-void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t interrupt,
+// Create entry in IDT
+void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t IRQ,
     uint16_t CodeSegment, void (*handler)(), uint8_t DescriptorPrivilegeLevel, uint8_t DescriptorType) {
     // address of pointer to code segment (relative to global descriptor table)
     // and address of the handler (relative to segment)
-    interruptDescriptorTable[interrupt].offsetLo = ((uint32_t) handler) & 0xFFFF;
-    interruptDescriptorTable[interrupt].offsetHi = (((uint32_t) handler) >> 16) & 0xFFFF;
-    interruptDescriptorTable[interrupt].selector = CodeSegment;
-    interruptDescriptorTable[interrupt].typeAttr = IDT_DESC_PRESENT | ((DescriptorPrivilegeLevel & 0x3) << 5) | DescriptorType;
-    interruptDescriptorTable[interrupt].zero = 0;
+    interruptDescriptorTable[IRQ].offsetLo = ((uint32_t) handler) & 0xFFFF;
+    interruptDescriptorTable[IRQ].offsetHi = (((uint32_t) handler) >> 16) & 0xFFFF;
+    interruptDescriptorTable[IRQ].selector = CodeSegment;
+    interruptDescriptorTable[IRQ].typeAttr = IDT_DESC_PRESENT | ((DescriptorPrivilegeLevel & 0x3) << 5) | DescriptorType;
+    interruptDescriptorTable[IRQ].zero = 0;
 }
 
-
-interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) {
+// IDT constructor
+interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) 
+    : PICMasterCommandPort(PIC_MASTER_COMMAND_PORT),
+    PICSlaveCommandPort(PIC_SLAVE_COMMAND_PORT),
+    PICMasterDataPort(PIC_MASTER_DATA_PORT),
+    PICSlaveDataPort(PIC_SLAVE_DATA_PORT) {
     
     uint32_t CodeSegment = globalDescriptorTable->CodeSegmentSelector();
 
     // Initialise all interrupts to default (do nothing)
     for (uint8_t i = 255; i > 0; i--) {
         SetInterruptDescriptorTableEntry(i, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE);
+        interruptHandles[i] = 0;
     }
-
+    interruptHandles[0] = 0;
     // Set first 32 IRQs to system exceptions
     SetInterruptDescriptorTableEntry(0x00, CodeSegment, &HandlerException0x00, 0, IDT_TRAP_GATE);
     SetInterruptDescriptorTableEntry(0x01, CodeSegment, &HandlerException0x01, 0, IDT_TRAP_GATE);
@@ -123,13 +109,8 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0D, CodeSegment, &HandlerIRQ0x0D, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0E, CodeSegment, &HandlerIRQ0x0E, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x0F, CodeSegment, &HandlerIRQ0x0F, 0, IDT_INTERRUPT_GATE);
-    
-    // Remap the PIC
-    Port8Bit PICMasterCommandPort(0x20);
-    Port8Bit PICSlaveCommandPort(0xA0);
-    Port8Bit PICMasterDataPort(0x21);
-    Port8Bit PICSlaveDataPort(0xA1);
 
+    // Remap the PIC
     PICMasterCommandPort.write(0x11);
     PICSlaveCommandPort.write(0x11);
 
@@ -152,55 +133,62 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     asm volatile("lidt %0" : : "m" (idt_pointer));
 }
 
+// Destructor
+interruptsHandler::~interruptsHandler(){
+    Deactivate();
+}
 
-interruptsHandler::~interruptsHandler(){}
-
-
+// Activate IRQs
 void interruptsHandler::Activate() {
+    if (ActiveInterruptsHandler != 0)
+        ActiveInterruptsHandler->Deactivate();
+
+    ActiveInterruptsHandler = this;
     asm("sti");
 }
 
-uint32_t interruptsHandler::HandleInterrupt(uint8_t interrupt, uint32_t esp) {
-
-    // Debug print
-    // char* message = "INTERRUPT 0x00 ";
-    // char* hex = "0123456789ABCDEF";
-    // message[12] = hex[(interrupt >> 4) & 0xF];
-    // message[13] = hex[interrupt & 0xF];
-    // printf(message);
-
-    if (interrupt == 0x21) {
-        Port8Bit keyboardDataPort(0x60);
-        uint8_t scanCode = keyboardDataPort.read();
-        if (scanCode < 0x80) {
-            // char *c = "KEYBOARD 0x00 ";
-            // char *hex = "01234567889ABCDEF";
-            // c[11] = hex[(scanCode >> 4) & 0x0F];
-            // c[12] = hex[scanCode & 0x0F];
-            char *c = " ";
-            c[0] = ascii_values[scanCode];
-
-            printf(c);
-        }
-        
-
+// Disable IRQs
+void interruptsHandler::Deactivate() {
+    if (ActiveInterruptsHandler == this) {
+        ActiveInterruptsHandler = 0;
+        asm("cli");
     }
+}
 
-    // EOI (End Of Interrupt)
-    Port8Bit MasterCommandPort(0x20);
-    Port8Bit SlaveCommandPort(0xA0);
-    if (interrupt >= (HW_INTERRUPT_OFFSET + 8))
-        SlaveCommandPort.write(EOI);
-    MasterCommandPort.write(EOI);
+// IRQ handler
+uint32_t interruptsHandler::HandleInterrupt(uint8_t IRQ, uint32_t esp) {
+    if(ActiveInterruptsHandler != 0)
+        return ActiveInterruptsHandler->DoHandleInterrupt(IRQ, esp);
+    return esp;
+}
+
+uint32_t interruptsHandler::DoHandleInterrupt(uint8_t IRQ, uint32_t esp) {    
+    if(interruptHandles[IRQ] != 0) // Handled IRQ
+    {
+        esp = interruptHandles[IRQ]->ISR(esp);
+    }
+    else if(IRQ != HW_INTERRUPT_OFFSET) // Unhandled IRQ
+    {
+        char* message = "UNHANDLED INTERRUPT 0x00";
+        char* hex = "0123456789ABCDEF";
+        message[22] = hex[(IRQ >> 4) & 0xF];
+        message[23] = hex[IRQ & 0xF];
+        printf(message);
+    } 
+    else {} // PIC timer IRQ
+
+    // EOI (End of Interrupt) command to PICs
+    if(IRQ >= HW_INTERRUPT_OFFSET && IRQ < HW_INTERRUPT_OFFSET + 16) {
+        PICMasterCommandPort.write(0x20);
+        if(HW_INTERRUPT_OFFSET + 8 <= IRQ)
+            PICSlaveCommandPort.write(0x20);
+    }
 
     return esp;
 }
 
+// Handler for unhandled IRQs
 void interruptsHandler::InterruptIgnore(){
     asm volatile("iret");
 }
-
-// void interruptsHandler::ISR0x00(void) {
-
-// }
 
