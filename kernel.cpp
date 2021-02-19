@@ -23,6 +23,8 @@
 #error "This tutorial needs to be compiled with a ix86-elf compiler"
 #endif
 
+void terminal_write(const char* data, size_t size);
+
 /* Hardware text mode color constants. */
 enum vga_color {
 	VGA_COLOR_BLACK = 0,
@@ -93,22 +95,37 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
 }
- 
+
+bool isWelcome = true;
+
 void terminal_putchar(char c) 
 {
 	if (c == '\n') {
 		terminal_column = 0;
 		terminal_row++;
 		if (terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
+			terminal_initialize();
+		if(!isWelcome) {
+			terminal_write("$ ", strlen("$ "));
+			terminal_column = 2;
+		}
 	}
 	else if (c == '\0') {}
+	else if (c == '\b') {
+		if (terminal_column > 2) {
+			terminal_column--;
+			terminal_putentryat('\0', terminal_color, terminal_column, terminal_row);
+		}
+		else {
+			terminal_column = 2;
+		}
+	}
 	else {
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 		if (++terminal_column == VGA_WIDTH) {
 			terminal_column = 0;
 			if (++terminal_row == VGA_HEIGHT)
-				terminal_row = 0;
+				terminal_initialize();
 		}
 	}	
 }
@@ -134,6 +151,8 @@ extern "C" void callConstructors()
     	(*i)();
 }
 
+
+
 void print_welcome_msg() {
 
 	kprintf("                               __    _ ____  _____\n");
@@ -145,6 +164,7 @@ void print_welcome_msg() {
 	kprintf("\nWake up, Neo...\n");
 	kprintf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
 	kprintf("\n$ ");
+	isWelcome = false;
 }
 
 

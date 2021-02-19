@@ -46,7 +46,7 @@ class interruptsHandler {
 
 protected:
     static interruptsHandler* ActiveInterruptsHandler; // Not great, but required to get out of static space
-    interruptHandle* interruptHandles[256]; // Pointers to interruptHandle objects
+    interruptHandle* interruptHandles[NUM_INTERRUPTS]; // Pointers to interruptHandle objects
 
     // IDT gate (entry) definition
     struct Gate {
