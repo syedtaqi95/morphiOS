@@ -9,107 +9,245 @@ void Keyboard::getASCIIChar() {
         case 0x01:
             currentChar = (char)0x1B; break;
         case 0x02:
-            currentChar = '1'; break;
+            currentChar = '1';
+            if(isShiftPressed)
+                currentChar = '!';
+            break;
         case 0x03:
-            currentChar = '2'; break;
+            currentChar = '2'; 
+            if(isShiftPressed)
+                currentChar = '"';
+            break;
         case 0x04:
-            currentChar = '3'; break;
+            currentChar = '3'; 
+            if(isShiftPressed)
+                currentChar = '£';
+            break;
         case 0x05:
-            currentChar = '4'; break;
+            currentChar = '4'; 
+            if(isShiftPressed)
+                currentChar = '$';
+            break;
         case 0x06:
-            currentChar = '5'; break;
+            currentChar = '5'; 
+            if(isShiftPressed)
+                currentChar = '%';
+            break;
         case 0x07:
-            currentChar = '6'; break;
+            currentChar = '6'; 
+            if(isShiftPressed)
+                currentChar = '^';
+            break;
         case 0x08:
-            currentChar = '7'; break;
+            currentChar = '7'; 
+            if(isShiftPressed)
+                currentChar = '&';
+            break;
         case 0x09:
-            currentChar = '8'; break;
+            currentChar = '8'; 
+            if(isShiftPressed)
+                currentChar = '*';
+            break;
         case 0x0A:
-            currentChar = '9'; break;
+            currentChar = '9'; 
+            if(isShiftPressed)
+                currentChar = '(';
+            break;
         case 0x0B:
-            currentChar = '0'; break;
+            currentChar = '0'; 
+            if(isShiftPressed)
+                currentChar = ')';
+            break;
         case 0x0C:
-            currentChar = '-'; break;
+            currentChar = '-'; 
+            if(isShiftPressed)
+                currentChar = '_';
+            break;
         case 0x0D:
-            currentChar = '='; break;
+            currentChar = '='; 
+            if(isShiftPressed)
+                currentChar = '+';
+            break;
         case 0x0E:
             currentChar = '\b'; break;
         case 0x0F:
             currentChar = '\t'; break;
         case 0x10:
-            currentChar = 'q'; break;
+            currentChar = 'q'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'Q';
+            break;
         case 0x11:
-            currentChar = 'w'; break;
+            currentChar = 'w'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'W';
+            break;
         case 0x12:
-            currentChar = 'e'; break;
+            currentChar = 'e'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'E';
+            break;
         case 0x13:
-            currentChar = 'r'; break;
+            currentChar = 'r'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'R';
+            break;
         case 0x14:
-            currentChar = 't'; break;
+            currentChar = 't'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'T';
+            break;
         case 0x15:
-            currentChar = 'y'; break;
+            currentChar = 'y'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'Y';
+            break;
         case 0x16:
-            currentChar = 'u'; break;
+            currentChar = 'u'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'U';
+            break;
         case 0x17:
-            currentChar = 'i'; break;
+            currentChar = 'i'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'I';
+            break;
         case 0x18:
-            currentChar = 'o'; break;
+            currentChar = 'o'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'O';
+            break;
         case 0x19:
-            currentChar = 'p'; break;
+            currentChar = 'p'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'P';
+            break;
         case 0x1A:
-            currentChar = '['; break;
+            currentChar = '['; 
+            if(isShiftPressed)
+                currentChar = '{';
+            break;
         case 0x1B:
-            currentChar = ']'; break;
+            currentChar = ']'; 
+            if(isShiftPressed)
+                currentChar = '}';
+            break;
         case 0x1C:
             currentChar = '\n'; break;
         case 0x1D:
             isControlPressed = true; break;
         case 0x1E:
-            currentChar = 'a'; break;
+            currentChar = 'a'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'A';
+            break;
         case 0x1F:
-            currentChar = 's'; break;
+            currentChar = 's'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'S';
+            break;
         case 0x20:
-            currentChar = 'd'; break;
+            currentChar = 'd';
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'D';
+            break;
         case 0x21:
-            currentChar = 'f'; break;
+            currentChar = 'f'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'F';
+            break;
         case 0x22:
-            currentChar = 'g'; break;
+            currentChar = 'g';
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'G';
+            break;
         case 0x23:
-            currentChar = 'h'; break;
+            currentChar = 'h'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'H';
+            break;
         case 0x24:
-            currentChar = 'j'; break;
+            currentChar = 'j'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'J';
+            break;
         case 0x25:
-            currentChar = 'k'; break;
+            currentChar = 'k'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'K';
+            break;
         case 0x26:
-            currentChar = 'l'; break;
+            currentChar = 'l'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'L';
+            break;
         case 0x27:
-            currentChar = ';'; break;
+            currentChar = ';'; 
+            if(isShiftPressed)
+                currentChar = ':';
+            break;
         case 0x28:
-            currentChar = '\''; break;
+            currentChar = '\''; 
+            if(isShiftPressed)
+                currentChar = '|';
+            break;
         case 0x2A:
             isShiftPressed = true; break;
         case 0x2B:
-            currentChar = '#'; break;
+            currentChar = '#'; 
+            if(isShiftPressed)
+                currentChar = '~';
+            break;
         case 0x2C:
-            currentChar = 'z'; break;
+            currentChar = 'z'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'Z';
+            break;
         case 0x2D:
-            currentChar = 'x'; break;
+            currentChar = 'x'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'X';
+            break;
         case 0x2E:
-            currentChar = 'c'; break;
+            currentChar = 'c'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'C';
+            break;
         case 0x2F:
-            currentChar = 'v'; break;
+            currentChar = 'v'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'V';
+            break;
         case 0x30:
-            currentChar = 'b'; break;
+            currentChar = 'b'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'B';
+            break;
         case 0x31:
-            currentChar = 'n'; break;
+            currentChar = 'n'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'N';
+            break;
         case 0x32:
-            currentChar = 'm'; break;
+            currentChar = 'm'; 
+            if(isShiftPressed || isCapsLockOn)
+                currentChar = 'M';
+            break;
         case 0x33:
-            currentChar = ','; break;
+            currentChar = ','; 
+            if(isShiftPressed)
+                currentChar = '<';
+            break;
         case 0x34:
-            currentChar = '.'; break;
+            currentChar = '.'; 
+            if(isShiftPressed)
+                currentChar = '>';
+            break;
         case 0x35:
-            currentChar = '/'; break;
+            currentChar = '/'; 
+            if(isShiftPressed)
+                currentChar = '?';
+            break;
         case 0x36:
             isShiftPressed = true; break;
         case 0x37:
@@ -196,9 +334,16 @@ uint32_t Keyboard::ISR(uint32_t esp) {
     scanCode = dataPort.read();
     getASCIIChar();   
 
+    // Print to stdout
     char *msg = " ";
     msg[0] = currentChar;
     kprintf(msg);
+
+    // char *msg = "0x00 ";
+    // char *hex = "0123456789ABCDEF";
+    // msg[2] = hex[(scanCode >> 4) & 0xF];
+    // msg[3] = hex[scanCode & 0xF];
+    // kprintf(msg);
     
     return esp;
 }
