@@ -23,7 +23,7 @@ uint32_t interruptHandle::ISR(uint32_t esp) {
 }
 
 // IDT
-interruptsHandler::Gate interruptsHandler::interruptDescriptorTable[256];
+interruptsHandler::Gate interruptsHandler::interruptDescriptorTable[NUM_INTERRUPTS];
 
 // Active IRQ handler
 interruptsHandler* interruptsHandler::ActiveInterruptsHandler = 0;
@@ -125,7 +125,7 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
 
     // Load IDT register
     interruptDescriptorTablePointer idt_pointer;
-    idt_pointer.size  = 256*sizeof(Gate) - 1;
+    idt_pointer.size  = NUM_INTERRUPTS*sizeof(Gate) - 1;
     idt_pointer.base  = (uint32_t)interruptDescriptorTable;
     asm volatile("lidt %0" : : "m" (idt_pointer));
 }
