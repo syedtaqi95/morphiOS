@@ -34,6 +34,7 @@ protected:
     ~interruptHandle();
  
  public:
+    // Virtual function so it can be overloaded by drivers
     virtual uint32_t ISR(uint32_t esp);
 };
 

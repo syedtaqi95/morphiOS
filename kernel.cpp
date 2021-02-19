@@ -10,6 +10,7 @@
 #include "gdt.h"
 #include "port.h"
 #include "interrupts.h"
+#include "keyboard.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
