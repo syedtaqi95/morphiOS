@@ -4,9 +4,6 @@
 
 #include "interrupts.h"
 
-// Used for debug prints
-void printf(const char* str);
-
 // Constructor
 interruptHandle::interruptHandle(interruptsHandler *InterruptsHandler, uint8_t IRQ) {
     this->IRQ = IRQ;
@@ -173,7 +170,7 @@ uint32_t interruptsHandler::DoHandleInterrupt(uint8_t IRQ, uint32_t esp) {
         char* hex = "0123456789ABCDEF";
         message[22] = hex[(IRQ >> 4) & 0xF];
         message[23] = hex[IRQ & 0xF];
-        printf(message);
+        kprintf(message);
     } 
     else {} // PIC timer IRQ
 

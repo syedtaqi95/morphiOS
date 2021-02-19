@@ -6,6 +6,7 @@
     Created by Syed Taqi Haider
 */
 
+#include "common.h"
 #include "types.h"
 #include "gdt.h"
 #include "port.h"
@@ -118,7 +119,7 @@ void terminal_write(const char* data, size_t size)
 		terminal_putchar(data[i]);
 }
  
-void printf(const char* data) 
+void kprintf(const char* data) 
 {
 	terminal_write(data, strlen(data));
 }
@@ -135,15 +136,15 @@ extern "C" void callConstructors()
 
 void print_welcome_msg() {
 
-	printf("                               __    _ ____  _____\n");
-	printf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");
-	printf("  / __ `__ \\/ __ \\/ ___/ __ \\/ __ \\/ / / / /\\__ \\ \n");
-	printf(" / / / / / / /_/ / /  / /_/ / / / / / /_/ /___/ / \n");
-	printf("/_/ /_/ /_/\\____/_/  / .___/_/ /_/_/\\____//____/  \n");
-	printf("                    /_/                           \n");
-	printf("\nWake up, Neo...\n");
-	printf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
-	printf("\n$ ");
+	kprintf("                               __    _ ____  _____\n");
+	kprintf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");
+	kprintf("  / __ `__ \\/ __ \\/ ___/ __ \\/ __ \\/ / / / /\\__ \\ \n");
+	kprintf(" / / / / / / /_/ / /  / /_/ / / / / / /_/ /___/ / \n");
+	kprintf("/_/ /_/ /_/\\____/_/  / .___/_/ /_/_/\\____//____/  \n");
+	kprintf("                    /_/                           \n");
+	kprintf("\nWake up, Neo...\n");
+	kprintf("The Matrix has you...\nFollow the white rabbit.\n...\nKnock, Knock, Neo.\n");
+	kprintf("\n$ ");
 }
 
 
@@ -158,6 +159,8 @@ extern "C" void kernel_main(void)
 	GlobalDescriptorTable gdt;
 
 	interruptsHandler interrupts(&gdt);
+	Keyboard keyboard(&interrupts);
+
     interrupts.Activate();
 
 	while(1);

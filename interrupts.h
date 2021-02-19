@@ -5,6 +5,7 @@
 #ifndef INTERRUPTS_H
 #define INTERRUPTS_H
 
+#include "common.h"
 #include "types.h"
 #include "port.h"
 #include "gdt.h"
