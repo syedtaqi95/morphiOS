@@ -10,6 +10,7 @@ Mouse::Mouse(interruptsHandler* handler)
     dataPort(0x60),
     commandPort(0x64) {
 
+    // Typecast to signed int8
     int8_t SCREEN_W = (int8_t)VGA::VGA_WIDTH;
     int8_t SCREEN_H = (int8_t)VGA::VGA_HEIGHT;
     
@@ -44,7 +45,7 @@ Mouse::Mouse(interruptsHandler* handler)
 Mouse::~Mouse() {}
 
 // Handle the keyboard IRQ
-uint32_t Mouse::ISR(uint32_t esp) {
+uint32_t Mouse::ISR(uint32_t esp) {        
 
     uint8_t status = commandPort.read();
     if (!(status & 0x20))

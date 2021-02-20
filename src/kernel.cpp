@@ -63,8 +63,10 @@ extern "C" void kernel_main(void)
 	GlobalDescriptorTable gdt;
 	interruptsHandler interrupts(&gdt);
 	
-	Keyboard keyboard(&interrupts);
+	// NOTE: always initialise mouse before keyboard
 	Mouse mouse(&interrupts);
+	Keyboard keyboard(&interrupts);
+
     interrupts.Activate();
 
 	while(1);

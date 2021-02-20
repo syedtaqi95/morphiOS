@@ -15,7 +15,6 @@ class Port {
 };
 
 class Port8Bit : public Port {
-    
     public:
         Port8Bit(uint16_t portNumber);
         ~Port8Bit();
@@ -24,7 +23,6 @@ class Port8Bit : public Port {
 };
 
 class Port16Bit : public Port {
-    
     public:
         Port16Bit(uint16_t portNumber);
         ~Port16Bit();
@@ -33,7 +31,6 @@ class Port16Bit : public Port {
 };
 
 class Port32Bit : public Port {
-    
     public:
         Port32Bit(uint16_t portNumber);
         ~Port32Bit();
