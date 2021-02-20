@@ -73,7 +73,7 @@ void Keyboard::getASCIIChar() {
         case 0x0E:
             currentChar = '\b'; break;
         case 0x0F:
-            currentChar = '\t'; break;
+            currentChar = ' '; break; // TODO: output actual tab
         case 0x10:
             currentChar = 'q'; 
             if(isShiftPressed || isCapsLockOn)
