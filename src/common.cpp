@@ -1,3 +1,6 @@
+/*
+	common.cpp - Common functions used in the project
+*/
 
 #include "common.h"
 
