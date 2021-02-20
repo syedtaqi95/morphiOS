@@ -17,7 +17,9 @@ Knock, Knock, Neo.
 
 A lightweight 32-bit operating system written in C++ for the i386 (x86) architecture.
 
-Used some of the code from the OSDev Wiki: https://wiki.osdev.org/
+Borrowed some code from the following sources: 
+- https://wiki.osdev.org/
+- https://github.com/AlgorithMan-de/wyoos/
 
 ## Installation
 
