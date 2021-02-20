@@ -1,6 +1,21 @@
 # morphiOS
 
-Developing my own hobbyist 32-bit operating system written in C++ for the x86 architecture.
+```
+                               __    _ ____  _____
+   ____ ___  ____  _________  / /_  (_) __ \/ ___/
+  / __ `__ \/ __ \/ ___/ __ \/ __ \/ / / / /\__ \
+ / / / / / / /_/ / /  / /_/ / / / / / /_/ /___/ / 
+/_/ /_/ /_/\____/_/  / .___/_/ /_/_/\____//____/  
+                    /_/                           
+
+Wake up, Neo
+The Matrix has you
+Follow the white rabbit
+...
+Knock, Knock, Neo.
+```
+
+A lightweight 32-bit operating system written in C++ for the i386 (x86) architecture.
 
 Used some of the code from the OSDev Wiki: https://wiki.osdev.org/
 
