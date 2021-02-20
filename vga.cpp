@@ -14,13 +14,6 @@ uint8_t VGA::terminal_color = 0;
 uint16_t* VGA::terminal_buffer = 0;
 
 bool VGA::isWelcome = true;
- 
-size_t strlen(const char* str) {
-	size_t len = 0;
-	while (str[len])
-		len++;
-	return len;
-}
 
 void VGA::terminal_initialize(void) {
 	terminal_row = 0;
