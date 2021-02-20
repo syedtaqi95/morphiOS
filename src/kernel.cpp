@@ -13,6 +13,7 @@
 #include "port.h"
 #include "interrupts.h"
 #include "keyboard.h"
+// #include "mouse.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -60,10 +61,10 @@ extern "C" void kernel_main(void)
 	print_welcome_msg();
  
 	GlobalDescriptorTable gdt;
-
 	interruptsHandler interrupts(&gdt);
+	
 	Keyboard keyboard(&interrupts);
-
+	// Mouse mouse(&interrupts);
     interrupts.Activate();
 
 	while(1);

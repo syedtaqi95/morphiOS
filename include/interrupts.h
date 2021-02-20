@@ -10,19 +10,19 @@
 #include "port.h"
 #include "gdt.h"
 
-// IDT macros
-#define NUM_INTERRUPTS 256 // number of entries in IDT (max 256 in x86)
-#define HW_INTERRUPT_OFFSET 0x20 // good practice to leave the first 32 IRQs for system interrupts
-#define IDT_INTERRUPT_GATE 0xE // Descriptor type for interrupt gates
-#define IDT_TRAP_GATE 0xF // Descriptor type for trap gates
-#define IDT_DESC_PRESENT 0x80  // Flag to confirm IDT entry is present
+// IDT consts
+static const size_t NUM_INTERRUPTS = 256; // number of entries in IDT (max 256 in x86)
+static const uint8_t HW_INTERRUPT_OFFSET = 0x20; // good practice to leave the first 32 IRQs for system interrupts
+static const uint8_t IDT_INTERRUPT_GATE = 0xE; // Descriptor type for interrupt gates
+static const uint8_t IDT_TRAP_GATE = 0xF; // Descriptor type for trap gates
+static const uint8_t IDT_DESC_PRESENT = 0x80;  // Flag to confirm IDT entry is present
 
-// PIC macros
-#define PIC_MASTER_COMMAND_PORT 0x20
-#define PIC_SLAVE_COMMAND_PORT 0xA0
-#define PIC_MASTER_DATA_PORT 0x21
-#define PIC_SLAVE_DATA_PORT 0xA1
-#define EOI 0x20 // End Of Interrupt command
+// PIC consts
+static const uint8_t PIC_MASTER_COMMAND_PORT = 0x20;
+static const uint8_t PIC_SLAVE_COMMAND_PORT = 0xA0;
+static const uint8_t PIC_MASTER_DATA_PORT = 0x21;
+static const uint8_t PIC_SLAVE_DATA_PORT = 0xA1;
+static const uint8_t EOI = 0x20; // End Of Interrupt command
 
 class interruptsHandler;
 

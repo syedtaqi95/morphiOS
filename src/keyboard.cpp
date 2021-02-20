@@ -6,6 +6,7 @@
 
 // Convert key press to ASCII character (UK layout - uses scan code 1)
 // Accounts for shift, control, alt and capsLock
+// TODO : implement as a LUT - for uppercase add ASCII offset to lowercase
 void Keyboard::getASCIIChar() {
     switch(scanCode) {
         case 0x01:
@@ -303,7 +304,7 @@ void Keyboard::getASCIIChar() {
 
 // Constructor
 Keyboard::Keyboard(interruptsHandler* handler) 
-    : interruptHandle(handler, 0x21),
+    : interruptHandle(handler, HW_INTERRUPT_OFFSET + 0x01),
     dataPort(0x60),
     commandPort(0x64) {
 

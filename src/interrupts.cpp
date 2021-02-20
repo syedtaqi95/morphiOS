@@ -89,7 +89,7 @@ interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTabl
     SetInterruptDescriptorTableEntry(0x1E, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
     SetInterruptDescriptorTableEntry(0x1F, CodeSegment, &HandlerException0x13, 0, IDT_TRAP_GATE);
 
-    // User defined PIC interrupts
+    // PIC interrupts
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x00, CodeSegment, &HandlerIRQ0x00, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x01, CodeSegment, &HandlerIRQ0x01, 0, IDT_INTERRUPT_GATE);
     SetInterruptDescriptorTableEntry(HW_INTERRUPT_OFFSET + 0x02, CodeSegment, &HandlerIRQ0x02, 0, IDT_INTERRUPT_GATE);

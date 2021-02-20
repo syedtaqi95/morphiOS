@@ -10,8 +10,8 @@
 #include "interrupts.h"
 #include "common.h"
 
-#define NUM_ASCII_VALUES 256 // ASCII array size
-#define KEY_RELEASE_OFFSET 0x80 // Value to add to get the value of a key release
+static const size_t NUM_ASCII_VALUES = 256; // ASCII array size
+static const uint8_t KEY_RELEASE_OFFSET = 0x80; // Value to add to get the value of a key release
 
 class Keyboard : public interruptHandle {
 protected:

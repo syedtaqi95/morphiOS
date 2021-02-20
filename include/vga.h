@@ -30,6 +30,7 @@ private:
         VGA_COLOR_LIGHT_BROWN = 14,
         VGA_COLOR_WHITE = 15,
     };
+    
     static const size_t VGA_WIDTH = 80;
     static const size_t VGA_HEIGHT = 25;
 
