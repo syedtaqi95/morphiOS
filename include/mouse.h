@@ -14,6 +14,10 @@ class Mouse : public interruptHandle {
 protected:
     Port8Bit dataPort;
     Port8Bit commandPort;
+    uint8_t buffer[3];
+    uint8_t offset;
+    uint8_t buttons;
+    int8_t x, y;
 
 public:
     Mouse(interruptsHandler* handler);
