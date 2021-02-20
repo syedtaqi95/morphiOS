@@ -12,6 +12,6 @@ size_t strlen(const char* str) {
 }
 
 void kprintf(const char* data) {
-    VGA vga = VGA();
+    VGA vga;
 	vga.terminal_write(data, strlen(data));
 }

@@ -36,7 +36,7 @@ extern "C" void callConstructors()
 
 void print_welcome_msg() {
 
-	VGA vga = VGA();
+	VGA vga;
 
 	kprintf("                               __    _ ____  _____\n");
 	kprintf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");
@@ -54,7 +54,7 @@ void print_welcome_msg() {
 extern "C" void kernel_main(void) 
 {
 	/* Initialize terminal interface */
-	VGA vga = VGA();
+	VGA vga;
 	vga.terminal_initialize();
 
 	print_welcome_msg();
