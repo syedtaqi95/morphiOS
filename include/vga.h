@@ -30,9 +30,6 @@ private:
         VGA_COLOR_LIGHT_BROWN = 14,
         VGA_COLOR_WHITE = 15,
     };
-    
-    static const size_t VGA_WIDTH = 80;
-    static const size_t VGA_HEIGHT = 25;
 
     // Private methods
     static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) {
@@ -50,10 +47,12 @@ private:
 public:
     // Public variables
     // Defined as static as they are global in scope
+    static const size_t VGA_WIDTH = 80;
+    static const size_t VGA_HEIGHT = 25;
     static size_t terminal_row;
     static size_t terminal_column;
     static uint8_t terminal_color;
-    static uint16_t* terminal_buffer;
+    static uint16_t *terminal_buffer;
     static bool isWelcome; // For checking if it is a welcome message, stops printing "$ "
 
     // Public methods

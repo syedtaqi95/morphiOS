@@ -9,6 +9,7 @@
 #include "port.h"
 #include "interrupts.h"
 #include "common.h"
+#include "vga.h"
 
 class Mouse : public interruptHandle {
 protected:

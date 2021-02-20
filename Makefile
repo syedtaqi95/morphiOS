@@ -23,6 +23,7 @@ objects = 	$(OBJ_DIR)/boot.o \
 			$(OBJ_DIR)/interrupts-stubs.o \
 			$(OBJ_DIR)/interrupts.o \
 			$(OBJ_DIR)/keyboard.o \
+			$(OBJ_DIR)/mouse.o \
 			$(OBJ_DIR)/vga.o \
 			$(OBJ_DIR)/kernel.o
 

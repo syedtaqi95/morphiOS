@@ -341,12 +341,6 @@ uint32_t Keyboard::ISR(uint32_t esp) {
     char *msg = " ";
     msg[0] = currentChar;
     kprintf(msg);
-
-    // char *msg = "0x00 ";
-    // char *hex = "0123456789ABCDEF";
-    // msg[2] = hex[(scanCode >> 4) & 0xF];
-    // msg[3] = hex[scanCode & 0xF];
-    // kprintf(msg);
     
     return esp;
 }
