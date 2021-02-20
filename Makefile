@@ -13,11 +13,13 @@ LD_FLAGS = -ffreestanding -O2 -nostdlib -lgcc
 
 # Objects
 objects = 	boot.o \
+			common.o \
 			gdt.o \
 			port.o \
 			interrupts-stubs.o \
 			interrupts.o \
 			keyboard.o \
+			vga.o \
 			kernel.o
 
 # Targets

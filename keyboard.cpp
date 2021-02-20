@@ -4,6 +4,8 @@
 
 #include "keyboard.h"
 
+// Convert key press to ASCII character (UK layout - uses scan code 1)
+// Accounts for shift, control, alt and capsLock
 void Keyboard::getASCIIChar() {
     switch(scanCode) {
         case 0x01:
