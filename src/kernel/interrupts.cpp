@@ -2,7 +2,7 @@
     interrupts.cpp - x86 interrupt handler in C++
 */
 
-#include "interrupts.h"
+#include "kernel/interrupts.h"
 
 // Constructor
 interruptHandle::interruptHandle(interruptsHandler *InterruptsHandler, uint8_t IRQ) {

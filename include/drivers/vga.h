@@ -5,8 +5,8 @@
 #ifndef VGA_H
 #define VGA_H
 
-#include "types.h"
-#include "common.h"
+#include "common/types.h"
+#include "common/common.h"
 
 class VGA {
 private:

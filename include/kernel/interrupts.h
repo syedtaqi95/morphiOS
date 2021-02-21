@@ -5,10 +5,10 @@
 #ifndef INTERRUPTS_H
 #define INTERRUPTS_H
 
-#include "common.h"
-#include "types.h"
-#include "port.h"
-#include "gdt.h"
+#include "common/common.h"
+#include "common/types.h"
+#include "kernel/port.h"
+#include "kernel/gdt.h"
 
 // IDT consts
 static const size_t NUM_INTERRUPTS = 256; // number of entries in IDT (max 256 in x86)

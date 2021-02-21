@@ -2,7 +2,7 @@
 	common.cpp - Common functions used in the project
 */
 
-#include "common.h"
+#include "common/common.h"
 
 size_t strlen(const char* str) {
 	size_t len = 0;

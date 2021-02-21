@@ -5,8 +5,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include "types.h"
-#include "vga.h"
+#include "common/types.h"
+#include "drivers/vga.h"
 
 void kprintf(const char* str);
 

@@ -2,7 +2,7 @@
     vga.cpp - VGA class implementation to communicate with stdout
 */
 
-#include "vga.h"
+#include "drivers/vga.h"
 
 VGA::VGA() {}
 

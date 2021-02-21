@@ -2,12 +2,12 @@
     keyboard.cpp - Keyboard driver class for x86 OS kernel
 */
 
-#include "keyboard.h"
+#include "drivers/keyboard.h"
 
 // Convert key press to ASCII character (UK layout - uses scan code 1)
 // Accounts for shift, control, alt and capsLock
 // TODO : implement as a LUT - for uppercase add ASCII offset to lowercase
-void Keyboard::getASCIIChar() {
+void KeyboardDriver::getASCIIChar() {
     switch(scanCode) {
         case 0x01:
             currentChar = (char)0x1B; break;
@@ -303,7 +303,7 @@ void Keyboard::getASCIIChar() {
 }
 
 // Constructor
-Keyboard::Keyboard(interruptsHandler* handler) 
+KeyboardDriver::KeyboardDriver(interruptsHandler* handler) 
     : interruptHandle(handler, HW_INTERRUPT_OFFSET + 0x01),
     dataPort(0x60),
     commandPort(0x64) {
@@ -329,10 +329,10 @@ Keyboard::Keyboard(interruptsHandler* handler)
 }
 
 // Destructor
-Keyboard::~Keyboard() {}
+KeyboardDriver::~KeyboardDriver() {}
 
 // Handle the keyboard IRQ
-uint32_t Keyboard::ISR(uint32_t esp) {
+uint32_t KeyboardDriver::ISR(uint32_t esp) {
 
     scanCode = dataPort.read();
     getASCIIChar();   
@@ -346,15 +346,15 @@ uint32_t Keyboard::ISR(uint32_t esp) {
 }
 
 
-char Keyboard::getCharacter() {
+char KeyboardDriver::getCharacter() {
     return currentChar;
 }
 
-uint8_t Keyboard::getScancode() {
+uint8_t KeyboardDriver::getScancode() {
     return scanCode;
 }
 
-void Keyboard::printCharacter() {
+void KeyboardDriver::printCharacter() {
     char* msg = " ";
     msg[0] = currentChar;
     kprintf(msg);

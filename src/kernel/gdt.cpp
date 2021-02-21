@@ -2,7 +2,7 @@
     gdt.cpp - IA32 Global Descriptor Table implementation written in C++
 */
 
-#include "gdt.h"
+#include "kernel/gdt.h"
 
 // GDT constructor
 GlobalDescriptorTable::GlobalDescriptorTable()

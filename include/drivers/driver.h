@@ -5,7 +5,7 @@
 #ifndef DRIVER_H
 #define DRIVER_H
 
-#include "types.h"
+#include "common/types.h"
 
  // Max number of drivers
 

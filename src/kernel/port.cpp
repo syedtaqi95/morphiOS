@@ -2,7 +2,7 @@
     port.cppC++ header for 8-bit, 16-bit and 32-bit ports in x86 architecture
 */
 
-#include "port.h"
+#include "kernel/port.h"
 
 // Port constructor
 Port::Port(uint16_t portNumber) {
