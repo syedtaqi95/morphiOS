@@ -81,8 +81,6 @@ uint32_t Mouse::ISR(uint32_t esp) {
         }
     }
 
-    // kprintf("M ");
-
     return esp;
 }
 

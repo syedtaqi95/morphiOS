@@ -15,3 +15,11 @@ void kprintf(const char* data) {
     VGA vga;
 	vga.terminal_write(data, strlen(data));
 }
+
+void kprintHex(uint8_t hexVal) {
+	char *msg = "  ";
+	char *hex = "0123456789ABCDEF";
+	msg[0] = hex[(hexVal >> 4) & 0x0F];
+	msg[1] = hex[hexVal & 0x0F];
+	kprintf(msg);
+}

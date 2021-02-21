@@ -6,12 +6,13 @@
 #define MOUSE_H
 
 #include "types.h"
+#include "driver.h"
 #include "port.h"
 #include "interrupts.h"
 #include "common.h"
 #include "vga.h"
 
-class Mouse : public interruptHandle {
+class Mouse : public interruptHandle, public Driver {
 protected:
     Port8Bit dataPort;
     Port8Bit commandPort;

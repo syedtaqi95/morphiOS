@@ -166,11 +166,8 @@ uint32_t interruptsHandler::DoHandleInterrupt(uint8_t IRQ, uint32_t esp) {
     }
     else if(IRQ != HW_INTERRUPT_OFFSET) // Unhandled IRQ
     {
-        char* message = "UNHANDLED INTERRUPT 0x00";
-        char* hex = "0123456789ABCDEF";
-        message[22] = hex[(IRQ >> 4) & 0xF];
-        message[23] = hex[IRQ & 0xF];
-        kprintf(message);
+        kprintf("UNHANDLED INTERRUPT 0x");
+        kprintHex(IRQ);
     } 
     else {} // PIC timer IRQ
 
