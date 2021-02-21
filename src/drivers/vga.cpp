@@ -72,4 +72,17 @@ void VGA::terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
 }
+
+void VGA::print_welcome_msg() {
+	kprintf("                               __    _ ____  _____\n");
+	kprintf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");
+	kprintf("  / __ `__ \\/ __ \\/ ___/ __ \\/ __ \\/ / / / /\\__ \\ \n");
+	kprintf(" / / / / / / /_/ / /  / /_/ / / / / / /_/ /___/ / \n");
+	kprintf("/_/ /_/ /_/\\____/_/  / .___/_/ /_/_/\\____//____/  \n");
+	kprintf("                    /_/                           \n");
+	kprintf("\nWake up, Neo\n");
+	kprintf("The Matrix has you\nFollow the white rabbit\n...\nKnock, Knock, Neo.\n");
+	kprintf("\n$ ");
+	isWelcome = false;
+}
  

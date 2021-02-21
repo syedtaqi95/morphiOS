@@ -6,12 +6,13 @@
     Created by Syed Taqi Haider
 */
 
-#include "drivers/vga.h"
-#include "common/common.h"
+// Includes
 #include "common/types.h"
+#include "common/common.h"
 #include "kernel/gdt.h"
 #include "kernel/port.h"
 #include "kernel/interrupts.h"
+#include "drivers/vga.h"
 #include "drivers/keyboard.h"
 #include "drivers/mouse.h"
 
@@ -35,21 +36,7 @@ extern "C" void callConstructors()
     	(*i)();
 }
 
-void print_welcome_msg() {
 
-	VGA vga;
-
-	kprintf("                               __    _ ____  _____\n");
-	kprintf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");
-	kprintf("  / __ `__ \\/ __ \\/ ___/ __ \\/ __ \\/ / / / /\\__ \\ \n");
-	kprintf(" / / / / / / /_/ / /  / /_/ / / / / / /_/ /___/ / \n");
-	kprintf("/_/ /_/ /_/\\____/_/  / .___/_/ /_/_/\\____//____/  \n");
-	kprintf("                    /_/                           \n");
-	kprintf("\nWake up, Neo\n");
-	kprintf("The Matrix has you\nFollow the white rabbit\n...\nKnock, Knock, Neo.\n");
-	kprintf("\n$ ");
-	vga.isWelcome = false;
-}
 
 // kernel main function called by loader.s
 extern "C" void kernel_main(void) 
@@ -57,13 +44,12 @@ extern "C" void kernel_main(void)
 	/* Initialize terminal interface */
 	VGA vga;
 	vga.terminal_initialize();
-
-	print_welcome_msg();
+	vga.print_welcome_msg();
  
 	GlobalDescriptorTable gdt;
 	interruptsHandler interrupts(&gdt);
 	
-	// NOTE: always initialise mouse before keyboard
+	// NOTE: always initialise mouse before keyboard as they share the same port
 	MouseDriver mouse(&interrupts);
 	KeyboardDriver keyboard(&interrupts);
 

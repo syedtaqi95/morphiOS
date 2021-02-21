@@ -60,6 +60,7 @@ public:
     ~VGA(); // Destructor
     void terminal_initialize(void);
     void terminal_write(const char* data, size_t size);
+    void print_welcome_msg();
 };
 
 
