@@ -4,10 +4,48 @@
 
 #include "drivers/keyboard.h"
 
+KeyboardEventHandler::KeyboardEventHandler() {
+    // Initialise key variables (pun intended)
+    currentChar = '\0';
+    scanCode = 0;
+    isShiftPressed = false;
+    isControlPressed = false;
+    isCapsLockOn = false;
+}
+KeyboardEventHandler::~KeyboardEventHandler() {
+
+}
+
+void KeyboardEventHandler::onKeyUp() {
+
+}
+void KeyboardEventHandler::onKeyDown(uint8_t) {
+    getASCIIChar();   
+
+    // Print to stdout
+    char *msg = " ";
+    msg[0] = currentChar;
+    kprintf(msg);
+}
+
+char KeyboardEventHandler::getCharacter() {
+    return currentChar;
+}
+
+uint8_t KeyboardEventHandler::getScancode() {
+    return scanCode;
+}
+
+void KeyboardEventHandler::printCharacter() {
+    char* msg = " ";
+    msg[0] = currentChar;
+    kprintf(msg);
+}
+
 // Convert key press to ASCII character (UK layout - uses scan code 1)
 // Accounts for shift, control, alt and capsLock
 // TODO : implement as a LUT - for uppercase add ASCII offset to lowercase
-void KeyboardDriver::getASCIIChar() {
+void KeyboardEventHandler::getASCIIChar() {
     switch(scanCode) {
         case 0x01:
             currentChar = (char)0x1B; break;
@@ -303,8 +341,8 @@ void KeyboardDriver::getASCIIChar() {
 }
 
 // Constructor
-KeyboardDriver::KeyboardDriver(interruptsHandler* handler) 
-    : interruptHandle(handler, HW_INTERRUPT_OFFSET + 0x01),
+KeyboardDriver::KeyboardDriver(interruptsHandler* IRQhandler, KeyboardEventHandler *eventHandler) 
+    : interruptHandle(IRQhandler, HW_INTERRUPT_OFFSET + 0x01),
     dataPort(0x60),
     commandPort(0x64) {
 
@@ -319,13 +357,6 @@ KeyboardDriver::KeyboardDriver(interruptsHandler* handler)
     commandPort.write(0x60); // Command 0x60 = set controller command byte
     dataPort.write(status);
     dataPort.write(0xF4);
-
-    // Initialise key variables (pun intended)
-    currentChar = '\0';
-    scanCode = 0;
-    isShiftPressed = false;
-    isControlPressed = false;
-    isCapsLockOn = false;
 }
 
 // Destructor
@@ -334,31 +365,10 @@ KeyboardDriver::~KeyboardDriver() {}
 // Handle the keyboard IRQ
 uint32_t KeyboardDriver::ISR(uint32_t esp) {
 
-    scanCode = dataPort.read();
-    getASCIIChar();   
-
-    // Print to stdout
-    char *msg = " ";
-    msg[0] = currentChar;
-    kprintf(msg);
-    
+    scanCode = dataPort.read();    
     return esp;
 }
 
-
-char KeyboardDriver::getCharacter() {
-    return currentChar;
-}
-
-uint8_t KeyboardDriver::getScancode() {
-    return scanCode;
-}
-
-void KeyboardDriver::printCharacter() {
-    char* msg = " ";
-    msg[0] = currentChar;
-    kprintf(msg);
-}
 
 
 

@@ -73,6 +73,7 @@ void VGA::terminal_write(const char* data, size_t size) {
 		terminal_putchar(data[i]);
 }
 
+// TODO: create a child class and move this method there
 void VGA::print_welcome_msg() {
 	kprintf("                               __    _ ____  _____\n");
 	kprintf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");

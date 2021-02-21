@@ -12,6 +12,17 @@
 #include "common/common.h"
 #include "drivers/vga.h"
 
+// Mouse event handler class
+class MouseEventHandler {
+public:
+    MouseEventHandler();
+    ~MouseEventHandler();
+    virtual void onActivate();
+    virtual void onMouseDown();
+    virtual void onMouseUp();
+    virtual void onMouseMove();
+};
+
 class MouseDriver : public interruptHandle, public Driver {
 protected:
     Port8Bit dataPort;
