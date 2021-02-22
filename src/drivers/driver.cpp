@@ -4,6 +4,9 @@
 
 #include "drivers/driver.h"
 
+namespace morphios {
+namespace drivers {
+
 // These virtual methods will be overloaded by actual drivers
 Driver::Driver() {}
 Driver::~Driver(){}
@@ -23,7 +26,10 @@ void DriverManager::addDriver(Driver *drv) {
 }
 
 void DriverManager::activateAll() {
-    for (uint8_t i = 0; i < numDrivers; i++) {
+    for (morphios::common::uint8_t i = 0; i < numDrivers; i++) {
         drivers[i]->activate();
     } 
 }
+
+} // namespace drivers
+} // namespace morphios

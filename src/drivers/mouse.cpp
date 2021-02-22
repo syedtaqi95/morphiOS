@@ -4,6 +4,10 @@
 
 #include "drivers/mouse.h"
 
+using namespace morphios::common;
+using namespace morphios::drivers;
+using namespace morphios::kernel;
+
 // Constructor - set cursor to centre of screen
 MouseEventHandler::MouseEventHandler() {}
 

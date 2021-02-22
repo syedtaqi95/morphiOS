@@ -4,6 +4,9 @@
 
 #include "kernel/gdt.h"
 
+using namespace morphios::common;
+using namespace morphios::kernel;
+
 // GDT constructor
 GlobalDescriptorTable::GlobalDescriptorTable()
     : nullSegmentSelector(0, 0, 0),

@@ -4,6 +4,10 @@
 
 #include "drivers/keyboard.h"
 
+using namespace morphios::common;
+using namespace morphios::drivers;
+using namespace morphios::kernel;
+
 KeyboardEventHandler::KeyboardEventHandler() {
     // Initialise key variables (pun intended)
     currentChar = '\0';
@@ -12,6 +16,7 @@ KeyboardEventHandler::KeyboardEventHandler() {
     isAltPressed = false;
     isCapsLockOn = false;
 }
+
 KeyboardEventHandler::~KeyboardEventHandler() {}
 
 void KeyboardEventHandler::onKeyUp(uint8_t scanCode) {}
@@ -51,7 +56,7 @@ void KeyboardEventHandler::getASCIIChar(uint8_t scanCode) {
         case 0x04:
             currentChar = '3'; 
             if(isShiftPressed)
-                currentChar = '£';
+                currentChar = '$';
             break;
         case 0x05:
             currentChar = '4'; 
@@ -330,7 +335,7 @@ void KeyboardEventHandler::getASCIIChar(uint8_t scanCode) {
 }
 
 // Constructor
-KeyboardDriver::KeyboardDriver(interruptsHandler* IRQhandler, KeyboardEventHandler *eventHandler) 
+KeyboardDriver::KeyboardDriver(morphios::kernel::interruptsHandler* IRQhandler, KeyboardEventHandler *eventHandler) 
     : interruptHandle(IRQhandler, HW_INTERRUPT_OFFSET + 0x01),
       dataPort(0x60),
       commandPort(0x64) {
@@ -360,7 +365,3 @@ uint32_t KeyboardDriver::ISR(uint32_t esp) {
     eventHandler->onKeyDown(scanCode);
     return esp;
 }
-
-
-
-

@@ -7,6 +7,9 @@
 
 #include "common/types.h"
 
+namespace morphios {
+namespace kernel {
+
 class GlobalDescriptorTable {
 
     public:
@@ -15,17 +18,17 @@ class GlobalDescriptorTable {
     class SegmentDescriptor {
         
         private:
-            uint16_t limit_lo;
-            uint16_t base_lo;
-            uint8_t base_hi;
-            uint8_t type;
-            uint8_t limit_hi;
-            uint8_t base_vhi;
+            morphios::common::uint16_t limit_lo;
+            morphios::common::uint16_t base_lo;
+            morphios::common::uint8_t base_hi;
+            morphios::common::uint8_t type;
+            morphios::common::uint8_t limit_hi;
+            morphios::common::uint8_t base_vhi;
         
         public:
-            SegmentDescriptor(uint32_t base, uint32_t limit, uint8_t type);
-            uint32_t Base();
-            uint32_t Limit();
+            SegmentDescriptor(morphios::common::uint32_t base, morphios::common::uint32_t limit, morphios::common::uint8_t type);
+            morphios::common::uint32_t Base();
+            morphios::common::uint32_t Limit();
     } __attribute__((packed));
 
     private:
@@ -41,8 +44,11 @@ class GlobalDescriptorTable {
         ~GlobalDescriptorTable();
 
         // Public methods
-        uint16_t CodeSegmentSelector();
-        uint16_t DataSegmentSelector();
+        morphios::common::uint16_t CodeSegmentSelector();
+        morphios::common::uint16_t DataSegmentSelector();
 };
+
+} // namespace kernel    
+} // namespace morphios
 
 #endif // GDT_H

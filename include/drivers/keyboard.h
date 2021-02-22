@@ -11,7 +11,10 @@
 #include "kernel/interrupts.h"
 #include "common/common.h"
 
-static const uint8_t KEY_RELEASE_OFFSET = 0x80; // Add this offset to get the value of a key release
+namespace morphios {
+namespace drivers {
+
+static const morphios::common::uint8_t KEY_RELEASE_OFFSET = 0x80; // Add this offset to get the value of a key release
 
 // Figures out what to do with a keyboard event
 class KeyboardEventHandler {
@@ -22,7 +25,7 @@ protected:
     bool isAltPressed;
     bool isCapsLockOn;
     
-    void getASCIIChar(uint8_t scanCode);
+    void getASCIIChar(morphios::common::uint8_t scanCode);
     char getCharacter();
     void printCharacter();
 
@@ -30,25 +33,28 @@ public:
     KeyboardEventHandler();
     ~KeyboardEventHandler();
     
-    virtual void onKeyUp(uint8_t scanCode);
-    virtual void onKeyDown(uint8_t scanCode);
+    virtual void onKeyUp(morphios::common::uint8_t scanCode);
+    virtual void onKeyDown(morphios::common::uint8_t scanCode);
 };
 
 // Keyboard driver class derived from Driver parent class
-class KeyboardDriver : public interruptHandle, public Driver {
+class KeyboardDriver : public morphios::kernel::interruptHandle, public Driver {
 protected:
-    Port8Bit dataPort;
-    Port8Bit commandPort;
+    morphios::kernel::Port8Bit dataPort;
+    morphios::kernel::Port8Bit commandPort;
     KeyboardEventHandler *eventHandler;
 
-    uint8_t scanCode; // Scan code of current key press
+    morphios::common::uint8_t scanCode; // Scan code of current key press
 
 public:
-    KeyboardDriver(interruptsHandler* IRQhandler, KeyboardEventHandler *eventHandler);
+    KeyboardDriver(morphios::kernel::interruptsHandler* IRQhandler, KeyboardEventHandler *eventHandler);
     ~KeyboardDriver();    
-    virtual uint32_t ISR(uint32_t esp);
+    virtual morphios::common::uint32_t ISR(morphios::common::uint32_t esp);
     virtual void activate();
 };
+
+} // namespace drivers
+} // namespace morphios
 
 
 #endif // KEYBOARD_H

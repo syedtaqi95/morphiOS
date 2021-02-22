@@ -7,35 +7,41 @@
 
 #include "common/types.h"
 
+namespace morphios {
+namespace kernel {
+
 class Port {
     protected:
-        uint16_t portNumber;
-        Port(uint16_t portNumber);
+        morphios::common::uint16_t portNumber;
+        Port(morphios::common::uint16_t portNumber);
         ~Port(); // 
 };
 
 class Port8Bit : public Port {
     public:
-        Port8Bit(uint16_t portNumber);
+        Port8Bit(morphios::common::uint16_t portNumber);
         ~Port8Bit();
-        virtual void write(uint8_t data);
-        virtual uint8_t read();
+        virtual void write(morphios::common::uint8_t data);
+        virtual morphios::common::uint8_t read();
 };
 
 class Port16Bit : public Port {
     public:
-        Port16Bit(uint16_t portNumber);
+        Port16Bit(morphios::common::uint16_t portNumber);
         ~Port16Bit();
-        virtual void write(uint16_t data);
-        virtual uint16_t read();
+        virtual void write(morphios::common::uint16_t data);
+        virtual morphios::common::uint16_t read();
 };
 
 class Port32Bit : public Port {
     public:
-        Port32Bit(uint16_t portNumber);
+        Port32Bit(morphios::common::uint16_t portNumber);
         ~Port32Bit();
-        virtual void write(uint32_t data);
-        virtual uint32_t read();
+        virtual void write(morphios::common::uint32_t data);
+        virtual morphios::common::uint32_t read();
 };
+
+} // namespace kernel
+} // namespace morphios
 
 #endif // PORT_H

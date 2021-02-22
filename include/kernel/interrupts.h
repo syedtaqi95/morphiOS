@@ -10,33 +10,36 @@
 #include "kernel/port.h"
 #include "kernel/gdt.h"
 
+namespace morphios {
+namespace kernel {
+    
 // IDT consts
-static const size_t NUM_INTERRUPTS = 256; // number of entries in IDT (max 256 in x86)
-static const uint8_t HW_INTERRUPT_OFFSET = 0x20; // good practice to leave the first 32 IRQs for system interrupts
-static const uint8_t IDT_INTERRUPT_GATE = 0xE; // Descriptor type for interrupt gates
-static const uint8_t IDT_TRAP_GATE = 0xF; // Descriptor type for trap gates
-static const uint8_t IDT_DESC_PRESENT = 0x80;  // Flag to confirm IDT entry is present
+static const morphios::common::size_t NUM_INTERRUPTS = 256; // number of entries in IDT (max 256 in x86)
+static const morphios::common::uint8_t HW_INTERRUPT_OFFSET = 0x20; // good practice to leave the first 32 IRQs for system interrupts
+static const morphios::common::uint8_t IDT_INTERRUPT_GATE = 0xE; // Descriptor type for interrupt gates
+static const morphios::common::uint8_t IDT_TRAP_GATE = 0xF; // Descriptor type for trap gates
+static const morphios::common::uint8_t IDT_DESC_PRESENT = 0x80;  // Flag to confirm IDT entry is present
 
 // PIC consts
-static const uint8_t PIC_MASTER_COMMAND_PORT = 0x20;
-static const uint8_t PIC_SLAVE_COMMAND_PORT = 0xA0;
-static const uint8_t PIC_MASTER_DATA_PORT = 0x21;
-static const uint8_t PIC_SLAVE_DATA_PORT = 0xA1;
-static const uint8_t EOI = 0x20; // End Of Interrupt command
+static const morphios::common::uint8_t PIC_MASTER_COMMAND_PORT = 0x20;
+static const morphios::common::uint8_t PIC_SLAVE_COMMAND_PORT = 0xA0;
+static const morphios::common::uint8_t PIC_MASTER_DATA_PORT = 0x21;
+static const morphios::common::uint8_t PIC_SLAVE_DATA_PORT = 0xA1;
+static const morphios::common::uint8_t EOI = 0x20; // End Of Interrupt command
 
 class interruptsHandler;
 
 // Non-static class that encapsulates the ISR for each IRQ
 class interruptHandle {
 protected:
-    uint8_t IRQ;
+    morphios::common::uint8_t IRQ;
     interruptsHandler *InterruptsHandler;
-    interruptHandle(interruptsHandler *InterruptsHandler, uint8_t IRQ);
+    interruptHandle(interruptsHandler *InterruptsHandler, morphios::common::uint8_t IRQ);
     ~interruptHandle();
  
  public:
     // Virtual function so it can be overloaded by drivers
-    virtual uint32_t ISR(uint32_t esp);
+    virtual morphios::common::uint32_t ISR(morphios::common::uint32_t esp);
 };
 
 // Static class to setup the IDT and handle IRQs
@@ -50,11 +53,11 @@ protected:
 
     // IDT gate (entry) definition
     struct Gate {
-        uint16_t offsetLo;
-        uint16_t selector;
-        uint8_t zero;
-        uint8_t typeAttr;
-        uint16_t offsetHi;
+        morphios::common::uint16_t offsetLo;
+        morphios::common::uint16_t selector;
+        morphios::common::uint8_t zero;
+        morphios::common::uint8_t typeAttr;
+        morphios::common::uint16_t offsetHi;
     } __attribute__((packed));
 
     // IDT
@@ -62,17 +65,17 @@ protected:
 
     // IDT pointer
     struct interruptDescriptorTablePointer {
-        uint16_t size;
-        uint32_t base;
+        morphios::common::uint16_t size;
+        morphios::common::uint32_t base;
     } __attribute__((packed));
 
     // Sets the IDT entry for the specified IRQ
     static void SetInterruptDescriptorTableEntry(
-        uint8_t IRQ,
-        uint16_t codeSegmentSelectorOffset, 
+        morphios::common::uint8_t IRQ,
+        morphios::common::uint16_t codeSegmentSelectorOffset, 
         void (*handler)(),
-        uint8_t DescriptorPrivilegeLevel, 
-        uint8_t DescriptorType);
+        morphios::common::uint8_t DescriptorPrivilegeLevel, 
+        morphios::common::uint8_t DescriptorType);
 
     // Interrupt handlers
     // 0x00...0x0F are system reserved interrupts
@@ -118,10 +121,10 @@ protected:
     static void HandlerException0x13();
 
     // Top level IRQ handler - called for every interrupt which then calls the below non-static method
-    static uint32_t HandleInterrupt(uint8_t IRQ, uint32_t esp);
+    static morphios::common::uint32_t HandleInterrupt(morphios::common::uint8_t IRQ, morphios::common::uint32_t esp);
     
     // Non static version of the above method
-    uint32_t DoHandleInterrupt(uint8_t IRQ, uint32_t esp);
+    morphios::common::uint32_t DoHandleInterrupt(morphios::common::uint8_t IRQ, morphios::common::uint32_t esp);
 
     // PIC ports
     Port8Bit PICMasterCommandPort;
@@ -135,5 +138,8 @@ public:
     void Activate();
     void Deactivate();
 };
+
+} // namespace kernel    
+} // namespace morphios
 
 #endif // INTERRUPTS_H

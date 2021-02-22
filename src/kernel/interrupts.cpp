@@ -4,6 +4,9 @@
 
 #include "kernel/interrupts.h"
 
+using namespace morphios::common;
+using namespace morphios::kernel;
+
 // Constructor
 interruptHandle::interruptHandle(interruptsHandler *InterruptsHandler, uint8_t IRQ) {
     this->IRQ = IRQ;

@@ -12,14 +12,17 @@
 #include "common/common.h"
 #include "drivers/vga.h"
 
+namespace morphios {
+namespace drivers {
+
 // Mouse event handler class
 class MouseEventHandler {
 protected:
-    int8_t x, y;
-    uint8_t buttonsStatus;
+    morphios::common::int8_t x, y;
+    morphios::common::uint8_t buttonsStatus;
     // Typecast to signed int8
-    static const int8_t SCREEN_W = (int8_t)VGA::VGA_WIDTH;
-    static const int8_t SCREEN_H = (int8_t)VGA::VGA_HEIGHT;
+    static const morphios::common::int8_t SCREEN_W = (morphios::common::int8_t)VGA::VGA_WIDTH;
+    static const morphios::common::int8_t SCREEN_H = (morphios::common::int8_t)VGA::VGA_HEIGHT;
     void switchFGandBGcolours();
 
 public:
@@ -28,23 +31,25 @@ public:
     virtual void onMouseActivate();
     virtual void onMouseDown();
     virtual void onMouseUp();
-    virtual void onMouseMove(int8_t xOffset, int8_t yOffset);
+    virtual void onMouseMove(morphios::common::int8_t xOffset, morphios::common::int8_t yOffset);
 };
 
-class MouseDriver : public interruptHandle, public Driver {
+class MouseDriver : public morphios::kernel::interruptHandle, public Driver {
 protected:
-    Port8Bit dataPort;
-    Port8Bit commandPort;
-    uint8_t buffer[3];
-    uint8_t offset;
+    morphios::kernel::Port8Bit dataPort;
+    morphios::kernel::Port8Bit commandPort;
+    morphios::common::uint8_t buffer[3];
+    morphios::common::uint8_t offset;
     MouseEventHandler *eventHandler;
 
 public:
-    MouseDriver(interruptsHandler *handler, MouseEventHandler *eventhandler);
+    MouseDriver(morphios::kernel::interruptsHandler *handler, MouseEventHandler *eventhandler);
     ~MouseDriver();    
-    virtual uint32_t ISR(uint32_t esp);
+    virtual morphios::common::uint32_t ISR(morphios::common::uint32_t esp);
     virtual void activate();
 };
 
+} // namespace drivers    
+} // namespace morphios
 
 #endif // MOUSE_H

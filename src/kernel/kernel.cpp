@@ -17,6 +17,12 @@
 #include "drivers/keyboard.h"
 #include "drivers/mouse.h"
 
+// Namespaces
+using namespace morphios::common;
+using namespace morphios::kernel;
+using namespace morphios::drivers;
+
+
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
 #error "You are not using a cross-compiler, you will most certainly run into trouble"

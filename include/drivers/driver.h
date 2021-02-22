@@ -7,6 +7,9 @@
 
 #include "common/types.h"
 
+namespace morphios {
+namespace drivers {
+    
 // Generic driver with virtual methods for overloading by actual driver implementations.
 class Driver {
 public:
@@ -22,7 +25,7 @@ public:
 class DriverManager {
 private:
     Driver *drivers[256]; // Array of pointers to drivers
-    uint8_t numDrivers; // Represents how many drivers are in use
+    morphios::common::uint8_t numDrivers; // Represents how many drivers are in use
 
 public:
     DriverManager();
@@ -30,5 +33,8 @@ public:
     void addDriver(Driver *drv);
     void activateAll();
 };
+
+} // namespace drivers    
+} // namespace morphios
 
 #endif // DRIVER_H

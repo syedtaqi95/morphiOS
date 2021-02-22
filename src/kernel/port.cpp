@@ -4,6 +4,9 @@
 
 #include "kernel/port.h"
 
+using namespace morphios::common;
+using namespace morphios::kernel;
+
 // Port constructor
 Port::Port(uint16_t portNumber) {
     this->portNumber = portNumber;

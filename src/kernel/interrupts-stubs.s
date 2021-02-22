@@ -2,18 +2,18 @@
 
 .section .text
 
-.extern _ZN17interruptsHandler15HandleInterruptEhj
+.extern _ZN8morphios6kernel17interruptsHandler15HandleInterruptEhj
 
 .macro HandlerException num
-.global _ZN17interruptsHandler20HandlerException\num\()Ev
-_ZN17interruptsHandler20HandlerException\num\()Ev:
+.global _ZN8morphios6kernel17interruptsHandler20HandlerException\num\()Ev
+_ZN8morphios6kernel17interruptsHandler20HandlerException\num\()Ev:
     movb $\num, (interruptnumber)
     jmp int_bottom
 .endm
 
 .macro HandlerIRQ num
-.global _ZN17interruptsHandler14HandlerIRQ\num\()Ev
-_ZN17interruptsHandler14HandlerIRQ\num\()Ev:
+.global _ZN8morphios6kernel17interruptsHandler14HandlerIRQ\num\()Ev
+_ZN8morphios6kernel17interruptsHandler14HandlerIRQ\num\()Ev:
     movb $\num + IRQ_BASE, (interruptnumber)
     jmp int_bottom
 .endm
@@ -73,7 +73,7 @@ int_bottom:
 
 pushl %esp
     push (interruptnumber)
-    call _ZN17interruptsHandler15HandleInterruptEhj
+    call _ZN8morphios6kernel17interruptsHandler15HandleInterruptEhj
     add %esp, 6
     mov %eax, %esp
 

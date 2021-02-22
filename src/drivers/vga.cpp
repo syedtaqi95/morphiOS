@@ -4,6 +4,9 @@
 
 #include "drivers/vga.h"
 
+using namespace morphios::common;
+using namespace morphios::drivers;
+
 VGA::VGA() {}
 
 VGA::~VGA() {}
