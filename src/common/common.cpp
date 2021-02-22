@@ -5,7 +5,6 @@
 #include "common/common.h"
 
 using namespace morphios::common;
-using namespace morphios::drivers;
 
 size_t morphios::common::strlen(const char* str) {
 	size_t len = 0;
@@ -15,7 +14,7 @@ size_t morphios::common::strlen(const char* str) {
 }
 
 void morphios::common::kprintf(const char* data) {
-    VGA vga;
+    morphios::drivers::VGA vga;
 	vga.terminal_write(data, strlen(data));
 }
 
