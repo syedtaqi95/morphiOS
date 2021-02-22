@@ -48,7 +48,7 @@ public:
         common::uint32_t value);
     
     // Creates a PCIDevice object and retrieves the config space info
-    PCIDevice getPCIDevice(
+    PCIDevice getPCIDeviceInfo(
         common::uint16_t bus,
         common::uint16_t slot,
         common::uint16_t function);
