@@ -23,8 +23,8 @@ objects = 	$(OBJ_DIR)/common/common.o \
 			$(OBJ_DIR)/kernel/interrupts-stubs.o \
 			$(OBJ_DIR)/kernel/interrupts.o \
 			$(OBJ_DIR)/drivers/driver.o \
-			$(OBJ_DIR)/drivers/keyboard.o \
 			$(OBJ_DIR)/drivers/mouse.o \
+			$(OBJ_DIR)/drivers/keyboard.o \
 			$(OBJ_DIR)/drivers/vga.o \
 			$(OBJ_DIR)/kernel/kernel.o
 

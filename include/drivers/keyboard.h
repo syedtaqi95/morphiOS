@@ -11,31 +11,27 @@
 #include "kernel/interrupts.h"
 #include "common/common.h"
 
-static const size_t NUM_ASCII_VALUES = 256; // ASCII array size
 static const uint8_t KEY_RELEASE_OFFSET = 0x80; // Add this offset to get the value of a key release
 
-// Keyboard event handler class
+// Figures out what to do with a keyboard event
 class KeyboardEventHandler {
 protected:
     char currentChar; // ASCII value of last key press
-    uint8_t scanCode; // Scan code of current key press
     bool isShiftPressed;
     bool isControlPressed;
     bool isAltPressed;
     bool isCapsLockOn;
     
-    void getASCIIChar();
+    void getASCIIChar(uint8_t scanCode);
+    char getCharacter();
+    void printCharacter();
 
 public:
     KeyboardEventHandler();
     ~KeyboardEventHandler();
     
-    virtual void onKeyUp();
-    virtual void onKeyDown();
-    
-    char getCharacter();
-    uint8_t getScancode();
-    void printCharacter();
+    virtual void onKeyUp(uint8_t scanCode);
+    virtual void onKeyDown(uint8_t scanCode);
 };
 
 // Keyboard driver class derived from Driver parent class
@@ -44,15 +40,14 @@ protected:
     Port8Bit dataPort;
     Port8Bit commandPort;
     KeyboardEventHandler *eventHandler;
-    
-    char currentChar; // ASCII value of last key press
+
     uint8_t scanCode; // Scan code of current key press
 
 public:
     KeyboardDriver(interruptsHandler* IRQhandler, KeyboardEventHandler *eventHandler);
-    ~KeyboardDriver();
-    
+    ~KeyboardDriver();    
     virtual uint32_t ISR(uint32_t esp);
+    virtual void activate();
 };
 
 

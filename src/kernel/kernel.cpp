@@ -12,6 +12,7 @@
 #include "kernel/gdt.h"
 #include "kernel/port.h"
 #include "kernel/interrupts.h"
+#include "drivers/driver.h"
 #include "drivers/vga.h"
 #include "drivers/keyboard.h"
 #include "drivers/mouse.h"
@@ -36,8 +37,6 @@ extern "C" void callConstructors()
     	(*i)();
 }
 
-
-
 // kernel main function called by loader.s
 extern "C" void kernel_main(void) 
 {
@@ -46,13 +45,28 @@ extern "C" void kernel_main(void)
 	vga.terminal_initialize();
 	vga.print_welcome_msg();
  
+	// Setup GDT and IDT
 	GlobalDescriptorTable gdt;
 	interruptsHandler interrupts(&gdt);
 	
-	// NOTE: always initialise mouse before keyboard as they share the same port
-	MouseDriver mouse(&interrupts);
-	KeyboardDriver keyboard(&interrupts);
+	// Initialise drivers using DriverManager class
+	DriverManager drvManager;
 
+	// Add mouse driver
+	// NOTE: always initialise mouse before keyboard as they are on the same I/O port
+	MouseEventHandler mouseEventH;
+	MouseDriver mouse(&interrupts, &mouseEventH);
+	drvManager.addDriver(&mouse);
+
+	// Add keyboard driver
+	KeyboardEventHandler keyboardEventH;
+	KeyboardDriver keyboard(&interrupts, &keyboardEventH);
+	drvManager.addDriver(&keyboard);
+
+	// Activate drivers
+	drvManager.activateAll();
+
+	// Activate interrupts
     interrupts.Activate();
 
 	while(1);

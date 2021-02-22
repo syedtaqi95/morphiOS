@@ -4,6 +4,7 @@
 
 #include "drivers/driver.h"
 
+// These virtual methods will be overloaded by actual drivers
 Driver::Driver() {}
 Driver::~Driver(){}
 void Driver::activate() {}

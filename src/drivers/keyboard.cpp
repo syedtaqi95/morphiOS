@@ -7,33 +7,22 @@
 KeyboardEventHandler::KeyboardEventHandler() {
     // Initialise key variables (pun intended)
     currentChar = '\0';
-    scanCode = 0;
     isShiftPressed = false;
     isControlPressed = false;
+    isAltPressed = false;
     isCapsLockOn = false;
 }
-KeyboardEventHandler::~KeyboardEventHandler() {
+KeyboardEventHandler::~KeyboardEventHandler() {}
 
-}
+void KeyboardEventHandler::onKeyUp(uint8_t scanCode) {}
 
-void KeyboardEventHandler::onKeyUp() {
-
-}
-void KeyboardEventHandler::onKeyDown(uint8_t) {
-    getASCIIChar();   
-
-    // Print to stdout
-    char *msg = " ";
-    msg[0] = currentChar;
-    kprintf(msg);
+void KeyboardEventHandler::onKeyDown(uint8_t scanCode) {
+    getASCIIChar(scanCode);   
+    printCharacter();
 }
 
 char KeyboardEventHandler::getCharacter() {
     return currentChar;
-}
-
-uint8_t KeyboardEventHandler::getScancode() {
-    return scanCode;
 }
 
 void KeyboardEventHandler::printCharacter() {
@@ -45,7 +34,7 @@ void KeyboardEventHandler::printCharacter() {
 // Convert key press to ASCII character (UK layout - uses scan code 1)
 // Accounts for shift, control, alt and capsLock
 // TODO : implement as a LUT - for uppercase add ASCII offset to lowercase
-void KeyboardEventHandler::getASCIIChar() {
+void KeyboardEventHandler::getASCIIChar(uint8_t scanCode) {
     switch(scanCode) {
         case 0x01:
             currentChar = (char)0x1B; break;
@@ -343,9 +332,15 @@ void KeyboardEventHandler::getASCIIChar() {
 // Constructor
 KeyboardDriver::KeyboardDriver(interruptsHandler* IRQhandler, KeyboardEventHandler *eventHandler) 
     : interruptHandle(IRQhandler, HW_INTERRUPT_OFFSET + 0x01),
-    dataPort(0x60),
-    commandPort(0x64) {
+      dataPort(0x60),
+      commandPort(0x64) {
+    this->eventHandler = eventHandler;
+}
 
+// Destructor
+KeyboardDriver::~KeyboardDriver() {}
+
+void KeyboardDriver::activate() {
     // Check status bit
     while(commandPort.read() & 0x01)
         dataPort.read();
@@ -359,13 +354,10 @@ KeyboardDriver::KeyboardDriver(interruptsHandler* IRQhandler, KeyboardEventHandl
     dataPort.write(0xF4);
 }
 
-// Destructor
-KeyboardDriver::~KeyboardDriver() {}
-
 // Handle the keyboard IRQ
 uint32_t KeyboardDriver::ISR(uint32_t esp) {
-
-    scanCode = dataPort.read();    
+    scanCode = dataPort.read();
+    eventHandler->onKeyDown(scanCode);
     return esp;
 }
 

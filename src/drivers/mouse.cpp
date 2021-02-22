@@ -1,31 +1,67 @@
 /*
-    mouse.cpp - Keyboard driver class for x86 OS kernel
+    mouse.cpp - mouse driver class for x86 OS kernel
 */
 
 #include "drivers/mouse.h"
 
-// Constructor
-MouseDriver::MouseDriver(interruptsHandler* handler) 
-    : interruptHandle(handler, HW_INTERRUPT_OFFSET + 0x0C),
-    dataPort(0x60),
-    commandPort(0x64) {
+// Constructor - set cursor to centre of screen
+MouseEventHandler::MouseEventHandler() {}
 
-    // Typecast to signed int8
-    int8_t SCREEN_W = (int8_t)VGA::VGA_WIDTH;
-    int8_t SCREEN_H = (int8_t)VGA::VGA_HEIGHT;
-    
-    // Set the cursor to the centre of the screen
-    offset = 0;
-    buttons = 0;
+MouseEventHandler::~MouseEventHandler() {}
+
+void MouseEventHandler::onMouseActivate() {
     x = SCREEN_W/2;
     y = SCREEN_H/2;
+    // Display cursor on screen
+    switchFGandBGcolours();
+}
 
-    // swap fg and bg VGA colours at the cursor
+void MouseEventHandler::onMouseDown() {}
+
+void MouseEventHandler::onMouseUp() {}
+
+// Triggered when mouse move generates an interrupt
+void MouseEventHandler::onMouseMove(int8_t xOffset, int8_t yOffset) {
+    // Switch original fg and bg colours back
+    switchFGandBGcolours();
+    
+    x += xOffset;
+    y += yOffset;
+
+    // Display new cursor location
+    switchFGandBGcolours();    
+}
+
+void MouseEventHandler::switchFGandBGcolours() {
+    // Stop cursor at boundary
+    if (x >= SCREEN_W) x = SCREEN_W - 1;
+    if (x < 0) x = 0;
+
+    if (y >= SCREEN_H) y = SCREEN_H - 1;
+    if (y < 0) y = 0;
+
     VGA::terminal_buffer[SCREEN_W*y + x] = 
           (VGA::terminal_buffer[SCREEN_W*y + x] & 0x0F00) << 4
         | (VGA::terminal_buffer[SCREEN_W*y + x] & 0xF000) >> 4
         | (VGA::terminal_buffer[SCREEN_W*y + x] & 0x00FF);
+}
+
+// Constructor
+MouseDriver::MouseDriver(interruptsHandler* IRQhandler, MouseEventHandler *eventhandler) 
+    : interruptHandle(IRQhandler, HW_INTERRUPT_OFFSET + 0x0C),
+    dataPort(0x60),
+    commandPort(0x64) {
+    this->eventHandler = eventhandler;
+}
+
+// Enable interrupts and initialise the cursor to the centre of the screen
+void MouseDriver::activate() {
+    offset = 0;
     
+    // Activate event handler
+    if (eventHandler != 0)
+        eventHandler->onMouseActivate();        
+
     // Aux Input / IRQ12 Enable
     commandPort.write(0xA8); // Aux Input Enable Command
     commandPort.write(0x20); // Get Compaq Status Byte command
@@ -44,9 +80,9 @@ MouseDriver::MouseDriver(interruptsHandler* handler)
 // Destructor
 MouseDriver::~MouseDriver() {}
 
-// Handle the keyboard IRQ
+// Handle the mouse IRQ
 uint32_t MouseDriver::ISR(uint32_t esp) {        
-
+    // Check status
     uint8_t status = commandPort.read();
     if (!(status & 0x20))
         return esp;
@@ -54,34 +90,14 @@ uint32_t MouseDriver::ISR(uint32_t esp) {
     buffer[offset] = dataPort.read();
     offset = (offset + 1) % 3;
 
-    int8_t SCREEN_W = (int8_t)VGA::VGA_WIDTH;
-    int8_t SCREEN_H = (int8_t)VGA::VGA_HEIGHT;
-
+    // Trigger OnMouseMove() event  if buffer is filled
     if (offset == 0) {
-        if (buffer[1] != 0 || buffer[2] != 0) {
-            
-            VGA::terminal_buffer[SCREEN_W*y + x] = 
-                  (VGA::terminal_buffer[SCREEN_W*y + x] & 0x0F00) << 4
-                | (VGA::terminal_buffer[SCREEN_W*y + x] & 0xF000) >> 4
-                | (VGA::terminal_buffer[SCREEN_W*y + x] & 0x00FF);
-            
-            // Stop cursor at boundary
-            x += buffer[1];
-            if (x >= SCREEN_W) x = SCREEN_W - 1;
-            if (x < 0) x = 0;
-
-            y -= buffer[2];
-            if (y >= SCREEN_H) y = SCREEN_H - 1;
-            if (y < 0) y = 0;
-
-            VGA::terminal_buffer[SCREEN_W*y + x] = 
-                  (VGA::terminal_buffer[SCREEN_W*y + x] & 0x0F00) << 4
-                | (VGA::terminal_buffer[SCREEN_W*y + x] & 0xF000) >> 4
-                | (VGA::terminal_buffer[SCREEN_W*y + x] & 0x00FF);
+        if (buffer[1] != 0 || buffer[2] != 0) {     
+            // Ensure arguments are typecaste to signed int8       
+            eventHandler->onMouseMove((int8_t)buffer[1], (int8_t)-buffer[2]);
         }
     }
 
     return esp;
 }
-
 

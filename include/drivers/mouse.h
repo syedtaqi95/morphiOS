@@ -14,13 +14,21 @@
 
 // Mouse event handler class
 class MouseEventHandler {
+protected:
+    int8_t x, y;
+    uint8_t buttonsStatus;
+    // Typecast to signed int8
+    static const int8_t SCREEN_W = (int8_t)VGA::VGA_WIDTH;
+    static const int8_t SCREEN_H = (int8_t)VGA::VGA_HEIGHT;
+    void switchFGandBGcolours();
+
 public:
     MouseEventHandler();
     ~MouseEventHandler();
-    virtual void onActivate();
+    virtual void onMouseActivate();
     virtual void onMouseDown();
     virtual void onMouseUp();
-    virtual void onMouseMove();
+    virtual void onMouseMove(int8_t xOffset, int8_t yOffset);
 };
 
 class MouseDriver : public interruptHandle, public Driver {
@@ -29,14 +37,13 @@ protected:
     Port8Bit commandPort;
     uint8_t buffer[3];
     uint8_t offset;
-    uint8_t buttons;
-    int8_t x, y;
+    MouseEventHandler *eventHandler;
 
 public:
-    MouseDriver(interruptsHandler* handler);
-    ~MouseDriver();
-    
+    MouseDriver(interruptsHandler *handler, MouseEventHandler *eventhandler);
+    ~MouseDriver();    
     virtual uint32_t ISR(uint32_t esp);
+    virtual void activate();
 };
 
 

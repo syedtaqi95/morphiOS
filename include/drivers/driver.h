@@ -7,8 +7,6 @@
 
 #include "common/types.h"
 
- // Max number of drivers
-
 // Generic driver with virtual methods for overloading by actual driver implementations.
 class Driver {
 public:
