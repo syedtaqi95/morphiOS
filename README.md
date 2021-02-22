@@ -1,4 +1,4 @@
-# morphiOS
+# MorphiOS
 
 ```
                                __    _ ____  _____
@@ -15,11 +15,18 @@ Follow the white rabbit
 Knock, Knock, Neo.
 ```
 
-A lightweight 32-bit operating system written in C++ for the i386 (x86) architecture.
+MorphiOS is a lightweight 32-bit operating system written in C++ for the i386 (x86) architecture.
 
-Borrowed some code from the following sources: 
+Currently supported features:
+ - Kernel (interfaced with the GRUB bootloader)
+ - Hardware communication (I/O ports)
+ - Global Descriptor table (GDT)
+ - Interrupts and interrupt handlers
+ - Drivers for VGA graphics, keyboard and mouse
+
+Used the following learning resources: 
 - https://wiki.osdev.org/
-- https://github.com/AlgorithMan-de/wyoos/
+- http://wyoos.org/
 
 ## Installation
 
