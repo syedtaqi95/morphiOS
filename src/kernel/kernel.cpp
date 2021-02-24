@@ -13,6 +13,7 @@
 #include "kernel/port.h"
 #include "kernel/interrupts.h"
 #include "drivers/driver.h"
+#include "drivers/pci.h"
 #include "drivers/vga.h"
 #include "drivers/keyboard.h"
 #include "drivers/mouse.h"
