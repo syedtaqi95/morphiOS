@@ -19,10 +19,9 @@ namespace drivers {
 // Add support for other header types (0x01, 0x02)
 class PCIDevice {
 public:
-    common::uint16_t bus, slot, function;
-    
-    common::uint16_t vendorID, deviceID, command, status, revisionID, 
-        progIF, subclass, classCode, IRQLine, IRQPin;
+    common::uint8_t revisionID, progIF, subClass, classCode;
+    common::uint16_t bus, slot, function, vendorID, deviceID;
+    common::uint32_t interrupt, portBase;
 
     PCIDevice();
     ~PCIDevice();
@@ -42,7 +41,7 @@ public:
     void findDevices();
 
     // Finds the number of functions for a PCI device
-    uint8_t findDeviceFunctions(
+    bool findDeviceFunctions(
         common::uint16_t bus,
         common::uint16_t slot);
 
