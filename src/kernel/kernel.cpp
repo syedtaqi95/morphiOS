@@ -80,7 +80,5 @@ extern "C" void kernel_main(void)
 	// Activate interrupts
     interrupts.Activate();
 
-	VGA::isWelcome = false;
-
 	while(1);
 }

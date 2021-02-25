@@ -87,5 +87,6 @@ void VGA::print_welcome_msg() {
 	kprintf("\nWake up, Neo\n");
 	kprintf("The Matrix has you\nFollow the white rabbit\n...\nKnock, Knock, Neo.\n");
 	kprintf("\n$ ");
+	VGA::isWelcome = false;
 }
  
