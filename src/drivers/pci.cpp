@@ -19,22 +19,30 @@ void PCIController::findDevices(){
     for (uint8_t _bus = 0; _bus < 8; _bus++) {
         for (uint8_t _slot = 0; _slot < 32; _slot++) {
 
-            PCIDevice dev = getPCIDeviceInfo(_bus, _slot, 0);
-            
-            // Find the number of functions
-            uint8_t numFunctions = findDeviceFunctions(_bus, _slot);
+            int numFunctions = findDeviceFunctions(_bus, _slot) ? 8 : 1;
+            for (int _func = 0; _func < numFunctions; _func++) {
+                PCIDevice dev = getPCIDeviceInfo(_bus, _slot, _func);
 
-            for (uint8_t _func = 0; _func < numFunctions; _func++) {
-                // Create a PCIDevice object
-                dev.bus = _bus;
-                dev.slot = _slot;
-                dev.function = _func;
+                if (dev.vendorID == 0x0000 || dev.vendorID == 0xFFFF)
+                    continue;
+
+                kprintf("PCI BUS ");
+                kprintHex(_bus & 0xFF);
+
+                kprintf(", DEVICE ");
+                kprintHex(_slot & 0xFF);
+
+                kprintf(", FUNCTION ");
+                kprintHex(_func & 0xFF);
+                
+                kprintf(" = VENDOR ");
+                kprintHex((dev.vendorID & 0xFF00) >> 8);
+                kprintHex(dev.vendorID & 0xFF);
+                kprintf(", DEVICE ");
+                kprintHex((dev.deviceID & 0xFF00) >> 8);
+                kprintHex(dev.deviceID & 0xFF);
+                kprintf("\n");
             }
-
-
-
-
-
         }
     }
 }
@@ -95,7 +103,6 @@ PCIDevice PCIController::getPCIDeviceInfo(uint16_t bus, uint16_t slot, uint16_t 
     return dev;
 }
 
-// Returns true if the device has 1 or more functions
 bool PCIController::findDeviceFunctions(uint16_t bus, uint16_t slot) {
     return read(bus, slot, 0, 0x0E) & (1<<7);
 }

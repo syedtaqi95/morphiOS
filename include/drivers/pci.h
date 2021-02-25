@@ -15,8 +15,6 @@ namespace morphios {
 namespace drivers {
 
 // PCI device class to store device related info
-// TODO: currently supports only 0x00 header type (generic device)
-// Add support for other header types (0x01, 0x02)
 class PCIDevice {
 public:
     common::uint8_t revisionID, progIF, subClass, classCode;
@@ -40,7 +38,7 @@ public:
     // Find active devices
     void findDevices();
 
-    // Finds the number of functions for a PCI device
+    // Returns true if the device has 1 or more functions
     bool findDeviceFunctions(
         common::uint16_t bus,
         common::uint16_t slot);

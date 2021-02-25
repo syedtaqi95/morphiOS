@@ -70,11 +70,17 @@ extern "C" void kernel_main(void)
 	KeyboardDriver keyboard(&interrupts, &keyboardEventH);
 	drvManager.addDriver(&keyboard);
 
+	// Activate PCI controller
+	PCIController PCI;
+	PCI.findDevices();
+
 	// Activate drivers
 	drvManager.activateAll();
 
 	// Activate interrupts
     interrupts.Activate();
+
+	VGA::isWelcome = false;
 
 	while(1);
 }
