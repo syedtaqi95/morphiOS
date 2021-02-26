@@ -38,10 +38,11 @@ public:
     // Find active devices
     void findDevices();
 
-    // Returns true if the device has 1 or more functions
-    bool findDeviceFunctions(
-        common::uint16_t bus,
-        common::uint16_t slot);
+    // Finds the number of functions for the device
+    // bool hasMultipleFunctions(
+    //     common::uint16_t bus,
+    //     common::uint16_t slot
+    // );
 
     // Creates a PCIDevice object and retrieves the config space info
     PCIDevice getPCIDeviceInfo(

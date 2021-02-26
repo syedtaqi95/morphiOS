@@ -80,5 +80,9 @@ extern "C" void kernel_main(void)
 	// Activate interrupts
     interrupts.Activate();
 
+	// Start shell
+	kprintf("$ ");
+	VGA::isWelcome = false;
+
 	while(1);
 }

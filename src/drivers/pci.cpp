@@ -4,6 +4,7 @@
 
 #include "drivers/pci.h"
 
+// TODO: remove these and namespace variables
 using namespace morphios::common;
 using namespace morphios::drivers;
 using namespace morphios::kernel;
@@ -16,13 +17,12 @@ PCIController::~PCIController(){}
 
 // Uses a brute force approach to find PCI devices
 void PCIController::findDevices(){
-    for (uint8_t _bus = 0; _bus < 8; _bus++) {
-        for (uint8_t _slot = 0; _slot < 32; _slot++) {
-
-            int numFunctions = findDeviceFunctions(_bus, _slot) ? 8 : 1;
-            for (int _func = 0; _func < numFunctions; _func++) {
+    for (uint8_t _bus = 0; _bus < 1; _bus++) {
+        for (uint8_t _slot = 0; _slot < 4; _slot++) {
+            for (uint8_t _func = 0; _func < 8; _func++) {
                 PCIDevice dev = getPCIDeviceInfo(_bus, _slot, _func);
 
+                // Function does not exist, continue to check non-contiguous functions
                 if (dev.vendorID == 0x0000 || dev.vendorID == 0xFFFF)
                     continue;
 
@@ -47,43 +47,10 @@ void PCIController::findDevices(){
     }
 }
 
-// Read data from a PCI register
-uint32_t PCIController::read(
-    uint16_t bus,
-    uint16_t slot, 
-    uint16_t function,
-    uint32_t registerOffset){
-    
-    // Config address
-    uint32_t addr = (uint32_t) 0x1 << 31 
-                    | ((bus & 0xFF) << 16) 
-                    | ((slot & 0x1F) << 11)
-                    | ((function & 0x07) << 8)
-                    | (registerOffset << 0xFC);
-    addressPort.write(addr);
-
-    // Read result
-    uint32_t result = dataPort.read();
-    return (result >> (8 * (registerOffset % 4))); // registerOffset should be word-aligned
-}
-
-// Write data to PCI register
-void PCIController::write(
-    uint16_t bus,
-    uint16_t slot, 
-    uint16_t function,
-    uint32_t registerOffset,
-    uint32_t value){
-
-    // Config address
-    uint32_t addr = (uint32_t) 0x1 << 31 
-                    | ((bus & 0xFF) << 16) 
-                    | ((slot & 0x1F) << 11)
-                    | ((function & 0x07) << 8)
-                    | (registerOffset << 0xFC);
-    addressPort.write(addr);
-    dataPort.write(value);
-}
+// Check if the device has more than 1 function
+// bool PCIController::hasMultipleFunctions( uint16_t bus, uint16_t slot) {
+//     return read(bus, slot,0, 0xE) & (1 << 7); // Return bit 7 which says if multiple functions are supported
+// }
 
 // Creates a PCIDevice object and retrieves the config space info
 PCIDevice PCIController::getPCIDeviceInfo(uint16_t bus, uint16_t slot, uint16_t function) {
@@ -103,10 +70,43 @@ PCIDevice PCIController::getPCIDeviceInfo(uint16_t bus, uint16_t slot, uint16_t 
     return dev;
 }
 
-bool PCIController::findDeviceFunctions(uint16_t bus, uint16_t slot) {
-    return read(bus, slot, 0, 0x0E) & (1<<7);
+// Read data from a PCI register
+uint32_t PCIController::read(
+    uint16_t bus,
+    uint16_t slot, 
+    uint16_t function,
+    uint32_t registerOffset){
+    
+    // Config address
+    uint32_t addr = (uint32_t)(1 << 31 
+                    | ((bus & 0xFF) << 16) 
+                    | ((slot & 0x1F) << 11)
+                    | ((function & 0x07) << 8)
+                    | (registerOffset & 0xFC));
+    addressPort.write(addr);
+
+    // Read result
+    uint32_t result = dataPort.read(); // result returns the full 4-byte aligned word.
+    return result >> (8 * (registerOffset % 4));
 }
 
+// Write data to PCI register
+void PCIController::write(
+    uint16_t bus,
+    uint16_t slot, 
+    uint16_t function,
+    uint32_t registerOffset,
+    uint32_t value){
+
+    // Config address
+    uint32_t addr = (uint32_t)(1 << 31 
+                    | ((bus & 0xFF) << 16) 
+                    | ((slot & 0x1F) << 11)
+                    | ((function & 0x07) << 8)
+                    | (registerOffset & 0xFC));
+    addressPort.write(addr);
+    dataPort.write(value);
+}
 
 PCIDevice::PCIDevice(){}
 
