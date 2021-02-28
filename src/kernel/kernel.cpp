@@ -72,7 +72,7 @@ extern "C" void kernel_main(void)
 
 	// Activate PCI controller
 	PCIController PCI;
-	PCI.findDevices();
+	PCI.findDevices(&drvManager);
 
 	// Activate drivers
 	drvManager.activateAll();

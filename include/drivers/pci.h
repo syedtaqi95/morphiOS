@@ -14,6 +14,18 @@
 namespace morphios {
 namespace drivers {
 
+#define MEMORY_MAPPED 0
+#define IO_MAPPED 1
+
+// Base Address Register class
+class BaseAddressRegister {
+public:
+    common::uint32_t size;
+    bool prefetchable;
+    common::uint8_t *address;
+    common::uint8_t type;
+};
+
 // PCI device class to store device related info
 class PCIDevice {
 public:
@@ -36,7 +48,7 @@ public:
     ~PCIController();
 
     // Find active devices
-    void findDevices();
+    void findDevices(DriverManager *drv);
 
     // Finds the number of functions for the device
     // bool hasMultipleFunctions(
@@ -50,6 +62,16 @@ public:
         common::uint16_t slot,
         common::uint16_t function);
     
+    // Link Driver to PCI device
+    Driver *getDriver(PCIDevice dev);
+
+    // Get address space of PCI device
+    BaseAddressRegister getBaseAddressRegister(
+        common::uint16_t bus,
+        common::uint16_t slot, 
+        common::uint16_t function,
+        common::uint16_t bar);
+
     // Read data from a PCI register
     common::uint32_t read(
         common::uint16_t bus,
