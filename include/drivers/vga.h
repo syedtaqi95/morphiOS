@@ -1,5 +1,8 @@
 /*
-    vga.h - VGA class header to communicate with stdout
+    vga.h - VGA class header to communicate in text or graphics mode
+
+    References:
+    - https://files.osdev.org/mirrors/geezer/osd/graphics/modes.c
 */
 
 #ifndef VGA_H
@@ -7,13 +10,36 @@
 
 #include "common/types.h"
 #include "common/common.h"
+#include "kernel/port.h"
 
 namespace morphios {
 namespace drivers {
 
+// Number of registers
+#define	VGA_NUM_SEQ_REGS	5
+#define	VGA_NUM_CRTC_REGS	25
+#define	VGA_NUM_GC_REGS		9
+#define	VGA_NUM_AC_REGS		21
+#define	VGA_NUM_REGS		(1 + VGA_NUM_SEQ_REGS + VGA_NUM_CRTC_REGS + \
+				            VGA_NUM_GC_REGS + VGA_NUM_AC_REGS)
+
 class VGA {
-private:
-    // Private members
+protected:
+
+    // Ports
+    kernel::Port8Bit VGA_AC_INDEX;
+    kernel::Port8Bit VGA_AC_WRITE;
+    kernel::Port8Bit VGA_AC_READ;
+    kernel::Port8Bit VGA_MISC_READ;
+    kernel::Port8Bit VGA_MISC_WRITE;
+    kernel::Port8Bit VGA_SEQ_INDEX;
+    kernel::Port8Bit VGA_SEQ_DATA;
+    kernel::Port8Bit VGA_GC_INDEX;
+    kernel::Port8Bit VGA_GC_DATA;
+    kernel::Port8Bit VGA_CRTC_INDEX;
+    kernel::Port8Bit VGA_CRTC_DATA;
+    kernel::Port8Bit VGA_INSTAT_READ;
+
     /* Hardware text mode color constants. */
     enum vga_color {
         VGA_COLOR_BLACK = 0,
@@ -34,7 +60,12 @@ private:
         VGA_COLOR_WHITE = 15,
     };
 
-    // Private methods
+    // Graphics mode methods
+    void writeRegisters(common::uint8_t* registers);
+    common::uint8_t* getFrameBufferSegment();
+    virtual common::uint8_t getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b);
+
+    // Text mode methods
     static inline morphios::common::uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) {
         return fg | bg << 4;
     }
@@ -61,9 +92,17 @@ public:
     // Public methods
     VGA(); // Constructor
     ~VGA(); // Destructor
+
+    // Text mode methods
     void terminal_initialize(void);
     void terminal_write(const char* data, morphios::common::size_t size);
     void print_welcome_msg();
+
+    // Graphics mode methods
+    virtual bool setMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth);
+    virtual bool supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth);    
+    virtual void putPixel(common::uint32_t x, common::uint32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b);
+    virtual void putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colorIndex);
 };
 
 } // namespace drivers    

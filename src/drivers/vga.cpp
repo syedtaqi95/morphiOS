@@ -1,13 +1,30 @@
 /*
     vga.cpp - VGA class implementation to communicate with stdout
+
+	References:
+    - https://files.osdev.org/mirrors/geezer/osd/graphics/modes.c
 */
 
 #include "drivers/vga.h"
 
 using namespace morphios::common;
 using namespace morphios::drivers;
+using namespace morphios::kernel;
 
-VGA::VGA() {}
+VGA::VGA()
+  : VGA_AC_INDEX(0x3C0),
+	VGA_AC_WRITE(0x3C0),
+	VGA_AC_READ(0x3C1),
+	VGA_MISC_READ(0x3CC),
+	VGA_MISC_WRITE(0x3C2),
+	VGA_SEQ_INDEX(0x3C4),
+	VGA_SEQ_DATA(0x3C5),
+	VGA_GC_INDEX(0x3CE),
+	VGA_GC_DATA(0x3CF),
+	VGA_CRTC_INDEX(0x3D4),
+	VGA_CRTC_DATA(0x3D5),
+	VGA_INSTAT_READ(0x3DA)
+{}
 
 VGA::~VGA() {}
 
@@ -76,7 +93,6 @@ void VGA::terminal_write(const char* data, size_t size) {
 		terminal_putchar(data[i]);
 }
 
-// TODO: create a child class and move this method there
 void VGA::print_welcome_msg() {
 	kprintf("                               __    _ ____  _____\n");
 	kprintf("   ____ ___  ____  _________  / /_  (_) __ \\/ ___/\n");
@@ -87,4 +103,20 @@ void VGA::print_welcome_msg() {
 	kprintf("\nWake up, Neo\n");
 	kprintf("The Matrix has you\nFollow the white rabbit\n...\nKnock, Knock, Neo.\n");	
 }
- 
+
+bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
+
+}
+
+bool VGA::supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
+
+}
+
+void VGA::putPixel(common::uint32_t x, common::uint32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b) {
+
+}
+
+void VGA::putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colorIndex) {
+
+}
+
