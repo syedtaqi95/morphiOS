@@ -32,30 +32,30 @@ VGA::~VGA() {}
 
 size_t VGA::terminal_row = 0;
 size_t VGA::terminal_column = 0;
-uint8_t VGA::terminal_color = 0;
+uint8_t VGA::terminal_colour = 0;
 uint16_t* VGA::terminal_buffer = 0;
 bool VGA::isWelcome = true;
 
 void VGA::terminal_initialize(void) {
 	terminal_row = 0;
 	terminal_column = 0;
-	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
+	terminal_colour = vga_entry_colour(VGA_COLOUR_GREEN, VGA_COLOUR_BLACK);
 	terminal_buffer = (uint16_t*) 0xB8000;
 	for (size_t y = 0; y < VGA_TEXT_MODE_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_TEXT_MODE_WIDTH; x++) {
 			const size_t index = y * VGA_TEXT_MODE_WIDTH + x;
-			terminal_buffer[index] = vga_entry(' ', terminal_color);
+			terminal_buffer[index] = vga_entry(' ', terminal_colour);
 		}
 	}
 }
 
-void VGA::terminal_setcolor(uint8_t color) {
-	terminal_color = color;
+void VGA::terminal_setcolour(uint8_t colour) {
+	terminal_colour = colour;
 }
  
-void VGA::terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
+void VGA::terminal_putentryat(char c, uint8_t colour, size_t x, size_t y) {
 	const size_t index = y * VGA_TEXT_MODE_WIDTH + x;
-	terminal_buffer[index] = vga_entry(c, color);
+	terminal_buffer[index] = vga_entry(c, colour);
 }
 
 void VGA::terminal_putchar(char c) {
@@ -73,14 +73,14 @@ void VGA::terminal_putchar(char c) {
 	else if (c == '\b') {
 		if (terminal_column > 2) {
 			terminal_column--;
-			terminal_putentryat('\0', terminal_color, terminal_column, terminal_row);
+			terminal_putentryat('\0', terminal_colour, terminal_column, terminal_row);
 		}
 		else {
 			terminal_column = 2;
 		}
 	}
 	else {
-		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+		terminal_putentryat(c, terminal_colour, terminal_column, terminal_row);
 		if (++terminal_column == VGA_TEXT_MODE_WIDTH) {
 			terminal_column = 0;
 			if (++terminal_row == VGA_TEXT_MODE_HEIGHT)
@@ -107,13 +107,13 @@ void VGA::print_welcome_msg() {
 
 // Graphics mode methods
 
-bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
-	if (!supportsMode(width, height, colorDepth))
+bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint32_t colourDepth) {
+	if (!supportsMode(width, height, colourDepth))
 		return false;
 	
 	this->VGA_GRAPHICS_MODE_WIDTH = width;
 	this->VGA_GRAPHICS_MODE_HEIGHT = height;
-	this->VGA_GRAPHICS_MODE_COLORDEPTH = colorDepth;
+	this->VGA_GRAPHICS_MODE_COLOURDEPTH = colourDepth;
 	
 	// register sets
 	unsigned char g_320x200x256[] =	{
@@ -140,8 +140,8 @@ bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint3
 }
 
 // TODO: add support for other display modes
-bool VGA::supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
-	if ((width == 320) && (height == 200) && (colorDepth == 8))
+bool VGA::supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colourDepth) {
+	if ((width == 320) && (height == 200) && (colourDepth == 8))
 		return true;
 	return false;
 }
@@ -196,16 +196,16 @@ void VGA::putPixel(common::uint32_t x, common::uint32_t y,  common::uint8_t r, c
 	putPixel(x, y, getColorIndex(r, g, b));
 }
 
-void VGA::putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colorIndex) {
+void VGA::putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colourIndex) {
 	uint8_t *pixelAddr = getFrameBufferSegment() + VGA_GRAPHICS_MODE_WIDTH*y + x;
-	*pixelAddr = colorIndex;
+	*pixelAddr = colourIndex;
 }
 
 // Converts RGB colours to the VGA colour
 // TODO: add all 256 VGA colours
 uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b) {
 	if(r == 0x00, g == 0x00, b == 0xA8) // blue
-        return 0x01;
+        return VGA_COLOUR_BLUE;
     return 0x00;
 }
 
@@ -214,32 +214,12 @@ uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t
 uint8_t* VGA::getFrameBufferSegment() {
 	VGA_GC_INDEX.write(0x06);
 	uint8_t segment = VGA_GC_DATA.read() & (3<<2);
-	switch(segment)
-    {
+	switch(segment) {
         default:
         case 0<<2: return (uint8_t*)0x00000;
         case 1<<2: return (uint8_t*)0xA0000;
         case 2<<2: return (uint8_t*)0xB0000;
         case 3<<2: return (uint8_t*)0xB8000;
     }
-	// segment >>=2;
-	// segment &= 3;
-
-	// switch(segment) {
-	// 	case 1:
-	// 		segment = 0xA0000;
-	// 		break;
-	// 	case 2:
-	// 		segment = 0xB0000;
-	// 		break;
-	// 	case 3:
-	// 		segment = 0xB8000;
-	// 		break;
-	// 	default:
-	// 		segment = 0x00000;
-	// 		break;			
-	// }
-
-	// return &segment;
 }
 
