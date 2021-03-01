@@ -41,9 +41,9 @@ void VGA::terminal_initialize(void) {
 	terminal_column = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	terminal_buffer = (uint16_t*) 0xB8000;
-	for (size_t y = 0; y < VGA_HEIGHT; y++) {
-		for (size_t x = 0; x < VGA_WIDTH; x++) {
-			const size_t index = y * VGA_WIDTH + x;
+	for (size_t y = 0; y < VGA_TEXT_MODE_HEIGHT; y++) {
+		for (size_t x = 0; x < VGA_TEXT_MODE_WIDTH; x++) {
+			const size_t index = y * VGA_TEXT_MODE_WIDTH + x;
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
@@ -54,7 +54,7 @@ void VGA::terminal_setcolor(uint8_t color) {
 }
  
 void VGA::terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
-	const size_t index = y * VGA_WIDTH + x;
+	const size_t index = y * VGA_TEXT_MODE_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
@@ -62,7 +62,7 @@ void VGA::terminal_putchar(char c) {
 	if (c == '\n') {
 		terminal_column = 0;
 		terminal_row++;
-		if (terminal_row == VGA_HEIGHT)
+		if (terminal_row == VGA_TEXT_MODE_HEIGHT)
 			terminal_initialize();
 		if(!isWelcome) {
 			terminal_write("$ ", strlen("$ "));
@@ -81,9 +81,9 @@ void VGA::terminal_putchar(char c) {
 	}
 	else {
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-		if (++terminal_column == VGA_WIDTH) {
+		if (++terminal_column == VGA_TEXT_MODE_WIDTH) {
 			terminal_column = 0;
-			if (++terminal_row == VGA_HEIGHT)
+			if (++terminal_row == VGA_TEXT_MODE_HEIGHT)
 				terminal_initialize();
 		}
 	}	
@@ -111,6 +111,10 @@ bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint3
 	if (!supportsMode(width, height, colorDepth))
 		return false;
 	
+	this->VGA_GRAPHICS_MODE_WIDTH = width;
+	this->VGA_GRAPHICS_MODE_HEIGHT = height;
+	this->VGA_GRAPHICS_MODE_COLORDEPTH = colorDepth;
+	
 	// register sets
 	unsigned char g_320x200x256[] =	{
 	/* MISC */
@@ -137,50 +141,49 @@ bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint3
 
 // TODO: add support for other display modes
 bool VGA::supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
-	if (width == 320 && height == 200 && colorDepth == 8)
+	if ((width == 320) && (height == 200) && (colorDepth == 8))
 		return true;
 	return false;
 }
 
 void VGA::writeRegisters(common::uint8_t* regs) {
-	uint8_t i = 0;
+
 	// Write Misc registers
-	VGA_MISC_WRITE.write(*regs);
-	regs++;
+	VGA_MISC_WRITE.write(*(regs++));
 
 	// Write Sequencer registers
-	for (i = 0; i < VGA_NUM_SEQ_REGS; i++, regs++) {
+	for (uint8_t i = 0; i < VGA_NUM_SEQ_REGS; i++) {
 		VGA_SEQ_INDEX.write(i);
-		VGA_SEQ_DATA.write(*regs);
+		VGA_SEQ_DATA.write(*(regs++));
 	}
 
 	// Unlock CRTC registers
 	VGA_CRTC_INDEX.write(0x03);
 	VGA_CRTC_DATA.write(VGA_CRTC_DATA.read() | 0x80);
 	VGA_CRTC_INDEX.write(0x11);
-	VGA_CRTC_DATA.write(VGA_CRTC_DATA.read() | 0x80);
+	VGA_CRTC_DATA.write(VGA_CRTC_DATA.read() & ~0x80);
 
 	// Make sure they remain unlocked
 	regs[0x03] |= 0x80;
 	regs[0x11] &= ~0x80;
 
 	// Write CRTC registers
-	for(i = 0; i < VGA_NUM_CRTC_REGS; i++, regs++) {
+	for(uint8_t i = 0; i < VGA_NUM_CRTC_REGS; i++) {
 		VGA_CRTC_INDEX.write(i);
-		VGA_CRTC_DATA.write(*regs);
+		VGA_CRTC_DATA.write(*(regs++));
 	}
 
 	// Write Graphics Controller registers
-	for(i = 0; i < VGA_NUM_GC_REGS; i++, regs++) {
+	for(uint8_t i = 0; i < VGA_NUM_GC_REGS; i++) {
 		VGA_GC_INDEX.write(i);
-		VGA_GC_DATA.write(*regs);
+		VGA_GC_DATA.write(*(regs++));
 	}
 
 	// Write Attribute Controller registers
-	for(i = 0; i < VGA_NUM_AC_REGS; i++, regs++) {
+	for(uint8_t i = 0; i < VGA_NUM_AC_REGS; i++) {
 		VGA_INSTAT_READ.read();
 		VGA_AC_INDEX.write(i);
-		VGA_AC_WRITE.write(*regs);
+		VGA_AC_WRITE.write(*(regs++));
 	}
 
 	// Lock 16-colour palette and unblank display
@@ -188,41 +191,55 @@ void VGA::writeRegisters(common::uint8_t* regs) {
 	VGA_AC_INDEX.write(0x20);
 }
 
+
+void VGA::putPixel(common::uint32_t x, common::uint32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b) {
+	putPixel(x, y, getColorIndex(r, g, b));
+}
+
+void VGA::putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colorIndex) {
+	uint8_t *pixelAddr = getFrameBufferSegment() + VGA_GRAPHICS_MODE_WIDTH*y + x;
+	*pixelAddr = colorIndex;
+}
+
+// Converts RGB colours to the VGA colour
+// TODO: add all 256 VGA colours
+uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b) {
+	if(r == 0x00, g == 0x00, b == 0xA8) // blue
+        return 0x01;
+    return 0x00;
+}
+
 // VGA framebuffer is at A000:0000, B000:0000, or B800:0000
 // depending on bits in GC 6
 uint8_t* VGA::getFrameBufferSegment() {
 	VGA_GC_INDEX.write(0x06);
-	uint8_t segment = VGA_GC_DATA.read();
-	segment >>=2;
-	segment &= 3;
+	uint8_t segment = VGA_GC_DATA.read() & (3<<2);
+	switch(segment)
+    {
+        default:
+        case 0<<2: return (uint8_t*)0x00000;
+        case 1<<2: return (uint8_t*)0xA0000;
+        case 2<<2: return (uint8_t*)0xB0000;
+        case 3<<2: return (uint8_t*)0xB8000;
+    }
+	// segment >>=2;
+	// segment &= 3;
 
-	switch(segment) {
-		case 1:
-			segment = 0xA0000;
-			break;
-		case 2:
-			segment = 0xB0000;
-			break;
-		case 3:
-			segment = 0xB8000;
-			break;
-		default:
-			segment = 0x00000;
-			break;			
-	}
+	// switch(segment) {
+	// 	case 1:
+	// 		segment = 0xA0000;
+	// 		break;
+	// 	case 2:
+	// 		segment = 0xB0000;
+	// 		break;
+	// 	case 3:
+	// 		segment = 0xB8000;
+	// 		break;
+	// 	default:
+	// 		segment = 0x00000;
+	// 		break;			
+	// }
 
-	return &segment;
-}
-
-uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b) {
-
-}
-
-void VGA::putPixel(common::uint32_t x, common::uint32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b) {
-
-}
-
-void VGA::putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colorIndex) {
-
+	// return &segment;
 }
 

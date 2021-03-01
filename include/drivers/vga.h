@@ -20,8 +20,6 @@ namespace drivers {
 #define	VGA_NUM_CRTC_REGS	25
 #define	VGA_NUM_GC_REGS		9
 #define	VGA_NUM_AC_REGS		21
-#define	VGA_NUM_REGS		(1 + VGA_NUM_SEQ_REGS + VGA_NUM_CRTC_REGS + \
-				            VGA_NUM_GC_REGS + VGA_NUM_AC_REGS)
 
 class VGA {
 protected:
@@ -39,6 +37,11 @@ protected:
     kernel::Port8Bit VGA_CRTC_INDEX;
     kernel::Port8Bit VGA_CRTC_DATA;
     kernel::Port8Bit VGA_INSTAT_READ;
+
+    // Graphics mode screen size
+    common::uint32_t VGA_GRAPHICS_MODE_WIDTH;
+    common::uint32_t VGA_GRAPHICS_MODE_HEIGHT;
+    common::uint32_t VGA_GRAPHICS_MODE_COLORDEPTH;
 
     /* Hardware text mode color constants. */
     enum vga_color {
@@ -66,28 +69,28 @@ protected:
     virtual common::uint8_t getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b);
 
     // Text mode methods
-    static inline morphios::common::uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) {
+    static inline common::uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) {
         return fg | bg << 4;
     }
     
-    static inline morphios::common::uint16_t vga_entry(unsigned char uc, morphios::common::uint8_t color) {
-        return (morphios::common::uint16_t) uc | (morphios::common::uint16_t) color << 8;
+    static inline common::uint16_t vga_entry(unsigned char uc, common::uint8_t color) {
+        return (common::uint16_t) uc | (common::uint16_t) color << 8;
     }
 
-    void terminal_setcolor(morphios::common::uint8_t color);
-    void terminal_putentryat(char c, morphios::common::uint8_t color, morphios::common::size_t x, morphios::common::size_t y);
+    void terminal_setcolor(common::uint8_t color);
+    void terminal_putentryat(char c, common::uint8_t color, common::size_t x, common::size_t y);
     void terminal_putchar(char c);
 
 public:
-    // Public variables
+    // Text mode variables
     // Defined as static as they are global in scope
-    static const morphios::common::size_t VGA_WIDTH = 80;
-    static const morphios::common::size_t VGA_HEIGHT = 25;
-    static morphios::common::size_t terminal_row;
-    static morphios::common::size_t terminal_column;
-    static morphios::common::uint8_t terminal_color;
-    static morphios::common::uint16_t *terminal_buffer;
-    static bool isWelcome; // For checking if it is a welcome message, stops printing "$ "
+    static const common::size_t VGA_TEXT_MODE_WIDTH = 80;
+    static const common::size_t VGA_TEXT_MODE_HEIGHT = 25;
+    static common::size_t terminal_row;
+    static common::size_t terminal_column;
+    static common::uint8_t terminal_color;
+    static common::uint16_t *terminal_buffer;
+    static bool isWelcome; // For checking if it is a welcome message, stops printing "$ "  
 
     // Public methods
     VGA(); // Constructor
@@ -95,7 +98,7 @@ public:
 
     // Text mode methods
     void terminal_initialize(void);
-    void terminal_write(const char* data, morphios::common::size_t size);
+    void terminal_write(const char* data, common::size_t size);
     void print_welcome_msg();
 
     // Graphics mode methods

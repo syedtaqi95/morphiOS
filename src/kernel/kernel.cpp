@@ -84,5 +84,15 @@ extern "C" void kernel_main(void)
 	kprintf("$ ");
 	VGA::isWelcome = false;
 
+	// Activate VGA 320x200x8 graphics mode
+	vga.setMode(320, 200, 8);
+	
+	// Draw a blue rectangle
+	for(int32_t y = 0; y < 200; y++) {
+		for(int32_t x = 0; x < 320; x++) {
+			vga.putPixel(x, y, 0, 0, 0xA8);
+		}
+	}
+
 	while(1);
 }

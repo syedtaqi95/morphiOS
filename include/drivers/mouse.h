@@ -21,8 +21,8 @@ protected:
     morphios::common::int8_t x, y;
     morphios::common::uint8_t buttonsStatus;
     // Typecast to signed int8
-    static const morphios::common::int8_t SCREEN_W = (morphios::common::int8_t)VGA::VGA_WIDTH;
-    static const morphios::common::int8_t SCREEN_H = (morphios::common::int8_t)VGA::VGA_HEIGHT;
+    static const morphios::common::int8_t SCREEN_W = (morphios::common::int8_t)VGA::VGA_TEXT_MODE_WIDTH;
+    static const morphios::common::int8_t SCREEN_H = (morphios::common::int8_t)VGA::VGA_TEXT_MODE_HEIGHT;
     void switchFGandBGcolours();
 
 public:
