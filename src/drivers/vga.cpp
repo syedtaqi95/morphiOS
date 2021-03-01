@@ -107,6 +107,41 @@ void VGA::print_welcome_msg() {
 
 // Graphics mode methods
 
+bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
+	if (!supportsMode(width, height, colorDepth))
+		return false;
+	
+	// register sets
+	unsigned char g_320x200x256[] =	{
+	/* MISC */
+		0x63,
+	/* SEQ */
+		0x03, 0x01, 0x0F, 0x00, 0x0E,
+	/* CRTC */
+		0x5F, 0x4F, 0x50, 0x82, 0x54, 0x80, 0xBF, 0x1F,
+		0x00, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x9C, 0x0E, 0x8F, 0x28,	0x40, 0x96, 0xB9, 0xA3,
+		0xFF,
+	/* GC */
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
+		0xFF,
+	/* AC */
+		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+		0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+		0x41, 0x00, 0x0F, 0x00,	0x00
+	};
+
+	writeRegisters(g_320x200x256);
+	return true;
+}
+
+// TODO: add support for other display modes
+bool VGA::supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
+	if (width == 320 && height == 200 && colorDepth == 8)
+		return true;
+	return false;
+}
+
 void VGA::writeRegisters(common::uint8_t* regs) {
 	uint8_t i = 0;
 	// Write Misc registers
@@ -153,47 +188,34 @@ void VGA::writeRegisters(common::uint8_t* regs) {
 	VGA_AC_INDEX.write(0x20);
 }
 
+// VGA framebuffer is at A000:0000, B000:0000, or B800:0000
+// depending on bits in GC 6
 uint8_t* VGA::getFrameBufferSegment() {
+	VGA_GC_INDEX.write(0x06);
+	uint8_t segment = VGA_GC_DATA.read();
+	segment >>=2;
+	segment &= 3;
 
+	switch(segment) {
+		case 1:
+			segment = 0xA0000;
+			break;
+		case 2:
+			segment = 0xB0000;
+			break;
+		case 3:
+			segment = 0xB8000;
+			break;
+		default:
+			segment = 0x00000;
+			break;			
+	}
+
+	return &segment;
 }
 
 uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b) {
 
-}
-
-bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
-	if (!supportsMode(width, height, colorDepth))
-		return false;
-	
-	// register sets
-	unsigned char g_320x200x256[] =	{
-	/* MISC */
-		0x63,
-	/* SEQ */
-		0x03, 0x01, 0x0F, 0x00, 0x0E,
-	/* CRTC */
-		0x5F, 0x4F, 0x50, 0x82, 0x54, 0x80, 0xBF, 0x1F,
-		0x00, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0x9C, 0x0E, 0x8F, 0x28,	0x40, 0x96, 0xB9, 0xA3,
-		0xFF,
-	/* GC */
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-		0xFF,
-	/* AC */
-		0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-		0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-		0x41, 0x00, 0x0F, 0x00,	0x00
-	};
-
-	writeRegisters(g_320x200x256);
-	return true;
-}
-
-// TODO: add support for other display modes
-bool VGA::supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colorDepth) {
-	if (width == 320 && height == 200 && colorDepth == 8)
-		return true;
-	return false;
 }
 
 void VGA::putPixel(common::uint32_t x, common::uint32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b) {
