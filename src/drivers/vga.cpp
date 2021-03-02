@@ -204,7 +204,7 @@ void VGA::putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colou
 // Converts RGB colours to the VGA colour
 // TODO: add all 256 VGA colours
 uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b) {
-	if(r == 0x00, g == 0x00, b == 0xA8) // blue
+	if(r == 0x00 && g == 0x00 && b == 0xA8) // blue
         return VGA_COLOUR_BLUE;
     return 0x00;
 }
