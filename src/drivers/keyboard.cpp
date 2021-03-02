@@ -8,14 +8,13 @@ using namespace morphios::common;
 using namespace morphios::drivers;
 using namespace morphios::kernel;
 
-KeyboardEventHandler::KeyboardEventHandler() {
-    // Initialise key variables (pun intended)
-    currentChar = '\0';
-    isShiftPressed = false;
-    isControlPressed = false;
-    isAltPressed = false;
-    isCapsLockOn = false;
-}
+KeyboardEventHandler::KeyboardEventHandler()
+    : currentChar('\0'),
+    isShiftPressed(false),
+    isControlPressed(false),
+    isAltPressed(false),
+    isCapsLockOn(false)
+{}
 
 KeyboardEventHandler::~KeyboardEventHandler() {}
 

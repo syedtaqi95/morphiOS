@@ -14,9 +14,7 @@ void Driver::activate() {}
 void Driver::deactivate() {}
 void Driver::reset() {}
 
-DriverManager::DriverManager() {
-    numDrivers = 0;
-}
+DriverManager::DriverManager() : numDrivers(0) {}
 
 DriverManager::~DriverManager() {}
 

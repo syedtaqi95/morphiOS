@@ -1,5 +1,5 @@
 /*
-    vga.cpp - VGA class implementation to communicate with stdout
+    vga.cpp - VGA class implementation to communicate in text or graphics mode
 
 	References:
     - https://files.osdev.org/mirrors/geezer/osd/graphics/modes.c
