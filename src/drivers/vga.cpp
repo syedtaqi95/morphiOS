@@ -223,3 +223,13 @@ uint8_t* VGA::getFrameBufferSegment() {
     }
 }
 
+void VGA::putLine(common::int32_t x0, common::int32_t y0, common::int32_t x1, common::int32_t y1,
+    common::uint8_t r, common::uint8_t g, common::uint8_t b) {
+
+}
+void VGA::putRect(common::int32_t x0, common::int32_t y0, common::int32_t w, common::int32_t h, 
+	common::uint8_t r, common::uint8_t g, common::uint8_t b) {
+
+}
+
+
