@@ -192,11 +192,11 @@ void VGA::writeRegisters(common::uint8_t* regs) {
 }
 
 
-void VGA::putPixel(common::uint32_t x, common::uint32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b) {
+void VGA::putPixel(common::int32_t x, common::int32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b) {
 	putPixel(x, y, getColorIndex(r, g, b));
 }
 
-void VGA::putPixel(common::uint32_t x, common::uint32_t y, common::uint8_t colourIndex) {
+void VGA::putPixel(common::int32_t x, common::int32_t y, common::uint8_t colourIndex) {
 	uint8_t *pixelAddr = getFrameBufferSegment() + VGA_GRAPHICS_MODE_WIDTH*y + x;
 	*pixelAddr = colourIndex;
 }
