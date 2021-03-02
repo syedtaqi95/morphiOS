@@ -94,5 +94,8 @@ extern "C" void kernel_main(void)
 		}
 	}
 
+	// Draw a line
+	vga.putLine(10, 10, 120, 140, 0, 0, 0);
+
 	while(1);
 }

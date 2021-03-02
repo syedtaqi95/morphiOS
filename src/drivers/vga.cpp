@@ -206,6 +206,8 @@ void VGA::putPixel(common::int32_t x, common::int32_t y, common::uint8_t colourI
 uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t b) {
 	if(r == 0x00 && g == 0x00 && b == 0xA8) // blue
         return VGA_COLOUR_BLUE;
+	if(r == 0x00 && g == 0x00 && b == 0x0) // black
+        return VGA_COLOUR_BLACK;
     return 0x00;
 }
 
@@ -225,7 +227,27 @@ uint8_t* VGA::getFrameBufferSegment() {
 
 void VGA::putLine(common::int32_t x0, common::int32_t y0, common::int32_t x1, common::int32_t y1,
     common::uint8_t r, common::uint8_t g, common::uint8_t b) {
+	
+	// Using Bresenham's line algorithm
+	int32_t _dx, _dy, _D, _x, _y;
 
+	_dx = x1 - x0;
+	_dy = y1 - y0;
+	_x = x0;
+	_y = y0;
+	_D = 2*_dy - _dx;
+
+	while(_x < x1) {
+		putPixel(_x, _y, r, g, b);
+		if (_D > 0) {
+			_y += 1;
+			_D += 2*_dy - 2*_dx;
+		}
+		else {
+			_D += 2*_dy;
+		}
+		_x += 1;
+	}
 }
 void VGA::putRect(common::int32_t x0, common::int32_t y0, common::int32_t w, common::int32_t h, 
 	common::uint8_t r, common::uint8_t g, common::uint8_t b) {
