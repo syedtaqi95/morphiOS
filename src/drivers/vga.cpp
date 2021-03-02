@@ -251,7 +251,11 @@ void VGA::putLine(common::int32_t x0, common::int32_t y0, common::int32_t x1, co
 }
 void VGA::putRect(common::int32_t x0, common::int32_t y0, common::int32_t w, common::int32_t h, 
 	common::uint8_t r, common::uint8_t g, common::uint8_t b) {
-
+	for(int32_t y = y0; y < y0 + h; y++) {
+		for(int32_t x = x0; x < x0 + w; x++) {
+			putPixel(x, y, r, g, b);
+		}
+	}
 }
 
 
