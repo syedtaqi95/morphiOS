@@ -94,7 +94,7 @@ uint32_t MouseDriver::ISR(uint32_t esp) {
     buffer[offset] = dataPort.read();
     offset = (offset + 1) % 3;
 
-    // Trigger OnMouseMove() event  if buffer is filled
+    // Trigger onMouseMove() event  if buffer is filled
     if (offset == 0) {
         if (buffer[1] != 0 || buffer[2] != 0) {     
             // Ensure arguments are typecaste to signed int8       

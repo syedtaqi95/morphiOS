@@ -35,4 +35,3 @@ void Window::onMouseMove(common::int32_t oldx, common:: int32_t oldy, common::in
     CompositeWidget::onMouseMove(oldx,oldy,newx,newy);
 }
 
-
