@@ -22,7 +22,7 @@
 #include "gui/render.h"
 
 // Uncomment to use graphics mode. Otherwise boots up in text mode
-#define GRAPHICS_MODE
+// #define GRAPHICS_MODE
 
 // Namespaces
 using namespace morphios::common;

@@ -29,8 +29,8 @@ void MouseEventHandler::onMouseMove(int32_t xOffset, int32_t yOffset) {
     // Switch original fg and bg colours back
     switchFGandBGcolours();
     
-    x += xOffset;
-    y += yOffset;
+    x += xOffset/2;
+    y += yOffset/2;
 
     // Display new cursor location
     switchFGandBGcolours();    
