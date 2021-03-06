@@ -86,7 +86,7 @@ extern "C" void kernel_main(void)
 
 	// Activate VGA 320x200x8 graphics mode
 	vga.setMode(320, 200, 8);
-	
+
 	// Draw a blue rectangle
 	vga.putRect(0, 0, 320, 200, 0, 0, 0xA8);
 	// Draw a line

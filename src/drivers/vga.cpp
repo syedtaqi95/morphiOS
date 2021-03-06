@@ -134,8 +134,10 @@ bool VGA::setMode(common::uint32_t width, common::uint32_t height, common::uint3
 		0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
 		0x41, 0x00, 0x0F, 0x00,	0x00
 	};
-
 	writeRegisters(g_320x200x256);
+
+	this->frameBufferSegment = getFrameBufferSegment();
+
 	return true;
 }
 
@@ -197,7 +199,7 @@ void VGA::putPixel(common::int32_t x, common::int32_t y,  common::uint8_t r, com
 }
 
 void VGA::putPixel(common::int32_t x, common::int32_t y, common::uint8_t colourIndex) {
-	uint8_t *pixelAddr = getFrameBufferSegment() + VGA_GRAPHICS_MODE_WIDTH*y + x;
+	uint8_t *pixelAddr = frameBufferSegment + VGA_GRAPHICS_MODE_WIDTH*y + x;
 	*pixelAddr = colourIndex;
 }
 

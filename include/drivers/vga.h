@@ -42,8 +42,9 @@ protected:
     common::uint32_t VGA_GRAPHICS_MODE_WIDTH;
     common::uint32_t VGA_GRAPHICS_MODE_HEIGHT;
     common::uint32_t VGA_GRAPHICS_MODE_COLOURDEPTH;
+    common::uint8_t *frameBufferSegment;
 
-    /* Hardware text mode colour constants. */
+    /* VGA colour constants. */
     // TODO: increase this to all 256 colours
     enum vga_colour {
         VGA_COLOUR_BLACK = 0,
