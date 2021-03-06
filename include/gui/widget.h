@@ -6,12 +6,13 @@
 #define WIDGET_H
 
 #include "common/types.h"
+#include "drivers/keyboard.h"
 
 namespace morphios {
 namespace gui {
 
 // Generic widget class
-class Widget {
+class Widget : public morphios::drivers::KeyboardEventHandler {
 protected:
     Widget *parent; // Parent widget
 
