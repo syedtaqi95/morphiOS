@@ -5,7 +5,7 @@
 
 namespace morphios{
 namespace common{
-    typedef drivers::VGA GraphicsContext;
+    typedef drivers::VGA graphicsContext;
 }
 }
 
