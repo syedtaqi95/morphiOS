@@ -42,7 +42,7 @@ class CompositeWidget : public Widget {
 private:
     Widget* children[100];
     common::int32_t numChildren;
-    Widget* focussedChild;
+    Widget* focusedChild;
 
 public:
     // Constructor
@@ -53,13 +53,13 @@ public:
 
     // Virtual methods called by widgets
     virtual void getFocus(Widget *widget);
-    virtual bool AddChild(Widget* child);
+    virtual bool addChild(Widget* child);
     virtual void draw(common::graphicsContext* gc);
     virtual void onMouseDown(common::int32_t x, common:: int32_t y, common::uint8_t button);
     virtual void onMouseUp(common::int32_t x, common:: int32_t y, common::uint8_t button);
     virtual void onMouseMove(common::int32_t oldx, common:: int32_t oldy, common::int32_t newx, common:: int32_t newy);
-    virtual void OnKeyDown(char);
-    virtual void OnKeyUp(char);
+    virtual void onKeyDown(char);
+    virtual void onKeyUp(char);
 };
     
 } // namespace gui    
