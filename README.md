@@ -15,14 +15,21 @@ Follow the white rabbit
 Knock, Knock, Neo.
 ```
 
-MorphiOS is a lightweight 32-bit operating system written in C++ for the i386 (x86) architecture.
+MorphiOS is a lightweight 32-bit operating system written in C++ for the i386 (x86) architecture, which I am developing to teach myself how operating systems work. Feel free to use the code from this repo.
 
 Currently supported features:
- - Kernel (interfaced with the GRUB bootloader)
- - Hardware communication (I/O ports)
+ - Kernel (interfaced with GRUB bootloader)
  - Global Descriptor table (GDT)
  - Interrupts and interrupt handlers
- - Drivers for VGA graphics, keyboard and mouse
+ - Drivers for graphics, keyboard and mouse
+ - Text mode and Graphics mode (using VGA video cards)
+
+Planned features:
+ - Multi-threading / concurrency
+ - Dynamic memory management (heap allocation)
+ - Networking
+ - Hard drive support
+ - System calls / POSIX
 
 Used the following learning resources: 
 - https://wiki.osdev.org/
@@ -59,7 +66,13 @@ You can run morphiOS locally using ```qemu```.
 - ```make install```
 - ```make run```
 
-![morhiOS splash](docs/screenshot.png "morhiOS Welcome Page")
+#### Text mode
+
+![morhiOS splash](docs/screenshot.png "morphiOS Welcome Page")
+
+#### Graphics mode
+
+![morhiOS splash](docs/screenshot-graphics.png "morphiOS Graphics Mode")
 
 Or you can generate the ISO image and run it using Virtualbox.
 
