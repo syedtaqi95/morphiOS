@@ -22,7 +22,7 @@ void Desktop::draw(common::graphicsContext *gc){
     // draw desktop
     CompositeWidget::draw(gc);
 
-    // draw mouse cursor as white cross
+    // draw mouse cursor as a 4x4 white cross
     for (int32_t i = 0; i < 4; ++i) {
         gc->putPixel(mouseX - i, mouseY, 0xFF, 0xFF, 0xFF);
         gc->putPixel(mouseX + i, mouseY, 0xFF, 0xFF, 0xFF);
@@ -39,16 +39,16 @@ void Desktop::onMouseUp(common::uint8_t button){
     CompositeWidget::onMouseUp(mouseX, mouseY, button);
 }
 
-void Desktop::onMouseMove(common::int32_t x, common:: int32_t y){
+void Desktop::onMouseMove(common::int32_t xOffset, morphios::common::int32_t yOffset){
     // Slow down mouse movement for desired sensativity
-    x /= 4;
-    y /= 4;
+    xOffset /= 2;
+    yOffset /= 2;
 
     // Limit cursor within screen
-    int32_t newMouseX = mouseX + x;
+    int32_t newMouseX = mouseX + xOffset;
     if(newMouseX < 0) newMouseX = 0;
     if(newMouseX >= w) newMouseX = w - 1;
-    int32_t newMouseY = mouseY + y;
+    int32_t newMouseY = mouseY + yOffset;
     if(newMouseY < 0) newMouseY = 0;
     if(newMouseY >= h) newMouseY = h - 1;
 

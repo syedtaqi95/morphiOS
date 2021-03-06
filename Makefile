@@ -27,6 +27,10 @@ objects = 	$(OBJ_DIR)/common/common.o \
 			$(OBJ_DIR)/drivers/mouse.o \
 			$(OBJ_DIR)/drivers/keyboard.o \
 			$(OBJ_DIR)/drivers/vga.o \
+			$(OBJ_DIR)/gui/widget.o \
+			$(OBJ_DIR)/gui/window.o \
+			$(OBJ_DIR)/gui/desktop.o \
+			$(OBJ_DIR)/gui/render.o \
 			$(OBJ_DIR)/kernel/kernel.o
 
 # Targets

@@ -20,12 +20,12 @@ void MouseEventHandler::onMouseActivate() {
     switchFGandBGcolours();
 }
 
-void MouseEventHandler::onMouseDown() {}
+void MouseEventHandler::onMouseDown(common::uint8_t button) {}
 
-void MouseEventHandler::onMouseUp() {}
+void MouseEventHandler::onMouseUp(common::uint8_t button) {}
 
 // Triggered when mouse move generates an interrupt
-void MouseEventHandler::onMouseMove(int8_t xOffset, int8_t yOffset) {
+void MouseEventHandler::onMouseMove(int32_t xOffset, int32_t yOffset) {
     // Switch original fg and bg colours back
     switchFGandBGcolours();
     
@@ -97,8 +97,8 @@ uint32_t MouseDriver::ISR(uint32_t esp) {
     // Trigger onMouseMove() event  if buffer is filled
     if (offset == 0) {
         if (buffer[1] != 0 || buffer[2] != 0) {     
-            // Ensure arguments are typecaste to signed int8       
-            eventHandler->onMouseMove((int8_t)buffer[1], (int8_t)-buffer[2]);
+            // Ensure arguments are typecast to signed int8       
+            eventHandler->onMouseMove((int8_t)buffer[1], -(int8_t)buffer[2]);
         }
     }
 

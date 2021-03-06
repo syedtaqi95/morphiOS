@@ -17,12 +17,18 @@
 #include "drivers/vga.h"
 #include "drivers/keyboard.h"
 #include "drivers/mouse.h"
+#include "gui/desktop.h"
+#include "gui/window.h"
+#include "gui/render.h"
+
+// Uncomment to use graphics mode. Otherwise boots up in text mode
+#define GRAPHICS_MODE
 
 // Namespaces
 using namespace morphios::common;
 using namespace morphios::kernel;
 using namespace morphios::drivers;
-
+using namespace morphios::gui;
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -55,19 +61,32 @@ extern "C" void kernel_main(void)
 	// Setup GDT and IDT
 	GlobalDescriptorTable gdt;
 	interruptsHandler interrupts(&gdt);
+
+	#ifdef GRAPHICS_MODE
+		// Initialise desktop
+		Desktop desktop(320, 200, 0, 0, 0xA8);
+	#endif
 	
 	// Initialise drivers using DriverManager class
 	DriverManager drvManager;
 
 	// Add mouse driver
 	// NOTE: always initialise mouse before keyboard as they are on the same I/O port
-	MouseEventHandler mouseEventH;
-	MouseDriver mouse(&interrupts, &mouseEventH);
+	#ifdef GRAPHICS_MODE
+		MouseDriver mouse(&interrupts, &desktop);
+	#else
+		MouseEventHandler mouseEventH;
+		MouseDriver mouse(&interrupts, &mouseEventH);
+	#endif	
 	drvManager.addDriver(&mouse);
 
 	// Add keyboard driver
-	KeyboardEventHandler keyboardEventH;
-	KeyboardDriver keyboard(&interrupts, &keyboardEventH);
+	#ifdef GRAPHICS_MODE
+		KeyboardDriver keyboard(&interrupts, &desktop);
+	#else
+		KeyboardEventHandler keyboardEventH;
+		KeyboardDriver keyboard(&interrupts, &keyboardEventH);
+	#endif	
 	drvManager.addDriver(&keyboard);
 
 	// Activate PCI controller
@@ -77,20 +96,29 @@ extern "C" void kernel_main(void)
 	// Activate drivers
 	drvManager.activateAll();
 
+	#ifdef GRAPHICS_MODE
+		vga.setMode(320, 200, 8);
+		//make new window and attach it to the desktop
+		Window win1(&desktop, 10, 10, 20, 20, 0xA8, 0x00, 0x00);
+		desktop.addChild(&win1);
+		Window win2(&desktop, 40, 15, 30, 30, 0x00, 0xA8, 0x00);
+		desktop.addChild(&win2);
+		// Create rendering frame
+		Render render;
+	#else
+		// Start shell
+		kprintf("$ ");
+		VGA::isWelcome = false;
+	#endif
+
 	// Activate interrupts
     interrupts.Activate();
 
-	// Start shell
-	kprintf("$ ");
-	VGA::isWelcome = false;
-
-	// Activate VGA 320x200x8 graphics mode
-	vga.setMode(320, 200, 8);
-
-	// Draw a blue rectangle
-	vga.putRect(0, 0, 320, 200, 0, 0, 0xA8);
-	// Draw a line
-	vga.putLine(10, 10, 120, 140, 0xFF, 0xFF, 0xFF);
-
-	while(1);
+	while(1) {
+		#ifdef GRAPHICS_MODE
+            desktop.draw(&render);
+			// Display rendered frame
+			render.display(&vga);
+        #endif
+	}
 }

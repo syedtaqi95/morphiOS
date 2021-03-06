@@ -199,6 +199,10 @@ void VGA::putPixel(common::int32_t x, common::int32_t y,  common::uint8_t r, com
 }
 
 void VGA::putPixel(common::int32_t x, common::int32_t y, common::uint8_t colourIndex) {
+	// Limit pixel writing to within the screen width
+	if(x < 0 || VGA_GRAPHICS_MODE_WIDTH <= x || y < 0 || VGA_GRAPHICS_MODE_HEIGHT <= y)
+        return;
+
 	uint8_t *pixelAddr = frameBufferSegment + VGA_GRAPHICS_MODE_WIDTH*y + x;
 	*pixelAddr = colourIndex;
 }
@@ -211,7 +215,7 @@ uint8_t VGA::getColorIndex(common::uint8_t r, common::uint8_t g, common::uint8_t
     if(r == 0x00 && g == 0xA8 && b == 0x00) return VGA_COLOUR_GREEN;
     if(r == 0xA8 && g == 0x00 && b == 0x00) return VGA_COLOUR_RED;
     if(r == 0xFF && g == 0xFF && b == 0xFF) return VGA_COLOUR_WHITE;
-    return VGA_COLOUR_BLACK;
+    return VGA_COLOUR_BLACK; // default
 }
 
 // VGA framebuffer is at A000:0000, B000:0000, or B800:0000

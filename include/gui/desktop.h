@@ -23,7 +23,7 @@ public:
     void draw(common::graphicsContext *gc);
     void onMouseDown(common::uint8_t button);
     void onMouseUp(common::uint8_t button);
-    void onMouseMove(common::int32_t x, common:: int32_t y);
+    void onMouseMove(common::int32_t xOffset, morphios::common::int32_t yOffset);
 };
 
 } // namespace gui    

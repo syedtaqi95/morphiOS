@@ -7,7 +7,7 @@
 
 #include "drivers/vga.h"
 #include "common/graphicscontext.h"
-#include "common.h"
+#include "common/common.h"
 
 namespace morphios{
 namespace gui{

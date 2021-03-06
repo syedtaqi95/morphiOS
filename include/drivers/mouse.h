@@ -29,9 +29,9 @@ public:
     MouseEventHandler();
     ~MouseEventHandler();
     virtual void onMouseActivate();
-    virtual void onMouseDown();
-    virtual void onMouseUp();
-    virtual void onMouseMove(morphios::common::int8_t xOffset, morphios::common::int8_t yOffset);
+    virtual void onMouseDown(common::uint8_t button);
+    virtual void onMouseUp(common::uint8_t button);
+    virtual void onMouseMove(morphios::common::int32_t xOffset, morphios::common::int32_t yOffset);
 };
 
 class MouseDriver : public morphios::kernel::interruptHandle, public Driver {
@@ -40,10 +40,11 @@ protected:
     morphios::kernel::Port8Bit commandPort;
     morphios::common::uint8_t buffer[3];
     morphios::common::uint8_t offset;
+    morphios::common::uint8_t buttons;
     MouseEventHandler *eventHandler;
 
 public:
-    MouseDriver(morphios::kernel::interruptsHandler *handler, MouseEventHandler *eventhandler);
+    MouseDriver(morphios::kernel::interruptsHandler *IRQhandler, MouseEventHandler *eventhandler);
     ~MouseDriver();    
     virtual morphios::common::uint32_t ISR(morphios::common::uint32_t esp);
     virtual void activate();
