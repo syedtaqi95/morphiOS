@@ -11,6 +11,7 @@ Render::Render() {}
 Render::~Render() {}
 
 void Render::display(common::graphicsContext* gc) {
+    // TODO : make this dynamically sized
     for (int32_t ix = 0; ix < 320; ++ix) {
         for (int32_t iy = 0; iy < 200; ++iy) {
             gc->putPixel(ix, iy, frameBuffer[ix][iy].r, frameBuffer[ix][iy].g, frameBuffer[ix][iy].b);
