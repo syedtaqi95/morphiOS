@@ -123,7 +123,7 @@ void CompositeWidget::onMouseMove(common::int32_t oldx, common:: int32_t oldy, c
     // for object that contains old coordinate
     for(int i = 0; i < numChildren; ++i){
         if(children[i]->containsCoordinate(oldx - this->x, oldy - this->y)){
-            // subtracting thisx/y turns the coordinates into relative coordinates
+            // subtracting this->x/y turns the coordinates into relative coordinates
             children[i]->onMouseMove(oldx - this->x, oldy - this->y, newx - this->x, newy - this->y);
             firstChild = i;
 
@@ -136,7 +136,7 @@ void CompositeWidget::onMouseMove(common::int32_t oldx, common:: int32_t oldy, c
     for(int i = 0; i < numChildren; ++i){
         if(children[i]->containsCoordinate(newx - this->x, newy - this->y)){
             if(firstChild != i)
-                // subtracting thisx/y turns the coordinates into relative coordinates
+                // subtracting this->x/y turns the coordinates into relative coordinates
                 children[i]->onMouseMove(oldx - this->x, oldy - this->y, newx - this->x, newy - this->y);
 
             // only the top window is clicked on

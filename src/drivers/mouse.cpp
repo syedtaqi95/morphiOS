@@ -61,6 +61,7 @@ MouseDriver::MouseDriver(interruptsHandler* IRQhandler, MouseEventHandler *event
 // Enable interrupts and initialise the cursor to the centre of the screen
 void MouseDriver::activate() {
     offset = 0;
+    buttons = 0;
     
     // Activate event handler
     if (eventHandler != 0)
@@ -100,6 +101,16 @@ uint32_t MouseDriver::ISR(uint32_t esp) {
             // Ensure arguments are typecast to signed int8       
             eventHandler->onMouseMove((int8_t)buffer[1], -(int8_t)buffer[2]);
         }
+
+        for (uint8_t i = 0; i < 3; i++) {
+            if ((buffer[0] & (0x1 << i)) != (buttons & (0x1 << i))) {
+                if (buttons & (0x1 << i))
+                    eventHandler->onMouseUp(i + 1);
+                else
+                    eventHandler->onMouseDown(i + 1);
+            }
+        }
+        buttons = buffer[0];
     }
 
     return esp;
