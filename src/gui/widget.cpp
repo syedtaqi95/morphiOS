@@ -98,7 +98,7 @@ void CompositeWidget::onMouseDown(common::int32_t x, common:: int32_t y, common:
         if(children[i]->containsCoordinate(x - this->x, y - this->y)){
             children[i]->onMouseDown(x - this->x, y - this->y, button);
 
-            //only the top window is clicked on
+            // only the top window is clicked on
             break;
         }
     }
@@ -111,7 +111,7 @@ void CompositeWidget::onMouseUp(common::int32_t x, common:: int32_t y, common::u
         if(children[i]->containsCoordinate(x - this->x, y - this->y)){
             children[i]->onMouseUp(x - this->x, y - this->y, button);
 
-            //only the top window is clicked on
+            // only the top window is clicked on
             break;
         }
     }
@@ -120,26 +120,26 @@ void CompositeWidget::onMouseUp(common::int32_t x, common:: int32_t y, common::u
 void CompositeWidget::onMouseMove(common::int32_t oldx, common:: int32_t oldy, common::int32_t newx, common:: int32_t newy) {
     int firstChild = -1;
 
-    //for object that contains old coordinate
+    // for object that contains old coordinate
     for(int i = 0; i < numChildren; ++i){
         if(children[i]->containsCoordinate(oldx - this->x, oldy - this->y)){
-            //subtracting thisx/y turns the coordinates into relative coordinates
+            // subtracting thisx/y turns the coordinates into relative coordinates
             children[i]->onMouseMove(oldx - this->x, oldy - this->y, newx - this->x, newy - this->y);
             firstChild = i;
 
-            //only the top window is clicked on
+            // only the top window is clicked on
             break;
         }
     }
 
-    //for object that contains new coordinate
+    // for object that contains new coordinate
     for(int i = 0; i < numChildren; ++i){
         if(children[i]->containsCoordinate(newx - this->x, newy - this->y)){
             if(firstChild != i)
-                //subtracting thisx/y turns the coordinates into relative coordinates
+                // subtracting thisx/y turns the coordinates into relative coordinates
                 children[i]->onMouseMove(oldx - this->x, oldy - this->y, newx - this->x, newy - this->y);
 
-            //only the top window is clicked on
+            // only the top window is clicked on
             break;
         }
     }
