@@ -44,11 +44,12 @@ void interruptsHandler::SetInterruptDescriptorTableEntry(uint8_t IRQ,
 }
 
 // IDT constructor
-interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable) 
+interruptsHandler::interruptsHandler(GlobalDescriptorTable* globalDescriptorTable, TaskManager *taskManager) 
     : PICMasterCommandPort(PIC_MASTER_COMMAND_PORT),
     PICSlaveCommandPort(PIC_SLAVE_COMMAND_PORT),
     PICMasterDataPort(PIC_MASTER_DATA_PORT),
-    PICSlaveDataPort(PIC_SLAVE_DATA_PORT) {
+    PICSlaveDataPort(PIC_SLAVE_DATA_PORT),
+    taskManager(taskManager) {
     
     uint32_t CodeSegment = globalDescriptorTable->CodeSegmentSelector();
 
@@ -171,8 +172,12 @@ uint32_t interruptsHandler::DoHandleInterrupt(uint8_t IRQ, uint32_t esp) {
     {
         kprintf("UNHANDLED INTERRUPT 0x");
         kprintHex(IRQ);
-    } 
-    else {} // PIC timer IRQ
+    }
+
+    // Timer interrupt for multithreading
+    // Switch the stack pointer to the task's stack
+    if (IRQ == HW_INTERRUPT_OFFSET)
+        esp = (uint32_t)taskManager->schedule((CPUState *)esp);
 
     // EOI (End of Interrupt) command to PICs
     if(IRQ >= HW_INTERRUPT_OFFSET && IRQ < HW_INTERRUPT_OFFSET + 16) {

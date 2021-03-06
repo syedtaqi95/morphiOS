@@ -20,6 +20,7 @@
 #include "gui/desktop.h"
 #include "gui/window.h"
 #include "gui/render.h"
+#include "kernel/multithreading.h"
 
 // Uncomment to use graphics mode. Otherwise boots up in text mode
 // #define GRAPHICS_MODE
@@ -40,6 +41,17 @@ using namespace morphios::gui;
 #error "This kernel needs to be compiled with a ix86-elf compiler"
 #endif
 
+// Example tasks
+void taskA() {
+	while(1)
+		kprintf("A");
+}
+
+void taskB() {
+	while(1)
+		kprintf("B");
+}
+
 // Constructors
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -58,9 +70,18 @@ extern "C" void kernel_main(void)
 	vga.terminal_initialize();
 	vga.print_welcome_msg();
  
-	// Setup GDT and IDT
+	// Setup GDT
 	GlobalDescriptorTable gdt;
-	interruptsHandler interrupts(&gdt);
+
+	// Setup multithreading
+	TaskManager taskManager;
+	Task task1(&gdt, taskA);
+	taskManager.addTask(&task1);
+	Task task2(&gdt, taskB);
+	taskManager.addTask(&task2);
+
+	// Setup IDT / interrupts
+	interruptsHandler interrupts(&gdt, &taskManager);
 
 	#ifdef GRAPHICS_MODE
 		// Initialise desktop

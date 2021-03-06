@@ -23,7 +23,6 @@ struct CPUState {
     common::uint32_t esi;
     common::uint32_t edi;
     common::uint32_t ebp;
-
     common::uint32_t error;
 
     // These registers are automatically pushed by the CPU when an interrupt occurs
@@ -34,6 +33,7 @@ struct CPUState {
     common::uint32_t ss;
 } __attribute__((packed));
 
+
 class Task {
 friend class TaskManager;
 private:
@@ -43,6 +43,7 @@ public:
     Task(GlobalDescriptorTable *gdt, void entryPoint());
     ~Task();
 };
+
 
 class TaskManager {
 private:
@@ -58,6 +59,5 @@ public:
 
 }
 }
-
 
 #endif // MULTITHREADING_H

@@ -15,6 +15,7 @@ _ZN8morphios6kernel17interruptsHandler20HandlerException\num\()Ev:
 .global _ZN8morphios6kernel17interruptsHandler14HandlerIRQ\num\()Ev
 _ZN8morphios6kernel17interruptsHandler14HandlerIRQ\num\()Ev:
     movb $\num + IRQ_BASE, (interruptnumber)
+    pushl $0 # Filler for the error variable in CPUStruct
     jmp int_bottom
 .endm
 
@@ -60,28 +61,50 @@ HandlerIRQ 0x31
 
 # To preserve the stack during ISR execution
 int_bottom:
-    pusha
-    pushl %ds
-    pushl %es
-    pushl %fs
-    pushl %gs
+    # Save registers
+    # pusha
+    # pushl %ds
+    # pushl %es
+    # pushl %fs
+    # pushl %gs
 
-    #cld
-    #mov $0x10, %eax
-    #mov %eax, %eds
-    #mov %eax, %ees
+    pushl %ebp
+    pushl %edi
+    pushl %esi
+    pushl %edx
+    pushl %ecx
+    pushl %ebx
+    pushl %eax
 
-pushl %esp
+    # Load ring 0 segment register
+    # cld
+    # mov $0x10, %eax
+    # mov %eax, %eds
+    # mov %eax, %ees
+
+    # call C++ handler
+    pushl %esp
     push (interruptnumber)
     call _ZN8morphios6kernel17interruptsHandler15HandleInterruptEhj
-    add %esp, 6
-    mov %eax, %esp
+    # add %esp, 6
+    mov %eax, %esp # switch the stack
 
-    pop %gs
-    pop %fs
-    pop %es
-    pop %ds
-    popa
+    # Restore the saved registers
+    popl %eax
+    popl %ebx
+    popl %ecx
+    popl %edx
+    popl %esi
+    popl %edi
+    popl %ebp
+
+    # pop %gs
+    # pop %fs
+    # pop %es
+    # pop %ds
+    # popa
+    add $4, %esp
+    
     iret
 
 .data

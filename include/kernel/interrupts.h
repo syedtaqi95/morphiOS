@@ -9,6 +9,7 @@
 #include "common/types.h"
 #include "kernel/port.h"
 #include "kernel/gdt.h"
+#include "kernel/multithreading.h"
 
 namespace morphios {
 namespace kernel {
@@ -50,6 +51,7 @@ class interruptsHandler {
 protected:
     static interruptsHandler* ActiveInterruptsHandler; // Not great, but required to get out of static space
     interruptHandle* interruptHandles[NUM_INTERRUPTS]; // Pointers to interruptHandle objects
+    TaskManager *taskManager;
 
     // IDT gate (entry) definition
     struct Gate {
@@ -133,7 +135,7 @@ protected:
     Port8Bit PICSlaveDataPort;
 
 public:
-    interruptsHandler(GlobalDescriptorTable* globalDescriptorTable);
+    interruptsHandler(GlobalDescriptorTable* globalDescriptorTable, TaskManager *taskManager);
     ~interruptsHandler();
     void Activate();
     void Deactivate();
