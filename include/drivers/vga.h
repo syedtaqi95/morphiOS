@@ -106,7 +106,7 @@ public:
     // Graphics mode methods
     virtual bool setMode(common::uint32_t width, common::uint32_t height, common::uint32_t colourDepth);
     virtual bool supportsMode(common::uint32_t width, common::uint32_t height, common::uint32_t colourDepth);    
-    virtual void putPixel(common::int32_t x, common::int32_t y,  common::uint8_t r, common::uint8_t g, common::uint8_t b);
+    virtual void putPixel(common::int32_t x, common::int32_t y, common::uint8_t r, common::uint8_t g, common::uint8_t b);
     virtual void putPixel(common::int32_t x, common::int32_t y, common::uint8_t colourIndex);
     virtual void putLine(common::int32_t x0, common::int32_t y0, common::int32_t x1, common::int32_t y1,
         common::uint8_t r, common::uint8_t g, common::uint8_t b);
