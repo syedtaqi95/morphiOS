@@ -22,6 +22,7 @@ objects = 	$(OBJ_DIR)/common/common.o \
 			$(OBJ_DIR)/kernel/port.o \
 			$(OBJ_DIR)/kernel/interrupts-stubs.o \
 			$(OBJ_DIR)/kernel/interrupts.o \
+			$(OBJ_DIR)/kernel/multithreading.o \
 			$(OBJ_DIR)/drivers/driver.o \
 			$(OBJ_DIR)/drivers/pci.o \
 			$(OBJ_DIR)/drivers/mouse.o \
