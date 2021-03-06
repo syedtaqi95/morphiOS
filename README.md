@@ -23,9 +23,9 @@ Currently supported features:
  - Interrupts and interrupt handlers
  - Drivers for graphics, keyboard and mouse
  - Text mode and Graphics mode (using VGA video cards)
+ - Multithreading / Concurrency
 
 Planned features:
- - Multi-threading / concurrency
  - Dynamic memory management (heap allocation)
  - Networking
  - Hard drive support
