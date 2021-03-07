@@ -73,12 +73,12 @@ extern "C" void kernel_main(void)
 	// Setup GDT
 	GlobalDescriptorTable gdt;
 
-	// Setup multithreading
+	// Add tasks for scheduling
 	TaskManager taskManager;
-	Task task1(&gdt, taskA);
-	taskManager.addTask(&task1);
-	Task task2(&gdt, taskB);
-	taskManager.addTask(&task2);
+	// Task task1(&gdt, taskA);
+	// taskManager.addTask(&task1);
+	// Task task2(&gdt, taskB);
+	// taskManager.addTask(&task2);
 
 	// Setup IDT / interrupts
 	interruptsHandler interrupts(&gdt, &taskManager);
