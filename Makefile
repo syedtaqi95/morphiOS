@@ -19,6 +19,7 @@ SRC_DIR := src
 objects = 	$(OBJ_DIR)/common/common.o \
 			$(OBJ_DIR)/boot/boot.o \
 			$(OBJ_DIR)/kernel/gdt.o \
+			$(OBJ_DIR)/kernel/memorymanager.o \
 			$(OBJ_DIR)/kernel/port.o \
 			$(OBJ_DIR)/kernel/interrupts-stubs.o \
 			$(OBJ_DIR)/kernel/interrupts.o \

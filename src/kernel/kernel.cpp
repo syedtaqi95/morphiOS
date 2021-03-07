@@ -10,6 +10,7 @@
 #include "common/types.h"
 #include "common/common.h"
 #include "kernel/gdt.h"
+#include "kernel/memorymanager.h"
 #include "kernel/port.h"
 #include "kernel/interrupts.h"
 #include "drivers/driver.h"
